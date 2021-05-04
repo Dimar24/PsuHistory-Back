@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory", "PsuHistory\PsuHistory.csproj", "{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{B616024A-15F6-4D77-A7EC-8C3F1153D17A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business Logic", "Business Logic", "{AD2F53C0-2C4C-4FEC-9255-4B070B157829}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data access", "Data access", "{E976FF00-502E-49F1-8449-F036AC397D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Data.Domain", "PsuHistory.Data.Domain\PsuHistory.Data.Domain.csproj", "{71BC831D-6F4D-4518-86D6-6D2023359BD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Data.EF.SQL", "PsuHistory.Data.EF.SQL\PsuHistory.Data.EF.SQL.csproj", "{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Data.Service", "PsuHistory.Data.Service\PsuHistory.Data.Service.csproj", "{A5BDAE1B-3D34-4273-898E-65B0075FAD66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71BC831D-6F4D-4518-86D6-6D2023359BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71BC831D-6F4D-4518-86D6-6D2023359BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71BC831D-6F4D-4518-86D6-6D2023359BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71BC831D-6F4D-4518-86D6-6D2023359BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5BDAE1B-3D34-4273-898E-65B0075FAD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5BDAE1B-3D34-4273-898E-65B0075FAD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5BDAE1B-3D34-4273-898E-65B0075FAD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5BDAE1B-3D34-4273-898E-65B0075FAD66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4AE88544-521D-4AC9-AD15-7BC3C8F39D45} = {B616024A-15F6-4D77-A7EC-8C3F1153D17A}
+		{71BC831D-6F4D-4518-86D6-6D2023359BD2} = {E976FF00-502E-49F1-8449-F036AC397D0D}
+		{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC} = {E976FF00-502E-49F1-8449-F036AC397D0D}
+		{A5BDAE1B-3D34-4273-898E-65B0075FAD66} = {E976FF00-502E-49F1-8449-F036AC397D0D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18F49147-BAC5-493E-9C89-1BFEA22C5E99}
+	EndGlobalSection
+EndGlobal
