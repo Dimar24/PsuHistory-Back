@@ -14,34 +14,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class FormService : IFormService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public FormService(PsuHistoryDbContext dbContext)
+        public FormService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<Form> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Forms.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.Forms.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<Form>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Forms.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.Forms.ToListAsync(cancellationToken);
         }
 
         public async Task<Form> InsertAsync(Form entity, CancellationToken cancellationToken)
         {
-            await _dbContext.Forms.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.Forms.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<Form> UpdateAsync(Form entity, CancellationToken cancellationToken)
         {
-            _dbContext.Forms.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.Forms.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -50,8 +50,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.Forms.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.Forms.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

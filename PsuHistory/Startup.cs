@@ -41,8 +41,14 @@ namespace PsuHistory.API.Host
                     ValidateAudience = false
                 };
             });
-            services.AddDbContext<PsuHistoryDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<PsuHistoryDbContext>(options => {
+            //    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //});
+            services.AddDbContext<PsuHistoryDbContextPostgreSQL>(options => {
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
+            });
             services.AddPsuHistoryDataService();
             services.AddSwaggerGen(s =>
             {

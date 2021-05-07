@@ -14,34 +14,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class DutyStationService : IDutyStationService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public DutyStationService(PsuHistoryDbContext dbContext)
+        public DutyStationService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<DutyStation> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.DutyStations.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.DutyStations.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<DutyStation>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.DutyStations.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.DutyStations.ToListAsync(cancellationToken);
         }
 
         public async Task<DutyStation> InsertAsync(DutyStation entity, CancellationToken cancellationToken)
         {
-            await _dbContext.DutyStations.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.DutyStations.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<DutyStation> UpdateAsync(DutyStation entity, CancellationToken cancellationToken)
         {
-            _dbContext.DutyStations.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.DutyStations.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -50,8 +50,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.DutyStations.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.DutyStations.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

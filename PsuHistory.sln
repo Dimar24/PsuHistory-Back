@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data.Service", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9B7A9775-4E35-436B-AF97-75EBB93D6F92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Data", "PsuHistory.Data\PsuHistory.Data.csproj", "{8E082FCE-A9B0-4A3D-ACED-7405CE020076}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data", "PsuHistory.Data\PsuHistory.Data.csproj", "{8E082FCE-A9B0-4A3D-ACED-7405CE020076}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Business.Record", "PsuHistory.Business.Record\PsuHistory.Business.Record.csproj", "{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{8E082FCE-A9B0-4A3D-ACED-7405CE020076}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E082FCE-A9B0-4A3D-ACED-7405CE020076}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E082FCE-A9B0-4A3D-ACED-7405CE020076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service.Services;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 namespace PsuHistory.Data
 {
     [TestFixture]
-    public class AttachmentBurialServiceTest
+    class FormServiceTest
     {
         private PsuHistoryDbContext _dbContext;
-        private IAttachmentBurialService _service;
+        private IFormService _service;
 
         [SetUp]
         public void Setup()
@@ -23,7 +24,7 @@ namespace PsuHistory.Data
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             _dbContext = new PsuHistoryDbContext(options.Options);
-            _service = new AttachmentBurialService(_dbContext);
+            _service = new FormService(_dbContext);
         }
 
         [TearDown]
@@ -43,19 +44,16 @@ namespace PsuHistory.Data
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var result = await _service.GetAsync(entity.Id);
             _dbContext.Entry(result).State = EntityState.Detached;
-            _dbContext.Entry(result.Burial).State = EntityState.Detached;
 
             // Assert
             Assert.IsTrue(
-                entity.FileName == result.FileName &&
-                entity.FilePath == result.FilePath &&
-                entity.FileType == result.FileType &&
-                entity.BurialId == result.BurialId &&
+                entity.FirstName == result.FirstName &&
+                entity.LastName == result.LastName &&
+                entity.MiddleName == result.MiddleName &&
                 entity.CreatedAt == result.CreatedAt &&
                 entity.UpdatedAt == result.UpdatedAt
                 );
@@ -93,32 +91,28 @@ namespace PsuHistory.Data
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
-            entity = new AttachmentBurial()
+            entity = new Form()
             {
                 Id = entity.Id,
-                BurialId = Guid.NewGuid(),
-                Burial = GetBurial(),
-                FileName = Guid.NewGuid().ToString(),
+                FirstName = "Имя Тест",
+                LastName = "Фамилия Тест",
+                MiddleName = "Отчество Тест",
                 CreatedAt = DateTime.Now.AddMinutes(60),
                 UpdatedAt = DateTime.Now.AddMinutes(60)
             };
             await _service.UpdateAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var result = await _service.GetAsync(entity.Id);
             _dbContext.Entry(result).State = EntityState.Detached;
-            _dbContext.Entry(result.Burial).State = EntityState.Detached;
 
             // Assert
             Assert.IsTrue(
-                entity.FileName == result.FileName &&
-                entity.FilePath == result.FilePath &&
-                entity.FileType == result.FileType &&
-                entity.BurialId == result.BurialId &&
+                entity.FirstName == result.FirstName &&
+                entity.LastName == result.LastName &&
+                entity.MiddleName == result.MiddleName &&
                 entity.CreatedAt == result.CreatedAt &&
                 entity.UpdatedAt == result.UpdatedAt
                 );
@@ -136,12 +130,10 @@ namespace PsuHistory.Data
             entity = await _service.InsertAsync(entity);
             var id = entity.Id;
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var entityExsist = await _service.GetAsync(id);
             _dbContext.Entry(entityExsist).State = EntityState.Detached;
-            _dbContext.Entry(entityExsist.Burial).State = EntityState.Detached;
             await _service.DeleteAsync(id);
             var entityNotExsist = await _service.GetAsync(id) ?? null;
 
@@ -153,77 +145,50 @@ namespace PsuHistory.Data
         }
 
 
-        private List<AttachmentBurial> GetList()
+        private List<Form> GetList()
         {
-            return new List<AttachmentBurial>()
+            return new List<Form>()
             {
-                new AttachmentBurial()
+                new Form()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    FirstName = "Имя 1",
+                    LastName = "Фамилия 1",
+                    MiddleName = "Отчество 1",
                     CreatedAt = DateTime.Now.AddDays(-5),
                     UpdatedAt = DateTime.Now.AddDays(-5)
                 },
-                new AttachmentBurial()
+                new Form()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    FirstName = "Имя 2",
+                    LastName = "Фамилия 2",
+                    MiddleName = "Отчество 2",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
-                new AttachmentBurial()
+                new Form()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".jpg",
+                    FirstName = "Имя 3",
+                    LastName = "Фамилия 3",
+                    MiddleName = "Отчество 3",
                     CreatedAt = DateTime.Now.AddDays(5),
                     UpdatedAt = DateTime.Now.AddDays(5)
                 },
-                new AttachmentBurial()
+                new Form()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    FirstName = "Имя 4",
+                    LastName = "Фамилия 4",
+                    MiddleName = "Отчество 4",
                     CreatedAt = DateTime.Now.AddDays(-2),
                     UpdatedAt = DateTime.Now.AddDays(-3)
                 },
-                new AttachmentBurial()
+                new Form()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".svg",
+                    FirstName = "Имя 5",
+                    LastName = "Фамилия 5",
+                    MiddleName = "Отчество 5",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 }
-            };
-        }
-
-        private Burial GetBurial()
-        {
-            return new Burial()
-            {
-                NumberBurial = 1,
-                Location = "ул. Блохина 29, Новополоцк 211440",
-                NumberPeople = 10,
-                UnknownNumber = 10,
-                Year = 2001,
-                Latitude = 28.01,
-                Longitude = 32.01,
-                Description = "Описание",
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
             };
         }
     }

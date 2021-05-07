@@ -72,34 +72,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class TypeBurialService : ITypeBurialService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public TypeBurialService(PsuHistoryDbContext dbContext)
+        public TypeBurialService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<TypeBurial> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.TypeBurials.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.TypeBurials.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<TypeBurial>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.TypeBurials.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.TypeBurials.ToListAsync(cancellationToken);
         }
 
         public async Task<TypeBurial> InsertAsync(TypeBurial entity, CancellationToken cancellationToken)
         {
-            await _dbContext.TypeBurials.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.TypeBurials.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<TypeBurial> UpdateAsync(TypeBurial entity, CancellationToken cancellationToken)
         {
-            _dbContext.TypeBurials.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.TypeBurials.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -108,8 +108,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.TypeBurials.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.TypeBurials.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

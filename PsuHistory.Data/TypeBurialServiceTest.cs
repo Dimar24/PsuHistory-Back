@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 namespace PsuHistory.Data
 {
     [TestFixture]
-    public class AttachmentBurialServiceTest
+    class TypeBurialServiceTest
     {
         private PsuHistoryDbContext _dbContext;
-        private IAttachmentBurialService _service;
+        private ITypeBurialService _service;
 
         [SetUp]
         public void Setup()
@@ -23,7 +23,7 @@ namespace PsuHistory.Data
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             _dbContext = new PsuHistoryDbContext(options.Options);
-            _service = new AttachmentBurialService(_dbContext);
+            _service = new TypeBurialService(_dbContext);
         }
 
         [TearDown]
@@ -43,19 +43,14 @@ namespace PsuHistory.Data
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var result = await _service.GetAsync(entity.Id);
             _dbContext.Entry(result).State = EntityState.Detached;
-            _dbContext.Entry(result.Burial).State = EntityState.Detached;
 
             // Assert
             Assert.IsTrue(
-                entity.FileName == result.FileName &&
-                entity.FilePath == result.FilePath &&
-                entity.FileType == result.FileType &&
-                entity.BurialId == result.BurialId &&
+                entity.Name == result.Name &&
                 entity.CreatedAt == result.CreatedAt &&
                 entity.UpdatedAt == result.UpdatedAt
                 );
@@ -93,32 +88,24 @@ namespace PsuHistory.Data
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
-            entity = new AttachmentBurial()
+            entity = new TypeBurial()
             {
                 Id = entity.Id,
-                BurialId = Guid.NewGuid(),
-                Burial = GetBurial(),
-                FileName = Guid.NewGuid().ToString(),
+                Name = "Тип № Тест",
                 CreatedAt = DateTime.Now.AddMinutes(60),
                 UpdatedAt = DateTime.Now.AddMinutes(60)
             };
             await _service.UpdateAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var result = await _service.GetAsync(entity.Id);
             _dbContext.Entry(result).State = EntityState.Detached;
-            _dbContext.Entry(result.Burial).State = EntityState.Detached;
 
             // Assert
             Assert.IsTrue(
-                entity.FileName == result.FileName &&
-                entity.FilePath == result.FilePath &&
-                entity.FileType == result.FileType &&
-                entity.BurialId == result.BurialId &&
+                entity.Name == result.Name &&
                 entity.CreatedAt == result.CreatedAt &&
                 entity.UpdatedAt == result.UpdatedAt
                 );
@@ -136,12 +123,10 @@ namespace PsuHistory.Data
             entity = await _service.InsertAsync(entity);
             var id = entity.Id;
             _dbContext.Entry(entity).State = EntityState.Detached;
-            _dbContext.Entry(entity.Burial).State = EntityState.Detached;
 
             // Act
             var entityExsist = await _service.GetAsync(id);
             _dbContext.Entry(entityExsist).State = EntityState.Detached;
-            _dbContext.Entry(entityExsist.Burial).State = EntityState.Detached;
             await _service.DeleteAsync(id);
             var entityNotExsist = await _service.GetAsync(id) ?? null;
 
@@ -153,77 +138,40 @@ namespace PsuHistory.Data
         }
 
 
-        private List<AttachmentBurial> GetList()
+        private List<TypeBurial> GetList()
         {
-            return new List<AttachmentBurial>()
+            return new List<TypeBurial>()
             {
-                new AttachmentBurial()
+                new TypeBurial()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    Name = "Тип № Один",
                     CreatedAt = DateTime.Now.AddDays(-5),
                     UpdatedAt = DateTime.Now.AddDays(-5)
                 },
-                new AttachmentBurial()
+                new TypeBurial()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    Name = "Тип № Два",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
-                new AttachmentBurial()
+                new TypeBurial()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".jpg",
+                    Name = "Тип № Три",
                     CreatedAt = DateTime.Now.AddDays(5),
                     UpdatedAt = DateTime.Now.AddDays(5)
                 },
-                new AttachmentBurial()
+                new TypeBurial()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".png",
+                    Name = "Тип № Четыри",
                     CreatedAt = DateTime.Now.AddDays(-2),
                     UpdatedAt = DateTime.Now.AddDays(-3)
                 },
-                new AttachmentBurial()
+                new TypeBurial()
                 {
-                    BurialId = Guid.NewGuid(),
-                    Burial = GetBurial(),
-                    FileName = Guid.NewGuid().ToString(),
-                    FilePath = "/files/images",
-                    FileType = ".svg",
+                    Name = "Тип № Пять",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 }
-            };
-        }
-
-        private Burial GetBurial()
-        {
-            return new Burial()
-            {
-                NumberBurial = 1,
-                Location = "ул. Блохина 29, Новополоцк 211440",
-                NumberPeople = 10,
-                UnknownNumber = 10,
-                Year = 2001,
-                Latitude = 28.01,
-                Longitude = 32.01,
-                Description = "Описание",
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
             };
         }
     }

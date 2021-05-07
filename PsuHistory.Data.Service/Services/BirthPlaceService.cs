@@ -14,34 +14,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class BirthPlaceService : IBirthPlaceService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public BirthPlaceService(PsuHistoryDbContext dbContext)
+        public BirthPlaceService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<BirthPlace> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.BirthPlaces.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.BirthPlaces.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<BirthPlace>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.BirthPlaces.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.BirthPlaces.ToListAsync(cancellationToken);
         }
 
         public async Task<BirthPlace> InsertAsync(BirthPlace entity, CancellationToken cancellationToken)
         {
-            await _dbContext.BirthPlaces.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.BirthPlaces.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<BirthPlace> UpdateAsync(BirthPlace entity, CancellationToken cancellationToken)
         {
-            _dbContext.BirthPlaces.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.BirthPlaces.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -50,8 +50,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.BirthPlaces.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.BirthPlaces.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

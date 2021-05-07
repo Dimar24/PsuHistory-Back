@@ -14,34 +14,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class AttachmentBurialService : IAttachmentBurialService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public AttachmentBurialService(PsuHistoryDbContext dbContext)
+        public AttachmentBurialService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<AttachmentBurial> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.AttachmentBurials.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.AttachmentBurials.Include(db => db.Burial).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<AttachmentBurial>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.AttachmentBurials.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.AttachmentBurials.Include(db => db.Burial).ToListAsync(cancellationToken);
         }
 
         public async Task<AttachmentBurial> InsertAsync(AttachmentBurial entity, CancellationToken cancellationToken)
         {
-            await _dbContext.AttachmentBurials.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.AttachmentBurials.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<AttachmentBurial> UpdateAsync(AttachmentBurial entity, CancellationToken cancellationToken)
         {
-            _dbContext.AttachmentBurials.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.AttachmentBurials.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -50,8 +50,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.AttachmentBurials.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.AttachmentBurials.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

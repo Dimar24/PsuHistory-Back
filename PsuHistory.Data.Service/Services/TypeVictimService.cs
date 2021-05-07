@@ -15,34 +15,34 @@ namespace PsuHistory.Data.Service.Services
 
     public class TypeVictimService : ITypeVictimService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public TypeVictimService(PsuHistoryDbContext dbContext)
+        public TypeVictimService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<TypeVictim> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.TypeVictims.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.TypeVictims.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<TypeVictim>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.TypeVictims.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.TypeVictims.ToListAsync(cancellationToken);
         }
 
         public async Task<TypeVictim> InsertAsync(TypeVictim entity, CancellationToken cancellationToken)
         {
-            await _dbContext.TypeVictims.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.TypeVictims.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<TypeVictim> UpdateAsync(TypeVictim entity, CancellationToken cancellationToken)
         {
-            _dbContext.TypeVictims.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.TypeVictims.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -51,8 +51,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.TypeVictims.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.TypeVictims.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PsuHistory.Data.EF.SQL;
-using PsuHistory.Data.Service.Abstraction;
+using PsuHistory.Data.Service.Interfaces;
 
 namespace PsuHistory.Data.Service
 {
@@ -19,7 +19,7 @@ namespace PsuHistory.Data.Service
             services.Scan(scan => scan.FromAssembliesOf(currentAssembly)
                 .AddClasses(classes => classes.AssignableTo(typeof(IBaseService<,>)))
                 .AsImplementedInterfaces()
-                .WithTransientLifetime()
+                .WithScopedLifetime()
             );
         }
     }

@@ -15,34 +15,41 @@ namespace PsuHistory.Data.Service.Services
 
     public class VictimService : IVictimService
     {
-        private readonly PsuHistoryDbContext _dbContext;
+        private readonly PsuHistoryDbContext db;
 
-        public VictimService(PsuHistoryDbContext dbContext)
+        public VictimService(PsuHistoryDbContext db)
         {
-            _dbContext = dbContext;
+            this.db = db;
         }
 
         public async Task<Victim> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Victims.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.Victims
+                .Include(db => db.TypeVictim)
+                .Include(db => db.DutyStation)
+                .Include(db => db.BirthPlace)
+                .Include(db => db.ConscriptionPlace)
+                .Include(db => db.Burial)
+                .ThenInclude(db => db.TypeBurial)
+                .FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<Victim>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Victims.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.Victims.ToListAsync(cancellationToken);
         }
 
         public async Task<Victim> InsertAsync(Victim entity, CancellationToken cancellationToken)
         {
-            await _dbContext.Victims.AddAsync(entity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await db.Victims.AddAsync(entity, cancellationToken);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
         public async Task<Victim> UpdateAsync(Victim entity, CancellationToken cancellationToken)
         {
-            _dbContext.Victims.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            db.Victims.Update(entity);
+            await db.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -51,8 +58,8 @@ namespace PsuHistory.Data.Service.Services
             var entity = await GetAsync(id, cancellationToken);
             if (entity is not null)
             {
-                _dbContext.Victims.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                db.Victims.Remove(entity);
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
     }
