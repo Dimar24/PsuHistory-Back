@@ -32,14 +32,12 @@ namespace PsuHistory.Data
             _dbContext.Dispose();
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestInsertAndGetAsync(int number)
+        [Test]
+        public async Task TestInsertAndGetAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
@@ -51,28 +49,25 @@ namespace PsuHistory.Data
             _dbContext.Entry(result.TypeBurial).State = EntityState.Detached;
 
             // Assert
-            Assert.IsTrue(
-                entity.NumberBurial == result.NumberBurial &&
-                entity.Location == result.Location &&
-                entity.NumberPeople == result.NumberPeople &&
-                entity.UnknownNumber == result.UnknownNumber &&
-                entity.Year == result.Year &&
-                entity.Latitude == result.Latitude &&
-                entity.Longitude == result.Longitude &&
-                entity.Description == result.Description &&
-                entity.CreatedAt == result.CreatedAt &&
-                entity.UpdatedAt == result.UpdatedAt
-                );
+            Assert.IsTrue(entity.NumberBurial == result.NumberBurial);
+            Assert.IsTrue(entity.Location == result.Location);
+            Assert.IsTrue(entity.NumberPeople == result.NumberPeople);
+            Assert.IsTrue(entity.UnknownNumber == result.UnknownNumber);
+            Assert.IsTrue(entity.Year == result.Year);
+            Assert.IsTrue(entity.Latitude == result.Latitude);
+            Assert.IsTrue(entity.Longitude == result.Longitude);
+            Assert.IsTrue(entity.Description == result.Description);
+            Assert.IsTrue(entity.TypeBurialId == result.TypeBurialId);
+            Assert.IsTrue(entity.CreatedAt == result.CreatedAt);
+            Assert.IsTrue(entity.UpdatedAt == result.UpdatedAt);
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestGetAllAsync(int count)
+        [Test]
+        public async Task TestGetAllAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var count = random.Next(5);
             var entityList = GetList().Take(count);
             foreach (var entity in entityList)
             {
@@ -86,14 +81,12 @@ namespace PsuHistory.Data
             Assert.AreEqual(entityList.Count(), result.Count());
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestUpdateAsync(int number)
+        [Test]
+        public async Task TestUpdateAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
@@ -119,36 +112,31 @@ namespace PsuHistory.Data
             _dbContext.Entry(entity).State = EntityState.Detached;
             _dbContext.Entry(entity.TypeBurial).State = EntityState.Detached;
 
-
             // Act
             var result = await _service.GetAsync(entity.Id);
             _dbContext.Entry(result).State = EntityState.Detached;
             _dbContext.Entry(result.TypeBurial).State = EntityState.Detached;
 
-
             // Assert
-            Assert.IsTrue(
-                entity.NumberBurial == result.NumberBurial &&
-                entity.Location == result.Location &&
-                entity.NumberPeople == result.NumberPeople &&
-                entity.UnknownNumber == result.UnknownNumber &&
-                entity.Year == result.Year &&
-                entity.Latitude == result.Latitude &&
-                entity.Longitude == result.Longitude &&
-                entity.Description == result.Description &&
-                entity.CreatedAt == result.CreatedAt &&
-                entity.UpdatedAt == result.UpdatedAt
-                );
+            Assert.IsTrue(entity.NumberBurial == result.NumberBurial);
+            Assert.IsTrue(entity.Location == result.Location);
+            Assert.IsTrue(entity.NumberPeople == result.NumberPeople);
+            Assert.IsTrue(entity.UnknownNumber == result.UnknownNumber);
+            Assert.IsTrue(entity.Year == result.Year);
+            Assert.IsTrue(entity.Latitude == result.Latitude);
+            Assert.IsTrue(entity.Longitude == result.Longitude);
+            Assert.IsTrue(entity.Description == result.Description);
+            Assert.IsTrue(entity.TypeBurialId == result.TypeBurialId);
+            Assert.IsTrue(entity.CreatedAt == result.CreatedAt);
+            Assert.IsTrue(entity.UpdatedAt == result.UpdatedAt);
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestDeleteAsync(int number)
+        [Test]
+        public async Task TestDeleteAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             entity = await _service.InsertAsync(entity);
             var id = entity.Id;
@@ -163,10 +151,8 @@ namespace PsuHistory.Data
             var entityNotExsist = await _service.GetAsync(id) ?? null;
 
             // Assert
-            Assert.IsTrue(
-                entityExsist is not null &&
-                entityNotExsist is null
-                );
+            Assert.IsNull(entityNotExsist);
+            Assert.IsNotNull(entityExsist);
         }
 
 

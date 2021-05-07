@@ -32,14 +32,12 @@ namespace PsuHistory.Data
             _dbContext.Dispose();
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestInsertAndGetAsync(int number)
+        [Test]
+        public async Task TestInsertAndGetAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
@@ -49,21 +47,17 @@ namespace PsuHistory.Data
             _dbContext.Entry(result).State = EntityState.Detached;
 
             // Assert
-            Assert.IsTrue(
-                entity.Name == result.Name &&
-                entity.CreatedAt == result.CreatedAt &&
-                entity.UpdatedAt == result.UpdatedAt
-                );
+            Assert.IsTrue(entity.Name == result.Name);
+            Assert.IsTrue(entity.CreatedAt == result.CreatedAt);
+            Assert.IsTrue(entity.UpdatedAt == result.UpdatedAt);
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestGetAllAsync(int count)
+        [Test]
+        public async Task TestGetAllAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var count = random.Next(5);
             var entityList = GetList().Take(count);
             foreach (var entity in entityList)
             {
@@ -77,14 +71,12 @@ namespace PsuHistory.Data
             Assert.AreEqual(entityList.Count(), result.Count());
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestUpdateAsync(int number)
+        [Test]
+        public async Task TestUpdateAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             await _service.InsertAsync(entity);
             _dbContext.Entry(entity).State = EntityState.Detached;
@@ -104,21 +96,17 @@ namespace PsuHistory.Data
             _dbContext.Entry(result).State = EntityState.Detached;
 
             // Assert
-            Assert.IsTrue(
-                entity.Name == result.Name &&
-                entity.CreatedAt == result.CreatedAt &&
-                entity.UpdatedAt == result.UpdatedAt
-                );
+            Assert.IsTrue(entity.Name == result.Name);
+            Assert.IsTrue(entity.CreatedAt == result.CreatedAt);
+            Assert.IsTrue(entity.UpdatedAt == result.UpdatedAt);
         }
 
-        [TestCase(4)]
-        [TestCase(3)]
-        [TestCase(2)]
-        [TestCase(1)]
-        [TestCase(0)]
-        public async Task TestDeleteAsync(int number)
+        [Test]
+        public async Task TestDeleteAsync()
         {
             // Arrange
+            var random = new Random(0);
+            var number = random.Next(5);
             var entity = GetList()[number];
             entity = await _service.InsertAsync(entity);
             var id = entity.Id;
@@ -131,10 +119,8 @@ namespace PsuHistory.Data
             var entityNotExsist = await _service.GetAsync(id) ?? null;
 
             // Assert
-            Assert.IsTrue(
-                entityExsist is not null &&
-                entityNotExsist is null
-                );
+            Assert.IsNull(entityNotExsist);
+            Assert.IsNotNull(entityExsist);
         }
 
 
