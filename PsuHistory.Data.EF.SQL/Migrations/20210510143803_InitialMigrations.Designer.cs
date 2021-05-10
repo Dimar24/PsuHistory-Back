@@ -10,7 +10,7 @@ using PsuHistory.Data.EF.SQL;
 namespace PsuHistory.Data.EF.SQL.Migrations
 {
     [DbContext(typeof(PsuHistoryDbContext))]
-    [Migration("20210510114723_InitialMigrations")]
+    [Migration("20210510143803_InitialMigrations")]
     partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

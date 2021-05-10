@@ -19,9 +19,9 @@ namespace PsuHistory.Data.EF.SQL
             IConfigurationRoot config = builder.Build();
 
             // получаем строку подключения из файла appsettings.json
-            string connectionString = config.GetConnectionString("PostgreSQLDbContext");
+            string connectionString = config.GetConnectionString("MSSQLDbContext");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            optionsBuilder.UseNpgsql(connectionString, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
+            optionsBuilder.UseSqlServer(connectionString, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
             //optionsBuilder.UseSqlServer(connectionString, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
             return new PsuHistoryDbContext(optionsBuilder.Options);
         }
