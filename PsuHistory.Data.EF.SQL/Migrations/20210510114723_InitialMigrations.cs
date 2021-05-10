@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
+namespace PsuHistory.Data.EF.SQL.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,6 +66,20 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TypeBurials",
                 columns: table => new
                 {
@@ -117,6 +131,28 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Burials",
                 columns: table => new
                 {
@@ -140,6 +176,29 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         name: "FK_Burials_TypeBurials_TypeBurialId",
                         column: x => x.TypeBurialId,
                         principalTable: "TypeBurials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AttachmentBurials",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    BurialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AttachmentBurials", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AttachmentBurials_Burials_BurialId",
+                        column: x => x.BurialId,
+                        principalTable: "Burials",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -199,45 +258,10 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "AttachmentBurials",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    FileType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    BurialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VictimId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AttachmentBurials", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AttachmentBurials_Burials_BurialId",
-                        column: x => x.BurialId,
-                        principalTable: "Burials",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AttachmentBurials_Victims_VictimId",
-                        column: x => x.VictimId,
-                        principalTable: "Victims",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AttachmentBurials_BurialId",
                 table: "AttachmentBurials",
                 column: "BurialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AttachmentBurials_VictimId",
-                table: "AttachmentBurials",
-                column: "VictimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AttachmentForms_FormId",
@@ -248,6 +272,11 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                 name: "IX_Burials_TypeBurialId",
                 table: "Burials",
                 column: "TypeBurialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Victims_BirthPlaceId",
@@ -284,10 +313,16 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                 name: "AttachmentForms");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Victims");
 
             migrationBuilder.DropTable(
                 name: "Forms");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "BirthPlaces");

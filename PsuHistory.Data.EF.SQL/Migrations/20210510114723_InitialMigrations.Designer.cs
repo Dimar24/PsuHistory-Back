@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PsuHistory.Data.EF.SQL;
 
-namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
+namespace PsuHistory.Data.EF.SQL.Migrations
 {
     [DbContext(typeof(PsuHistoryDbContext))]
-    [Migration("20210510095953_FixDateCheck")]
-    partial class FixDateCheck
+    [Migration("20210510114723_InitialMigrations")]
+    partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
@@ -50,7 +49,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -67,7 +65,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -84,7 +81,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -102,9 +98,7 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 5, 10, 12, 59, 53, 513, DateTimeKind.Local).AddTicks(3551));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
                         .IsRequired()
@@ -122,9 +116,7 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 5, 10, 12, 59, 53, 521, DateTimeKind.Local).AddTicks(6828));
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -140,7 +132,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
@@ -149,7 +140,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -164,7 +154,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -196,7 +185,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Year")
@@ -216,7 +204,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
@@ -225,7 +212,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -240,7 +226,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
@@ -249,7 +234,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -264,7 +248,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -273,7 +256,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -288,7 +270,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -297,7 +278,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -321,7 +301,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DateOfBirth")
@@ -358,7 +337,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -383,7 +361,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -392,7 +369,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -407,7 +383,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Mail")
@@ -424,7 +399,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PsuHistory.Data.EF.SQL;
 
-namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
+namespace PsuHistory.Data.EF.SQL.Migrations
 {
     [DbContext(typeof(PsuHistoryDbContext))]
-    [Migration("20210509193619_InitialMigration")]
-    partial class InitialMigration
+    partial class PsuHistoryDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,14 +116,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("VictimId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BurialId");
-
-                    b.HasIndex("VictimId");
 
                     b.ToTable("AttachmentBurials");
                 });
@@ -359,6 +352,60 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                     b.ToTable("Victims");
                 });
 
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Users.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.AttachmentForm", b =>
                 {
                     b.HasOne("PsuHistory.Data.Domain.Models.Histories.Form", "Form")
@@ -377,10 +424,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                         .HasForeignKey("BurialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PsuHistory.Data.Domain.Models.Monuments.Victim", null)
-                        .WithMany("AttachmentBurials")
-                        .HasForeignKey("VictimId");
 
                     b.Navigation("Burial");
                 });
@@ -439,6 +482,17 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                     b.Navigation("TypeVictim");
                 });
 
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Users.User", b =>
+                {
+                    b.HasOne("PsuHistory.Data.Domain.Models.Users.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.Form", b =>
                 {
                     b.Navigation("AttachmentForms");
@@ -449,9 +503,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
                     b.Navigation("AttachmentBurials");
                 });
 
-            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Monuments.Victim", b =>
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Users.Role", b =>
                 {
-                    b.Navigation("AttachmentBurials");
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

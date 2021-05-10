@@ -44,11 +44,11 @@ namespace PsuHistory.API.Host
             });
             services.AddDbContext<PsuHistoryDbContext>(options => {
                 /**/
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
-                /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
+                //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
+                /**/
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
             });
             //services.AddDbContextFactory<PeopleContext>(opt => opt.UseSqlServer($"Data Source={myconnectionstring}"));
             //services.AddDbContext<PostgreSQLDbContext>(options => {
