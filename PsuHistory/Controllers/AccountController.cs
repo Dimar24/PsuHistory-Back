@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PsuHistory.API.Host.Helpers;
 using PsuHistory.Data.Domain.Models.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PsuHistory.API.Host.Controllers
 {
@@ -16,19 +18,18 @@ namespace PsuHistory.API.Host.Controllers
     public class AccountController : ControllerBase
     {
         // тестовые данные вместо использования базы данных
-        private List<Person> people = new List<Person>
+        private List<User> users = new List<User>
         {
-            new Person {Login="admin@gmail.com", Password="12345", Role = "admin" },
-            new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" },
-            new Person { Login="1", Password="1", Role = "1" }
+            new User { Mail = "admin", Password = "secret", Role = new Role() { Name = "admin" } },
+            new User { Mail = "user", Password = "secret", Role = new Role() { Name = "user" } }
         };
     
         [HttpPost("/token")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerOperation(Summary = "Search Type Burial", OperationId = "SearchTypeBurial")]
-        public IActionResult Token(string username, string password)
+        public async Task<IActionResult> Token(User user)
         {
-            var identity = GetIdentity(username, password);
+            var identity = GetIdentity(user.Mail, user.Password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -48,21 +49,21 @@ namespace PsuHistory.API.Host.Controllers
             var response = new
             {
                 access_token = encodedJwt,
-                username = identity.Name
+                mail = identity.Name
             };
     
             return Ok(response);
         }
     
-        private ClaimsIdentity GetIdentity(string username, string password)
+        private ClaimsIdentity GetIdentity(string mail, string password)
         {
-            Person person = people.FirstOrDefault(x => x.Login == username && x.Password == password);
-            if (person != null)
+            User user = users.FirstOrDefault(x => x.Mail == mail && x.Password == password);
+            if (user != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Mail),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

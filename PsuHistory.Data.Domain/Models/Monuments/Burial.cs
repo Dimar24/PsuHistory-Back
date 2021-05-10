@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PsuHistory.Data.Domain.Models.Monuments
 {
@@ -15,5 +16,7 @@ namespace PsuHistory.Data.Domain.Models.Monuments
 
         public Guid TypeBurialId { get; set; }
         public virtual TypeBurial TypeBurial { get; set; }
+
+        public virtual ICollection<AttachmentBurial> AttachmentBurials { get; set; } = new List<AttachmentBurial>();
     }
 }

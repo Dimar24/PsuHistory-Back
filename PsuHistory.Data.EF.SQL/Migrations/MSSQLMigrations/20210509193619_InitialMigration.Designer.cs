@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PsuHistory.Data.EF.SQL;
 
-namespace PsuHistory.Data.EF.SQL.Migrations
+namespace PsuHistory.Data.EF.SQL.Migrations.MSSQLMigrations
 {
     [DbContext(typeof(PsuHistoryDbContext))]
-    partial class PsuHistoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210509193619_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,19 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("FileType")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<Guid>("FormId")
                         .HasColumnType("uniqueidentifier");
@@ -60,13 +68,17 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -89,20 +101,31 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("FileType")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("VictimId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BurialId");
+
+                    b.HasIndex("VictimId");
 
                     b.ToTable("AttachmentBurials");
                 });
@@ -117,7 +140,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -137,13 +162,17 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4096)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
@@ -183,7 +212,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -203,7 +234,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -223,7 +256,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -243,7 +278,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -272,16 +309,19 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DateOfBirth")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("DateOfDeath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<Guid>("DutyStationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("IsHeroSoviet")
                         .HasColumnType("bit");
@@ -290,10 +330,13 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("TypeVictimId")
                         .HasColumnType("uniqueidentifier");
@@ -319,7 +362,7 @@ namespace PsuHistory.Data.EF.SQL.Migrations
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.AttachmentForm", b =>
                 {
                     b.HasOne("PsuHistory.Data.Domain.Models.Histories.Form", "Form")
-                        .WithMany()
+                        .WithMany("AttachmentForms")
                         .HasForeignKey("FormId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -330,10 +373,14 @@ namespace PsuHistory.Data.EF.SQL.Migrations
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Monuments.AttachmentBurial", b =>
                 {
                     b.HasOne("PsuHistory.Data.Domain.Models.Monuments.Burial", "Burial")
-                        .WithMany()
+                        .WithMany("AttachmentBurials")
                         .HasForeignKey("BurialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PsuHistory.Data.Domain.Models.Monuments.Victim", null)
+                        .WithMany("AttachmentBurials")
+                        .HasForeignKey("VictimId");
 
                     b.Navigation("Burial");
                 });
@@ -390,6 +437,21 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                     b.Navigation("DutyStation");
 
                     b.Navigation("TypeVictim");
+                });
+
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.Form", b =>
+                {
+                    b.Navigation("AttachmentForms");
+                });
+
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Monuments.Burial", b =>
+                {
+                    b.Navigation("AttachmentBurials");
+                });
+
+            modelBuilder.Entity("PsuHistory.Data.Domain.Models.Monuments.Victim", b =>
+                {
+                    b.Navigation("AttachmentBurials");
                 });
 #pragma warning restore 612, 618
         }

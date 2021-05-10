@@ -23,12 +23,5 @@ namespace PsuHistory.Data.Domain.Models.Monuments
         public virtual ConscriptionPlace ConscriptionPlace { get; set; }
         public Guid BurialId { get; set; }
         public virtual Burial Burial { get; set; }
-
-        public virtual ICollection<AttachmentBurial> AttachmentBurials { get; set; }
-
-        public Victim()
-        {
-            AttachmentBurials = new List<AttachmentBurial>();
-        }
     }
 }

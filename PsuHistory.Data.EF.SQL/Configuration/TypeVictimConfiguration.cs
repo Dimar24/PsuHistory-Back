@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Monuments;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class TypeBurialMappingConfiguration : IEntityTypeConfiguration<TypeBurial>
+    class TypeVictimConfiguration : IEntityTypeConfiguration<TypeVictim>
     {
-        public void Configure(EntityTypeBuilder<TypeBurial> builder)
+        public void Configure(EntityTypeBuilder<TypeVictim> builder)
         {
-            builder.Property("TypeBurials");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("TypeVictims").HasKey(b => b.Id);
 
             builder.Property(b => b.Name).IsRequired().HasMaxLength(128);
 

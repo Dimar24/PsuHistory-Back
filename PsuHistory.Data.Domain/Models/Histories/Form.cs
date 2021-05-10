@@ -8,11 +8,6 @@ namespace PsuHistory.Data.Domain.Models.Histories
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
 
-        public virtual ICollection<AttachmentForm> AttachmentForms { get; set; }
-
-        public Form()
-        {
-            AttachmentForms = new List<AttachmentForm>();
-        }
+        public virtual ICollection<AttachmentForm> AttachmentForms { get; set; } = new List<AttachmentForm>();
     }
 }

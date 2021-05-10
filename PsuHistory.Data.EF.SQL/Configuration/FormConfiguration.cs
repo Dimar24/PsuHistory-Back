@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Histories;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class FormMappingConfiguration : IEntityTypeConfiguration<Form>
+    class FormConfiguration : IEntityTypeConfiguration<Form>
     {
         public void Configure(EntityTypeBuilder<Form> builder)
         {
-            builder.Property("Forms");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("Forms").HasKey(b => b.Id);
 
             builder.Property(b => b.LastName).IsRequired().HasMaxLength(128);
             builder.Property(b => b.FirstName).HasMaxLength(128);

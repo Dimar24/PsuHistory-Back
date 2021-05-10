@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Monuments;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class VictimMappingConfiguration : IEntityTypeConfiguration<Victim>
+    class VictimConfiguration : IEntityTypeConfiguration<Victim>
     {
         public void Configure(EntityTypeBuilder<Victim> builder)
         {
-            builder.Property("Victims");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("Victims").HasKey(b => b.Id);
 
             builder.Property(b => b.LastName).IsRequired().HasMaxLength(128);
             builder.Property(b => b.FirstName).HasMaxLength(128);
@@ -19,11 +18,12 @@ namespace PsuHistory.Data.EF.SQL.MappingConfiguration
             builder.Property(b => b.DateOfBirth).HasMaxLength(64);
             builder.Property(b => b.DateOfDeath).HasMaxLength(64);
 
-            builder.HasOne(b => b.TypeVictim).WithMany();
-            builder.HasOne(b => b.DutyStation).WithMany();
-            builder.HasOne(b => b.BirthPlace).WithMany();
-            builder.HasOne(b => b.ConscriptionPlace).WithMany();
-            builder.HasOne(b => b.Burial).WithMany();
+            builder.HasOne(b => b.TypeVictim).WithMany().HasForeignKey(b => b.TypeVictimId);
+            builder.HasOne(b => b.DutyStation).WithMany().HasForeignKey(b => b.DutyStationId);
+            builder.HasOne(b => b.BirthPlace).WithMany().HasForeignKey(b => b.BirthPlaceId);
+            builder.HasOne(b => b.ConscriptionPlace).WithMany().HasForeignKey(b => b.ConscriptionPlaceId);
+            builder.HasOne(b => b.Burial).WithMany().HasForeignKey(b => b.BurialId);
+            builder.HasOne(b => b.Burial).WithMany().HasForeignKey(b => b.BurialId);
 
             builder.Property(b => b.CreatedAt).IsRequired();
             builder.Property(b => b.UpdatedAt).IsRequired();

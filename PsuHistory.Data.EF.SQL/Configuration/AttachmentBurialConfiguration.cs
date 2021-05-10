@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Monuments;
+using System;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class AttachmentBurialMappingConfiguration : IEntityTypeConfiguration<AttachmentBurial>
+    class AttachmentBurialConfiguration : IEntityTypeConfiguration<AttachmentBurial>
     {
         public void Configure(EntityTypeBuilder<AttachmentBurial> builder)
         {
-            builder.Property("AttachmentBurials");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("AttachmentBurials").HasKey(b => b.Id);
 
             builder.Property(b => b.FileName).IsRequired().HasMaxLength(64);
             builder.Property(b => b.FilePath).IsRequired().HasMaxLength(256);
             builder.Property(b => b.FileType).IsRequired().HasMaxLength(8);
 
-            builder.HasOne(b => b.Burial).WithMany();
+            builder.HasOne(b => b.Burial).WithMany(b => b.AttachmentBurials).HasForeignKey(b => b.BurialId);
 
             builder.Property(b => b.CreatedAt).IsRequired();
             builder.Property(b => b.UpdatedAt).IsRequired();

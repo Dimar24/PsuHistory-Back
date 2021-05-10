@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Monuments;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class DutyStationMappingConfiguration : IEntityTypeConfiguration<DutyStation>
+    class ConscriptionPlaceConfiguration : IEntityTypeConfiguration<ConscriptionPlace>
     {
-        public void Configure(EntityTypeBuilder<DutyStation> builder)
+        public void Configure(EntityTypeBuilder<ConscriptionPlace> builder)
         {
-            builder.Property("DutyStations");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("ConscriptionPlaces").HasKey(b => b.Id);
 
             builder.Property(b => b.Place).IsRequired().HasMaxLength(512);
 

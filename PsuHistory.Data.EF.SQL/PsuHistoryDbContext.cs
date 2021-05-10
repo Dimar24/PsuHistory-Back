@@ -1,6 +1,9 @@
 ﻿using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Domain.Models.Histories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using PsuHistory.Data.EF.SQL.Configuration;
+using PsuHistory.Data.Domain.Models.Users;
 
 namespace PsuHistory.Data.EF.SQL
 {
@@ -18,13 +21,28 @@ namespace PsuHistory.Data.EF.SQL
         public DbSet<Form> Forms { get; set; }
         public DbSet<AttachmentForm> AttachmentForms { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+
         public PsuHistoryDbContext(DbContextOptions<PsuHistoryDbContext> options) 
             : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //Вынести потом
+            modelBuilder.ApplyConfiguration(new AttachmentBurialConfiguration());
+            modelBuilder.ApplyConfiguration(new AttachmentFormConfiguration());
+            modelBuilder.ApplyConfiguration(new BirthPlaceConfiguration());
+            modelBuilder.ApplyConfiguration(new BurialConfiguration());
+            modelBuilder.ApplyConfiguration(new ConscriptionPlaceConfiguration());
+            modelBuilder.ApplyConfiguration(new DutyStationConfiguration());
+            modelBuilder.ApplyConfiguration(new FormConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new TypeBurialConfiguration());
+            modelBuilder.ApplyConfiguration(new TypeVictimConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new VictimConfiguration());
         }
     }
 }

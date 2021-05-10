@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PsuHistory.Data.Domain.Models.Monuments;
 
-namespace PsuHistory.Data.EF.SQL.MappingConfiguration
+namespace PsuHistory.Data.EF.SQL.Configuration
 {
-    class BurialMappingConfiguration : IEntityTypeConfiguration<Burial>
+    class BurialConfiguration : IEntityTypeConfiguration<Burial>
     {
         public void Configure(EntityTypeBuilder<Burial> builder)
         {
-            builder.Property("Burials");
-            builder.HasKey(b => b.Id);
+            builder.ToTable("Burials").HasKey(b => b.Id);
 
             builder.Property(b => b.NumberBurial).IsRequired();
             builder.Property(b => b.Location).IsRequired().HasMaxLength(512);
@@ -20,7 +19,7 @@ namespace PsuHistory.Data.EF.SQL.MappingConfiguration
             builder.Property(b => b.Longitude).IsRequired();
             builder.Property(b => b.Description).IsRequired().HasMaxLength(4096);
 
-            builder.HasOne(b => b.TypeBurial).WithMany();
+            builder.HasOne(b => b.TypeBurial).WithMany().HasForeignKey(b => b.TypeBurialId);
 
             builder.Property(b => b.CreatedAt).IsRequired();
             builder.Property(b => b.UpdatedAt).IsRequired();
