@@ -43,27 +43,22 @@ namespace PsuHistory.API.Host
                 };
             });
 
-            var server = Configuration["DbServer"] ?? "localhost";
-            var port = Configuration["DbPort"] ?? "1433"; // Default SQL Server port
-            var user = Configuration["DbUser"] ?? "SA"; // Warning do not use the SA account
-            var password = Configuration["Password"] ?? "Pa55w0rd2021";
-            var database = Configuration["Database"] ?? "psuhistorydb";
+            var server = Configuration["DatabaseServer"] ?? "psuhistory.mssql.server";
+            var port = Configuration["DatabasePort"] ?? "1433"; // Default SQL Server port
+            var name = Configuration["DatabaseName"] ?? "psuhistorydb";
+            var user = Configuration["DatabaseUser"] ?? "SA"; // Warning do not use the SA account
+            var password = Configuration["DatabasePassword"] ?? "Pa55w0rd2021";
 
             services.AddDbContext<PsuHistoryDbContext>(options => {
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer($"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password}");
-            /**/
-            //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
-            /**/
-            //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
+                options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
+                /**/
+                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
+                /**/
+                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
             });
-            //services.AddDbContextFactory<PeopleContext>(opt => opt.UseSqlServer($"Data Source={myconnectionstring}"));
-            //services.AddDbContext<PostgreSQLDbContext>(options => {
-            //    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            //    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-            //});
             services.AddPsuHistoryDataService();
             services.AddSwaggerGen(s =>
             {

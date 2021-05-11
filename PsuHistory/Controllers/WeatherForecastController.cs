@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PsuHistory.API.Host.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -49,7 +49,7 @@ namespace PsuHistory.API.Host.Controllers
             return Ok(typeList);
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Add()
         {
