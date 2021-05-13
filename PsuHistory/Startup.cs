@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PsuHistory.API.Host.Helpers;
+using PsuHistory.Business.Service;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service;
 using System.Text;
@@ -43,23 +44,24 @@ namespace PsuHistory.API.Host
                 };
             });
 
-            var server = "database";
-            var port = "1433"; // Default SQL Server port
-            var name = "psuhistorydb";
-            var user = "sa"; // Warning do not use the SA account
-            var password = "Pa55w0rd2021";
+            var server = Configuration["DatabaseServer"] ?? "mssql";// "database|mssql"
+            var port = Configuration["DatabasePort"] ?? "1433"; // Default SQL Server port
+            var name = Configuration["DatabaseUser"] ?? "psuhistorydb";
+            var user = Configuration["DatabasePassword"] ?? "sa"; // Warning do not use the SA account
+            var password = Configuration["DatabaseName"] ?? "Pa55w0rd2021";
 
             services.AddDbContext<PsuHistoryDbContext>(options => {
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
-                /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
+                //options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
+                /**/
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
                 /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
             });
             services.AddPsuHistoryDataService();
+            services.AddPsuHistoryBusinessService();
             services.AddSwaggerGen(s =>
             {
                 s.EnableAnnotations();

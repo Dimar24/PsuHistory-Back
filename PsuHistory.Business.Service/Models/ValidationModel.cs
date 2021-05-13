@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace PsuHistory.Business.Service.Models
 {
-    public class ValidationModel
+    public class ValidationModel<TResult>
     {
-        public Dictionary<string, string> Errors { get; set; }
+        public TResult? Result;
+        public Dictionary<string, string> Errors { get; set; } = new Dictionary<string, string>();
 
         private int countError;
-
         public int CountError 
         { 
             get 
             {
-                return Errors.Count();
+                return Errors?.Count() ?? default;
             }
             private set
             {
@@ -24,9 +24,7 @@ namespace PsuHistory.Business.Service.Models
             }
         }
 
-
         private bool isValid;
-
         public bool IsValid 
         {
             get 

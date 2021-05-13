@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Monuments;
 using System;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
 {
     [ApiController]
     [Route("api/admin/[controller]")]
-    public class BirthPlaceController : ControllerBase
+    public class BirthPlaceController : AbstractionControllerBase
     {
         private readonly IBaseBusinessService<Guid, BirthPlace> birthPlaceService;
         public BirthPlaceController(IBaseBusinessService<Guid, BirthPlace> birthPlaceService)
@@ -20,41 +20,41 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
-            var data = await birthPlaceService.GetAsync(id);
+            var validation = await birthPlaceService.GetAsync(id);
 
-            return Ok(data);
+            return CreateObjectResult(validation);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var data = await birthPlaceService.GetAllAsync();
+            var validation = await birthPlaceService.GetAllAsync();
 
-            return Ok(data);
+            return CreateObjectResult(validation);
         }
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] BirthPlace birthPlace)
         {
-            var data = birthPlaceService.InsertAsync(birthPlace);
+            var validation = await birthPlaceService.InsertAsync(birthPlace);
 
-            return Ok(data);
+            return CreateObjectResult(validation);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(Guid id, [FromBody] BirthPlace birthPlace)
         {
-            var data = await birthPlaceService.UpdateAsync(birthPlace);
+            var validation = await birthPlaceService.UpdateAsync(birthPlace);
 
-            return Ok(data);
+            return CreateObjectResult(validation);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var data = await birthPlaceService.DeleteAsync(id);
+            var validation = await birthPlaceService.DeleteAsync(id);
 
-            return Ok(data);
+            return CreateObjectResult(validation);
         }
     }
 }

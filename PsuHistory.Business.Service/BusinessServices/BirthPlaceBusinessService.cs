@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Data.Service.Services;
@@ -26,57 +27,69 @@ namespace PsuHistory.Business.Service.Services
             this.birthPlaceValidation = birthPlaceValidation;
         }
 
-        public async Task<BirthPlace> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ValidationModel<BirthPlace>> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var validation = await birthPlaceValidation.GetValidationAsync(id, cancellationToken);
 
             if(!validation.IsValid)
             {
-                return null;
+                return validation;
             }
 
-            return await dataBirthPlace.GetAsync(id, cancellationToken);
+            validation.Result = await dataBirthPlace.GetAsync(id, cancellationToken);
+
+            return validation;
         }
 
-        public async Task<IEnumerable<BirthPlace>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<ValidationModel<IEnumerable<BirthPlace>>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await dataBirthPlace.GetAllAsync(cancellationToken);
+            var validation = new ValidationModel<IEnumerable<BirthPlace>>();
+
+            validation.Result = await dataBirthPlace.GetAllAsync(cancellationToken);
+
+            return validation;
         }
 
-        public async Task<IActionResult> InsertAsync(BirthPlace newEntity, CancellationToken cancellationToken = default)
+        public async Task<ValidationModel<BirthPlace>> InsertAsync(BirthPlace newEntity, CancellationToken cancellationToken = default)
         {
             var validation = await birthPlaceValidation.InsertValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
-                return null;
+                return validation;
             }
 
-            return Ok(await dataBirthPlace.InsertAsync(newEntity, cancellationToken));
+            validation.Result = await dataBirthPlace.InsertAsync(newEntity, cancellationToken);
+
+            return validation;
         }
 
-        public async Task<IActionResult> UpdateAsync(BirthPlace newEntity, CancellationToken cancellationToken = default)
+        public async Task<ValidationModel<BirthPlace>> UpdateAsync(BirthPlace newEntity, CancellationToken cancellationToken = default)
         {
             var validation = await birthPlaceValidation.UpdateValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
-                return null;
+                return validation;
             }
 
-            return Ok(await dataBirthPlace.InsertAsync(newEntity, cancellationToken);)
+            validation.Result = await dataBirthPlace.UpdateAsync(newEntity, cancellationToken);
+
+            return validation;
         }
 
-        public async Task<IActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ValidationModel<BirthPlace>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var validation = await birthPlaceValidation.DeleteValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {
-                return;
+                return validation;
             }
 
-            await Ok(dataBirthPlace.DeleteAsync(id, cancellationToken));
+            await dataBirthPlace.DeleteAsync(id, cancellationToken);
+
+            return validation;
         }
     }
 }
