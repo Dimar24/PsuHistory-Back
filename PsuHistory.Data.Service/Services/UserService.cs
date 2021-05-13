@@ -31,6 +31,13 @@ namespace PsuHistory.Data.Service.Services
             return await db.Users.Include(db => db.Role).ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(User entity, CancellationToken cancellationToken)
+        {
+            return await db.Users.AnyAsync(db =>
+                    db.Mail == entity.Mail,
+                    cancellationToken);
+        }
+
         public async Task<User> InsertAsync(User entity, CancellationToken cancellationToken)
         {
             await db.Users.AddAsync(entity, cancellationToken);

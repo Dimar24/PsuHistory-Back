@@ -31,6 +31,21 @@ namespace PsuHistory.Data.Service.Services
             return await db.Burials.Include(db => db.TypeBurial).ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(Burial entity, CancellationToken cancellationToken)
+        {
+            return await db.Burials.Include(d => d.TypeBurial).AnyAsync(db =>
+                    db.NumberBurial == entity.NumberBurial &&
+                    db.Location == entity.Location &&
+                    db.NumberPeople == entity.NumberPeople &&
+                    db.UnknownNumber == entity.UnknownNumber &&
+                    db.Year == entity.Year &&
+                    db.Latitude == entity.Latitude &&
+                    db.Longitude == entity.Longitude &&
+                    db.Description == entity.Description &&
+                    db.TypeBurial.Name == entity.TypeBurial.Name,
+                    cancellationToken);
+        }
+
         public async Task<Burial> InsertAsync(Burial entity, CancellationToken cancellationToken)
         {
             await db.Burials.AddAsync(entity, cancellationToken);

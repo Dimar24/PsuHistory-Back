@@ -31,6 +31,13 @@ namespace PsuHistory.Data.Service.Services
             return await db.ConscriptionPlaces.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(ConscriptionPlace entity, CancellationToken cancellationToken)
+        {
+            return await db.ConscriptionPlaces.AnyAsync(db =>
+                    db.Place == entity.Place,
+                    cancellationToken);
+        }
+
         public async Task<ConscriptionPlace> InsertAsync(ConscriptionPlace entity, CancellationToken cancellationToken)
         {
             await db.ConscriptionPlaces.AddAsync(entity, cancellationToken);

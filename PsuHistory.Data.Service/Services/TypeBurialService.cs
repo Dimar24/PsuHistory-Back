@@ -89,6 +89,13 @@ namespace PsuHistory.Data.Service.Services
             return await db.TypeBurials.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(TypeBurial entity, CancellationToken cancellationToken)
+        {
+            return await db.TypeBurials.AnyAsync(db =>
+                    db.Name == entity.Name,
+                    cancellationToken);
+        }
+
         public async Task<TypeBurial> InsertAsync(TypeBurial entity, CancellationToken cancellationToken)
         {
             await db.TypeBurials.AddAsync(entity, cancellationToken);

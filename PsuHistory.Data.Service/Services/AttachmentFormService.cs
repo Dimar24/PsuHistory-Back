@@ -31,6 +31,15 @@ namespace PsuHistory.Data.Service.Services
             return await db.AttachmentForms.Include(db => db.Form).ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(AttachmentForm entity, CancellationToken cancellationToken)
+        {
+            return await db.AttachmentForms.AnyAsync(db =>
+                    db.FileName == entity.FileName &&
+                    db.FileType == entity.FileType &&
+                    db.FilePath == entity.FilePath,
+                    cancellationToken);
+        }
+
         public async Task<AttachmentForm> InsertAsync(AttachmentForm entity, CancellationToken cancellationToken)
         {
             await db.AttachmentForms.AddAsync(entity, cancellationToken);

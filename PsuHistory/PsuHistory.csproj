@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PsuHistory.Business.Service\PsuHistory.Business.Service.csproj" />
     <ProjectReference Include="..\PsuHistory.Data.EF.SQL\PsuHistory.Data.EF.SQL.csproj" />
     <ProjectReference Include="..\PsuHistory.Data.Service\PsuHistory.Data.Service.csproj" />
   </ItemGroup>

@@ -31,6 +31,13 @@ namespace PsuHistory.Data.Service.Services
             return await db.BirthPlaces.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(BirthPlace entity, CancellationToken cancellationToken)
+        {
+            return await db.BirthPlaces.AnyAsync(db =>
+                    db.Place == entity.Place,
+                    cancellationToken);
+        }
+
         public async Task<BirthPlace> InsertAsync(BirthPlace entity, CancellationToken cancellationToken)
         {
             await db.BirthPlaces.AddAsync(entity, cancellationToken);

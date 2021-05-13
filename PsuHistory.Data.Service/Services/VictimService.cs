@@ -39,6 +39,25 @@ namespace PsuHistory.Data.Service.Services
             return await db.Victims.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(Victim entity, CancellationToken cancellationToken)
+        {
+            return await db.Victims.Include(d => d.TypeVictim).Include(d => d.DutyStation).Include(d => d.BirthPlace)
+                .Include(d => d.ConscriptionPlace).Include(d => d.Burial).AnyAsync(db =>
+                    db.LastName == entity.LastName &&
+                    db.FirstName == entity.FirstName &&
+                    db.MiddleName == entity.MiddleName &&
+                    db.IsHeroSoviet == entity.IsHeroSoviet &&
+                    db.IsPartisan == entity.IsPartisan &&
+                    db.DateOfBirth == entity.DateOfBirth &&
+                    db.DateOfDeath == entity.DateOfDeath &&
+                    db.TypeVictim.Name == entity.TypeVictim.Name &&
+                    db.DutyStation.Place == entity.DutyStation.Place &&
+                    db.BirthPlace.Place == entity.BirthPlace.Place &&
+                    db.ConscriptionPlace.Place == entity.ConscriptionPlace.Place &&
+                    db.Burial.Id == entity.Burial.Id,
+                    cancellationToken);
+        }
+
         public async Task<Victim> InsertAsync(Victim entity, CancellationToken cancellationToken)
         {
             await db.Victims.AddAsync(entity, cancellationToken);

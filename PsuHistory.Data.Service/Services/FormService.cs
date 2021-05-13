@@ -31,6 +31,15 @@ namespace PsuHistory.Data.Service.Services
             return await db.Forms.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(Form entity, CancellationToken cancellationToken)
+        {
+            return await db.Forms.AnyAsync(db =>
+                    db.FirstName == entity.FirstName &&
+                    db.LastName == entity.LastName &&
+                    db.MiddleName == entity.MiddleName,
+                    cancellationToken);
+        }
+
         public async Task<Form> InsertAsync(Form entity, CancellationToken cancellationToken)
         {
             await db.Forms.AddAsync(entity, cancellationToken);

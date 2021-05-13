@@ -31,6 +31,13 @@ namespace PsuHistory.Data.Service.Services
             return await db.Roles.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistAsync(Role entity, CancellationToken cancellationToken)
+        {
+            return await db.TypeVictims.AnyAsync(db =>
+                    db.Name == entity.Name,
+                    cancellationToken);
+        }
+
         public async Task<Role> InsertAsync(Role entity, CancellationToken cancellationToken)
         {
             await db.Roles.AddAsync(entity, cancellationToken);

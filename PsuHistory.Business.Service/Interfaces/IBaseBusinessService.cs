@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PsuHistory.Data.EF.SQL;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PsuHistory.Data.Service.Interfaces
+namespace PsuHistory.Business.Service.Interfaces
 {
-    public interface IBaseService<TKey, TEntity> 
+    public interface IBaseBusinessService<TKey, TEntity>
         where TEntity : class
     {
         Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken = default(CancellationToken));
