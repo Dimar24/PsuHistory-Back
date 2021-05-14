@@ -44,18 +44,18 @@ namespace PsuHistory.API.Host
                 };
             });
 
-            var server = Configuration["DatabaseServer"] ?? "mssql";// "database|mssql"
+            var server = Configuration["DatabaseServer"] ?? "database";// "database|mssql"
             var port = Configuration["DatabasePort"] ?? "1433"; // Default SQL Server port
-            var name = Configuration["DatabaseUser"] ?? "psuhistorydb";
-            var user = Configuration["DatabasePassword"] ?? "sa"; // Warning do not use the SA account
-            var password = Configuration["DatabaseName"] ?? "Pa55w0rd2021";
+            var name = Configuration["DatabaseName"] ?? "psuhistorydb";
+            var user = Configuration["DatabaseUser"] ?? "sa"; // Warning do not use the SA account
+            var password = Configuration["DatabasePassword"] ?? "Pa55w0rd2021";
 
             services.AddDbContext<PsuHistoryDbContext>(options => {
-                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
-                /**/
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
+                options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
+                /**/
+                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
                 /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));

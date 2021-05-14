@@ -44,6 +44,8 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(Guid id, [FromBody] BirthPlace birthPlace)
         {
+            birthPlace.Id = id;
+
             var validation = await birthPlaceService.UpdateAsync(birthPlace);
 
             return CreateObjectResult(validation);
