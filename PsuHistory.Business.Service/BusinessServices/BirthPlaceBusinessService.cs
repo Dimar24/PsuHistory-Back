@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PsuHistory.Business.Service.Interfaces;
+﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Service.Interfaces;
-using PsuHistory.Data.Service.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PsuHistory.Business.Service.Services
+namespace PsuHistory.Business.Service.BusinessServices
 {
     public interface IBirthPlaceBusinessService : IBaseBusinessService<Guid, BirthPlace>
     { }
@@ -59,6 +55,9 @@ namespace PsuHistory.Business.Service.Services
                 return validation;
             }
 
+            newEntity.CreatedAt = DateTime.Now;
+            newEntity.UpdatedAt = DateTime.Now;
+
             validation.Result = await dataBirthPlace.InsertAsync(newEntity, cancellationToken);
 
             return validation;
@@ -72,6 +71,8 @@ namespace PsuHistory.Business.Service.Services
             {
                 return validation;
             }
+
+            newEntity.UpdatedAt = DateTime.Now;
 
             validation.Result = await dataBirthPlace.UpdateAsync(newEntity, cancellationToken);
 

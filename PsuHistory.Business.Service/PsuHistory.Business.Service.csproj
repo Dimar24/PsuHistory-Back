@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PsuHistory.Data.Domain\PsuHistory.Data.Domain.csproj" />
     <ProjectReference Include="..\PsuHistory.Data.Service\PsuHistory.Data.Service.csproj" />
+    <ProjectReference Include="..\PsuHistory.Resource\PsuHistory.Resource.csproj" />
   </ItemGroup>
 
 </Project>

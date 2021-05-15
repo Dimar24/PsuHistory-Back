@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PsuHistory.Business.Service.BusinessServices;
 using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Services;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Monuments;
 using System;
@@ -21,12 +21,12 @@ namespace PsuHistory.Business.Service
             //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
             services.AddTransient<IBaseValidation<Guid, BirthPlace>, BirthPlaceValidation>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
-            //services.AddScoped<IBaseService<Guid, ConscriptionPlace>, ConscriptionPlaceService>();
-            //services.AddScoped<IBaseService<Guid, DutyStation>, DutyStationService>();
+            services.AddScoped<IBaseValidation<Guid, ConscriptionPlace>, ConscriptionPlaceValidation>();
+            services.AddScoped<IBaseValidation<Guid, DutyStation>, DutyStationValidation>();
             //services.AddScoped<IBaseService<Guid, Form>, FormService>();
             //services.AddScoped<IBaseService<Guid, Role>, RoleService>();
-            //services.AddScoped<IBaseService<Guid, TypeBurial>, TypeBurialService>();
-            //services.AddScoped<IBaseService<Guid, TypeVictim>, TypeVictimService>();
+            services.AddScoped<IBaseValidation<Guid, TypeBurial>, TypeBurialValidation>();
+            services.AddScoped<IBaseValidation<Guid, TypeVictim>, TypeVictimValidation>();
             //services.AddScoped<IBaseService<Guid, User>, UserService>();
             //services.AddScoped<IBaseService<Guid, Victim>, VictimService>();
 
@@ -45,12 +45,12 @@ namespace PsuHistory.Business.Service
             //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
             services.AddScoped<IBaseBusinessService<Guid, BirthPlace>, BirthPlaceBusinessService>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
-            //services.AddScoped<IBaseService<Guid, ConscriptionPlace>, ConscriptionPlaceService>();
-            //services.AddScoped<IBaseService<Guid, DutyStation>, DutyStationService>();
+            services.AddScoped<IBaseBusinessService<Guid, ConscriptionPlace>, ConscriptionPlaceBusinessService>();
+            services.AddScoped<IBaseBusinessService<Guid, DutyStation>, DutyStationBusinessService>();
             //services.AddScoped<IBaseService<Guid, Form>, FormService>();
             //services.AddScoped<IBaseService<Guid, Role>, RoleService>();
-            //services.AddScoped<IBaseService<Guid, TypeBurial>, TypeBurialService>();
-            //services.AddScoped<IBaseService<Guid, TypeVictim>, TypeVictimService>();
+            services.AddScoped<IBaseBusinessService<Guid, TypeBurial>, TypeBurialBusinessService>();
+            services.AddScoped<IBaseBusinessService<Guid, TypeVictim>, TypeVictimBusinessService>();
             //services.AddScoped<IBaseService<Guid, User>, UserService>();
             //services.AddScoped<IBaseService<Guid, Victim>, VictimService>();
 

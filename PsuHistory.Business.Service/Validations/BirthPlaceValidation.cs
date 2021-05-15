@@ -2,7 +2,7 @@
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Service.Interfaces;
-using PsuHistory.Data.Service.Services;
+using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataBirthPlace.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(BirthPlace), "Ошибка");
+                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
@@ -37,12 +37,19 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (await dataBirthPlace.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(BirthPlace), "Ошибка");
+                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectExistWithThisData);
             }
 
-            if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
+            if (newEntity.Place is null)
             {
-                validation.Errors.Add(nameof(newEntity.Place), "Ошибка");
+                validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
+            }
+            else
+            {
+                if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
+                {
+                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
+                }
             }
 
             return validation;
@@ -53,17 +60,24 @@ namespace PsuHistory.Business.Service.Validations
 
             if ((await dataBirthPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(BirthPlace), "Ошибка");
+                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
             }
 
             if (await dataBirthPlace.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(BirthPlace), "Ошибка");
+                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectExistWithThisData);
             }
 
-            if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
+            if (newEntity.Place is null)
             {
-                validation.Errors.Add(nameof(newEntity.Place), "Ошибка");
+                validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
+            }
+            else
+            {
+                if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
+                {
+                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
+                }
             }
 
             return validation;
@@ -73,7 +87,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataBirthPlace.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(BirthPlace), "Ошибка");
+                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
