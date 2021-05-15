@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9B7A9775
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data", "PsuHistory.Data\PsuHistory.Data.csproj", "{8E082FCE-A9B0-4A3D-ACED-7405CE020076}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Business.DTO", "PsuHistory.Business.Record\PsuHistory.Business.DTO.csproj", "{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Business.DTO", "PsuHistory.Business.DTO\PsuHistory.Business.DTO.csproj", "{801E9B1C-79CA-4C8D-8BF2-463F227F3E87}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Business.Service", "PsuHistory.Business.Service\PsuHistory.Business.Service.csproj", "{DA017A35-FBFA-4252-8AC7-4993BDDD280C}"
 EndProject
