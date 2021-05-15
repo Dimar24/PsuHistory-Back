@@ -17,7 +17,9 @@ namespace PsuHistory.Business.Service.BusinessServices
         private readonly IBaseService<Guid, TypeVictim> dataTypeVictim;
         private readonly IBaseValidation<Guid, TypeVictim> TypeVictimValidation;
 
-        public TypeVictimBusinessService(IBaseService<Guid, TypeVictim> dataTypeVictim, IBaseValidation<Guid, TypeVictim> TypeVictimValidation)
+        public TypeVictimBusinessService(
+            IBaseService<Guid, TypeVictim> dataTypeVictim, 
+            IBaseValidation<Guid, TypeVictim> TypeVictimValidation)
         {
             this.dataTypeVictim = dataTypeVictim;
             this.TypeVictimValidation = TypeVictimValidation;

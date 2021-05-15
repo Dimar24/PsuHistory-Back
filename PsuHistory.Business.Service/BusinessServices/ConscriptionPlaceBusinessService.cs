@@ -17,7 +17,9 @@ namespace PsuHistory.Business.Service.BusinessServices
         private readonly IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace;
         private readonly IBaseValidation<Guid, ConscriptionPlace> ConscriptionPlaceValidation;
 
-        public ConscriptionPlaceBusinessService(IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace, IBaseValidation<Guid, ConscriptionPlace> ConscriptionPlaceValidation)
+        public ConscriptionPlaceBusinessService(
+            IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace, 
+            IBaseValidation<Guid, ConscriptionPlace> ConscriptionPlaceValidation)
         {
             this.dataConscriptionPlace = dataConscriptionPlace;
             this.ConscriptionPlaceValidation = ConscriptionPlaceValidation;

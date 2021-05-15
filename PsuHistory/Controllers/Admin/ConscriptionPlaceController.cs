@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PsuHistory.Business.DTO.Models.CreateDataModels;
+using PsuHistory.Business.DTO.Models.UpdateDataModels;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Monuments;
@@ -11,16 +14,21 @@ namespace PsuHistory.API.Host.Controllers.Admin
     [Route("api/admin/[controller]")]
     public class ConscriptionPlaceController : AbstractionControllerBase
     {
-        private readonly IBaseBusinessService<Guid, ConscriptionPlace> ConscriptionPlaceService;
-        public ConscriptionPlaceController(IBaseBusinessService<Guid, ConscriptionPlace> ConscriptionPlaceService)
+        private readonly IMapper mapper;
+        private readonly IBaseBusinessService<Guid, ConscriptionPlace> conscriptionPlaceService;
+
+        public ConscriptionPlaceController(
+            IMapper mapper, 
+            IBaseBusinessService<Guid, ConscriptionPlace> conscriptionPlaceService)
         {
-            this.ConscriptionPlaceService = ConscriptionPlaceService;
+            this.mapper = mapper;
+            this.conscriptionPlaceService = conscriptionPlaceService;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id)
         {
-            var validation = await ConscriptionPlaceService.GetAsync(id);
+            var validation = await conscriptionPlaceService.GetAsync(id);
 
             return CreateObjectResult(validation);
         }
@@ -28,33 +36,35 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var validation = await ConscriptionPlaceService.GetAllAsync();
+            var validation = await conscriptionPlaceService.GetAllAsync();
 
             return CreateObjectResult(validation);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] ConscriptionPlace ConscriptionPlace)
+        public async Task<IActionResult> PostAsync([FromBody] CreateConscriptionPlace createConscriptionPlace)
         {
-            var validation = await ConscriptionPlaceService.InsertAsync(ConscriptionPlace);
+            var conscriptionPlace = mapper.Map<CreateConscriptionPlace, ConscriptionPlace>(createConscriptionPlace);
+
+            var validation = await conscriptionPlaceService.InsertAsync(conscriptionPlace);
 
             return CreateObjectResult(validation);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody] ConscriptionPlace ConscriptionPlace)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] UpdateConscriptionPlace updateConscriptionPlace)
         {
-            ConscriptionPlace.Id = id;
+            var conscriptionPlace = mapper.Map<UpdateConscriptionPlace, ConscriptionPlace>(updateConscriptionPlace);
 
-            var validation = await ConscriptionPlaceService.UpdateAsync(ConscriptionPlace);
+            var validation = await conscriptionPlaceService.UpdateAsync(conscriptionPlace);
 
             return CreateObjectResult(validation);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            var validation = await ConscriptionPlaceService.DeleteAsync(id);
+            var validation = await conscriptionPlaceService.DeleteAsync(id);
 
             return CreateObjectResult(validation);
         }

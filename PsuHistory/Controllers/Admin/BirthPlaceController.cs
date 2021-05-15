@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PsuHistory.Business.DTO.Models.CreateDataModels;
+using PsuHistory.Business.DTO.Models.UpdateDataModels;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Monuments;
@@ -11,14 +14,19 @@ namespace PsuHistory.API.Host.Controllers.Admin
     [Route("api/admin/[controller]")]
     public class BirthPlaceController : AbstractionControllerBase
     {
+        private readonly IMapper mapper;
         private readonly IBaseBusinessService<Guid, BirthPlace> birthPlaceService;
-        public BirthPlaceController(IBaseBusinessService<Guid, BirthPlace> birthPlaceService)
+
+        public BirthPlaceController(
+            IMapper mapper, 
+            IBaseBusinessService<Guid, BirthPlace> birthPlaceService)
         {
+            this.mapper = mapper;
             this.birthPlaceService = birthPlaceService;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id)
         {
             var validation = await birthPlaceService.GetAsync(id);
 
@@ -34,17 +42,19 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] BirthPlace birthPlace)
+        public async Task<IActionResult> PostAsync([FromBody] CreateBirthPlace createBirthPlace)
         {
+            var birthPlace = mapper.Map<CreateBirthPlace, BirthPlace>(createBirthPlace);
+
             var validation = await birthPlaceService.InsertAsync(birthPlace);
 
             return CreateObjectResult(validation);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody] BirthPlace birthPlace)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] UpdateBirthPlace updateBirthPlace)
         {
-            birthPlace.Id = id;
+            var birthPlace = mapper.Map<UpdateBirthPlace, BirthPlace>(updateBirthPlace);
 
             var validation = await birthPlaceService.UpdateAsync(birthPlace);
 
@@ -52,7 +62,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
             var validation = await birthPlaceService.DeleteAsync(id);
 

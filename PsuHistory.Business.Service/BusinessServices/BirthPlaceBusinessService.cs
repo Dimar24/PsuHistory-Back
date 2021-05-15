@@ -17,7 +17,9 @@ namespace PsuHistory.Business.Service.BusinessServices
         private readonly IBaseService<Guid, BirthPlace> dataBirthPlace;
         private readonly IBaseValidation<Guid, BirthPlace> birthPlaceValidation;
 
-        public BirthPlaceBusinessService(IBaseService<Guid, BirthPlace> dataBirthPlace, IBaseValidation<Guid, BirthPlace> birthPlaceValidation)
+        public BirthPlaceBusinessService(
+            IBaseService<Guid, BirthPlace> dataBirthPlace, 
+            IBaseValidation<Guid, BirthPlace> birthPlaceValidation)
         {
             this.dataBirthPlace = dataBirthPlace;
             this.birthPlaceValidation = birthPlaceValidation;

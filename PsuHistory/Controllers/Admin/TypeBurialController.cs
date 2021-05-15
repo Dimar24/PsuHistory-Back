@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PsuHistory.Business.DTO.Models.CreateDataModels;
+using PsuHistory.Business.DTO.Models.UpdateDataModels;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Monuments;
@@ -11,16 +14,21 @@ namespace PsuHistory.API.Host.Controllers.Admin
     [Route("api/admin/[controller]")]
     public class TypeBurialController : AbstractionControllerBase
     {
-        private readonly IBaseBusinessService<Guid, TypeBurial> TypeBurialService;
-        public TypeBurialController(IBaseBusinessService<Guid, TypeBurial> TypeBurialService)
+        private readonly IMapper mapper;
+        private readonly IBaseBusinessService<Guid, TypeBurial> typeBurialService;
+
+        public TypeBurialController(
+            IMapper mapper,
+            IBaseBusinessService<Guid, TypeBurial> typeBurialService)
         {
-            this.TypeBurialService = TypeBurialService;
+            this.mapper = mapper;
+            this.typeBurialService = typeBurialService;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id)
         {
-            var validation = await TypeBurialService.GetAsync(id);
+            var validation = await typeBurialService.GetAsync(id);
 
             return CreateObjectResult(validation);
         }
@@ -28,33 +36,35 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var validation = await TypeBurialService.GetAllAsync();
+            var validation = await typeBurialService.GetAllAsync();
 
             return CreateObjectResult(validation);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] TypeBurial TypeBurial)
+        public async Task<IActionResult> PostAsync([FromBody] CreateTypeBurial createTypeBurial)
         {
-            var validation = await TypeBurialService.InsertAsync(TypeBurial);
+            var typeBurial = mapper.Map<CreateTypeBurial, TypeBurial>(createTypeBurial);
+
+            var validation = await typeBurialService.InsertAsync(typeBurial);
 
             return CreateObjectResult(validation);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody] TypeBurial TypeBurial)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] UpdateTypeBurial updateTypeBurial)
         {
-            TypeBurial.Id = id;
+            var typeBurial = mapper.Map<UpdateTypeBurial, TypeBurial>(updateTypeBurial);
 
-            var validation = await TypeBurialService.UpdateAsync(TypeBurial);
+            var validation = await typeBurialService.UpdateAsync(typeBurial);
 
             return CreateObjectResult(validation);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            var validation = await TypeBurialService.DeleteAsync(id);
+            var validation = await typeBurialService.DeleteAsync(id);
 
             return CreateObjectResult(validation);
         }

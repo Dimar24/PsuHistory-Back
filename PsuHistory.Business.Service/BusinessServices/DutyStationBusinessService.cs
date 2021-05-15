@@ -17,7 +17,9 @@ namespace PsuHistory.Business.Service.BusinessServices
         private readonly IBaseService<Guid, DutyStation> dataDutyStation;
         private readonly IBaseValidation<Guid, DutyStation> DutyStationValidation;
 
-        public DutyStationBusinessService(IBaseService<Guid, DutyStation> dataDutyStation, IBaseValidation<Guid, DutyStation> DutyStationValidation)
+        public DutyStationBusinessService(
+            IBaseService<Guid, DutyStation> dataDutyStation, 
+            IBaseValidation<Guid, DutyStation> DutyStationValidation)
         {
             this.dataDutyStation = dataDutyStation;
             this.DutyStationValidation = DutyStationValidation;

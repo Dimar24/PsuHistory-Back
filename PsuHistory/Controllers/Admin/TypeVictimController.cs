@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PsuHistory.Business.DTO.Models.CreateDataModels;
+using PsuHistory.Business.DTO.Models.UpdateDataModels;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Monuments;
@@ -11,16 +14,21 @@ namespace PsuHistory.API.Host.Controllers.Admin
     [Route("api/admin/[controller]")]
     public class TypeVictimController : AbstractionControllerBase
     {
-        private readonly IBaseBusinessService<Guid, TypeVictim> TypeVictimService;
-        public TypeVictimController(IBaseBusinessService<Guid, TypeVictim> TypeVictimService)
+        private readonly IMapper mapper;
+        private readonly IBaseBusinessService<Guid, TypeVictim> typeVictimService;
+
+        public TypeVictimController(
+            IMapper mapper,
+            IBaseBusinessService<Guid, TypeVictim> typeVictimService)
         {
-            this.TypeVictimService = TypeVictimService;
+            this.mapper = mapper;
+            this.typeVictimService = typeVictimService;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id)
         {
-            var validation = await TypeVictimService.GetAsync(id);
+            var validation = await typeVictimService.GetAsync(id);
 
             return CreateObjectResult(validation);
         }
@@ -28,33 +36,35 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var validation = await TypeVictimService.GetAllAsync();
+            var validation = await typeVictimService.GetAllAsync();
 
             return CreateObjectResult(validation);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] TypeVictim TypeVictim)
+        public async Task<IActionResult> PostAsync([FromBody] CreateTypeVictim createTypeVictim)
         {
-            var validation = await TypeVictimService.InsertAsync(TypeVictim);
+            var typeVictim = mapper.Map<CreateTypeVictim, TypeVictim>(createTypeVictim);
+
+            var validation = await typeVictimService.InsertAsync(typeVictim);
 
             return CreateObjectResult(validation);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody] TypeVictim TypeVictim)
+        public async Task<IActionResult> PutAsync([FromBody] UpdateTypeVictim updateTypeVictim)
         {
-            TypeVictim.Id = id;
+            var typeVictim = mapper.Map<UpdateTypeVictim, TypeVictim>(updateTypeVictim);
 
-            var validation = await TypeVictimService.UpdateAsync(TypeVictim);
+            var validation = await typeVictimService.UpdateAsync(typeVictim);
 
             return CreateObjectResult(validation);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            var validation = await TypeVictimService.DeleteAsync(id);
+            var validation = await typeVictimService.DeleteAsync(id);
 
             return CreateObjectResult(validation);
         }

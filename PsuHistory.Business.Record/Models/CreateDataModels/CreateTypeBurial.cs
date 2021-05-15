@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PsuHistory.Business.DTO.Models
+namespace PsuHistory.Business.DTO.Models.CreateDataModels
 {
-    public class KeyGuidEntityBase
+    public class CreateTypeBurial
     {
-        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

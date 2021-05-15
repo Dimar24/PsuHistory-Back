@@ -17,7 +17,9 @@ namespace PsuHistory.Business.Service.BusinessServices
         private readonly IBaseService<Guid, TypeBurial> dataTypeBurial;
         private readonly IBaseValidation<Guid, TypeBurial> TypeBurialValidation;
 
-        public TypeBurialBusinessService(IBaseService<Guid, TypeBurial> dataTypeBurial, IBaseValidation<Guid, TypeBurial> TypeBurialValidation)
+        public TypeBurialBusinessService(
+            IBaseService<Guid, TypeBurial> dataTypeBurial, 
+            IBaseValidation<Guid, TypeBurial> TypeBurialValidation)
         {
             this.dataTypeBurial = dataTypeBurial;
             this.TypeBurialValidation = TypeBurialValidation;

@@ -1,5 +1,4 @@
 ﻿using PsuHistory.Business.Service.Models;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
