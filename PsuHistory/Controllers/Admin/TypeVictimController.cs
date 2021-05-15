@@ -44,17 +44,17 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] CreateTypeVictim createTypeVictim)
         {
-            var typeVictim = mapper.Map<CreateTypeVictim, TypeVictim>(createTypeVictim);
+            var typeVictim = mapper.Map<TypeVictim>(createTypeVictim);
 
             var validation = await typeVictimService.InsertAsync(typeVictim);
 
             return CreateObjectResult(validation);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutAsync([FromBody] UpdateTypeVictim updateTypeVictim)
         {
-            var typeVictim = mapper.Map<UpdateTypeVictim, TypeVictim>(updateTypeVictim);
+            var typeVictim = mapper.Map<TypeVictim>(updateTypeVictim);
 
             var validation = await typeVictimService.UpdateAsync(typeVictim);
 

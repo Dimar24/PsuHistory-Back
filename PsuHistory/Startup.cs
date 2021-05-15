@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PsuHistory.API.Host.Helpers;
+using PsuHistory.Business.DTO.Models;
 using PsuHistory.Business.Service;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service;
@@ -26,6 +27,8 @@ namespace PsuHistory.API.Host
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(KeyGuidEntityBase).Assembly);
+
             services.AddControllers();
             services.AddAuthentication(x =>
             {

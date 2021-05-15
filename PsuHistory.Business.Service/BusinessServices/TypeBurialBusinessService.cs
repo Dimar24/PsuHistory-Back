@@ -15,19 +15,19 @@ namespace PsuHistory.Business.Service.BusinessServices
     class TypeBurialBusinessService : ITypeBurialBusinessService
     {
         private readonly IBaseService<Guid, TypeBurial> dataTypeBurial;
-        private readonly IBaseValidation<Guid, TypeBurial> TypeBurialValidation;
+        private readonly IBaseValidation<Guid, TypeBurial> typeBurialValidation;
 
         public TypeBurialBusinessService(
             IBaseService<Guid, TypeBurial> dataTypeBurial, 
-            IBaseValidation<Guid, TypeBurial> TypeBurialValidation)
+            IBaseValidation<Guid, TypeBurial> typeBurialValidation)
         {
             this.dataTypeBurial = dataTypeBurial;
-            this.TypeBurialValidation = TypeBurialValidation;
+            this.typeBurialValidation = typeBurialValidation;
         }
 
         public async Task<ValidationModel<TypeBurial>> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await TypeBurialValidation.GetValidationAsync(id, cancellationToken);
+            var validation = await typeBurialValidation.GetValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -50,7 +50,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<TypeBurial>> InsertAsync(TypeBurial newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await TypeBurialValidation.InsertValidationAsync(newEntity, cancellationToken);
+            var validation = await typeBurialValidation.InsertValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -67,7 +67,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<TypeBurial>> UpdateAsync(TypeBurial newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await TypeBurialValidation.UpdateValidationAsync(newEntity, cancellationToken);
+            var validation = await typeBurialValidation.UpdateValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -83,7 +83,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<TypeBurial>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await TypeBurialValidation.DeleteValidationAsync(id, cancellationToken);
+            var validation = await typeBurialValidation.DeleteValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {

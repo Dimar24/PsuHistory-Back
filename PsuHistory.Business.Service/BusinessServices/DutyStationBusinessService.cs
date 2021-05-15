@@ -15,19 +15,19 @@ namespace PsuHistory.Business.Service.BusinessServices
     public class DutyStationBusinessService : IDutyStationBusinessService
     {
         private readonly IBaseService<Guid, DutyStation> dataDutyStation;
-        private readonly IBaseValidation<Guid, DutyStation> DutyStationValidation;
+        private readonly IBaseValidation<Guid, DutyStation> dutyStationValidation;
 
         public DutyStationBusinessService(
             IBaseService<Guid, DutyStation> dataDutyStation, 
-            IBaseValidation<Guid, DutyStation> DutyStationValidation)
+            IBaseValidation<Guid, DutyStation> dutyStationValidation)
         {
             this.dataDutyStation = dataDutyStation;
-            this.DutyStationValidation = DutyStationValidation;
+            this.dutyStationValidation = dutyStationValidation;
         }
 
         public async Task<ValidationModel<DutyStation>> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await DutyStationValidation.GetValidationAsync(id, cancellationToken);
+            var validation = await dutyStationValidation.GetValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -50,7 +50,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<DutyStation>> InsertAsync(DutyStation newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await DutyStationValidation.InsertValidationAsync(newEntity, cancellationToken);
+            var validation = await dutyStationValidation.InsertValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -67,7 +67,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<DutyStation>> UpdateAsync(DutyStation newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await DutyStationValidation.UpdateValidationAsync(newEntity, cancellationToken);
+            var validation = await dutyStationValidation.UpdateValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -83,7 +83,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<DutyStation>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await DutyStationValidation.DeleteValidationAsync(id, cancellationToken);
+            var validation = await dutyStationValidation.DeleteValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {

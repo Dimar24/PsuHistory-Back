@@ -44,7 +44,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] CreateConscriptionPlace createConscriptionPlace)
         {
-            var conscriptionPlace = mapper.Map<CreateConscriptionPlace, ConscriptionPlace>(createConscriptionPlace);
+            var conscriptionPlace = mapper.Map<ConscriptionPlace>(createConscriptionPlace);
 
             var validation = await conscriptionPlaceService.InsertAsync(conscriptionPlace);
 
@@ -54,7 +54,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         [HttpPut]
         public async Task<IActionResult> PutAsync([FromBody] UpdateConscriptionPlace updateConscriptionPlace)
         {
-            var conscriptionPlace = mapper.Map<UpdateConscriptionPlace, ConscriptionPlace>(updateConscriptionPlace);
+            var conscriptionPlace = mapper.Map<ConscriptionPlace>(updateConscriptionPlace);
 
             var validation = await conscriptionPlaceService.UpdateAsync(conscriptionPlace);
 

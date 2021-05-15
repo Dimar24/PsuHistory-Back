@@ -15,19 +15,19 @@ namespace PsuHistory.Business.Service.BusinessServices
     public class ConscriptionPlaceBusinessService : IConscriptionPlaceBusinessService
     {
         private readonly IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace;
-        private readonly IBaseValidation<Guid, ConscriptionPlace> ConscriptionPlaceValidation;
+        private readonly IBaseValidation<Guid, ConscriptionPlace> conscriptionPlaceValidation;
 
         public ConscriptionPlaceBusinessService(
             IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace, 
-            IBaseValidation<Guid, ConscriptionPlace> ConscriptionPlaceValidation)
+            IBaseValidation<Guid, ConscriptionPlace> conscriptionPlaceValidation)
         {
             this.dataConscriptionPlace = dataConscriptionPlace;
-            this.ConscriptionPlaceValidation = ConscriptionPlaceValidation;
+            this.conscriptionPlaceValidation = conscriptionPlaceValidation;
         }
 
         public async Task<ValidationModel<ConscriptionPlace>> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await ConscriptionPlaceValidation.GetValidationAsync(id, cancellationToken);
+            var validation = await conscriptionPlaceValidation.GetValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -50,7 +50,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<ConscriptionPlace>> InsertAsync(ConscriptionPlace newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await ConscriptionPlaceValidation.InsertValidationAsync(newEntity, cancellationToken);
+            var validation = await conscriptionPlaceValidation.InsertValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -67,7 +67,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<ConscriptionPlace>> UpdateAsync(ConscriptionPlace newEntity, CancellationToken cancellationToken = default)
         {
-            var validation = await ConscriptionPlaceValidation.UpdateValidationAsync(newEntity, cancellationToken);
+            var validation = await conscriptionPlaceValidation.UpdateValidationAsync(newEntity, cancellationToken);
 
             if (!validation.IsValid)
             {
@@ -83,7 +83,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
         public async Task<ValidationModel<ConscriptionPlace>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var validation = await ConscriptionPlaceValidation.DeleteValidationAsync(id, cancellationToken);
+            var validation = await conscriptionPlaceValidation.DeleteValidationAsync(id, cancellationToken);
 
             if (!validation.IsValid)
             {
