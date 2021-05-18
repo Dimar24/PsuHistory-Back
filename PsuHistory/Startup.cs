@@ -50,7 +50,7 @@ namespace PsuHistory.API.Host
             var server = Configuration["DatabaseServer"] ?? "database";// "database|mssql"
             var port = Configuration["DatabasePort"] ?? "1433"; // Default SQL Server port
             var name = Configuration["DatabaseName"] ?? "psuhistorydb";
-            var user = Configuration["DatabaseUser"] ?? "sa"; // Warning do not use the SA account
+            var user = Configuration["DatabaseUser"] ?? "SA"; // Warning do not use the SA account
             var password = Configuration["DatabasePassword"] ?? "Pa55w0rd2021";
 
             services.AddDbContext<PsuHistoryDbContext>(options => {

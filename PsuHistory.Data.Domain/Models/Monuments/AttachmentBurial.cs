@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PsuHistory.Data.Domain.Models.Monuments
 {
@@ -10,5 +12,8 @@ namespace PsuHistory.Data.Domain.Models.Monuments
 
         public Guid BurialId { get; set; }
         public virtual Burial Burial { get; set; }
+
+        [NotMapped]
+        public IFormFile File { get; set; }
     }
 }

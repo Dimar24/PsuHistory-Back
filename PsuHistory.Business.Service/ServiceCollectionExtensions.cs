@@ -17,9 +17,9 @@ namespace PsuHistory.Business.Service
 
         private static void AddValidationServices(this IServiceCollection services)
         {
-            //services.AddScoped<IBaseService<Guid, AttachmentBurial>, AttachmentBurialService>();
+            services.AddScoped<IBaseValidation<Guid, AttachmentBurial>, AttachmentBurialValidation>();
             //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
-            services.AddTransient<IBaseValidation<Guid, BirthPlace>, BirthPlaceValidation>();
+            services.AddScoped<IBaseValidation<Guid, BirthPlace>, BirthPlaceValidation>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
             services.AddScoped<IBaseValidation<Guid, ConscriptionPlace>, ConscriptionPlaceValidation>();
             services.AddScoped<IBaseValidation<Guid, DutyStation>, DutyStationValidation>();
@@ -41,7 +41,7 @@ namespace PsuHistory.Business.Service
 
         private static void AddServices(this IServiceCollection services)
         {
-            //services.AddScoped<IBaseService<Guid, AttachmentBurial>, AttachmentBurialService>();
+            services.AddScoped<IBaseBusinessService<Guid, AttachmentBurial>, AttachmentBurialBusinessService>();
             //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
             services.AddScoped<IBaseBusinessService<Guid, BirthPlace>, BirthPlaceBusinessService>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
