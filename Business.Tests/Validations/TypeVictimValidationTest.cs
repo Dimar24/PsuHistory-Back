@@ -46,6 +46,7 @@ namespace Business.Tests.Validations
             {
                 Assert.IsEmpty(result.Errors);
                 Assert.IsTrue(result.IsValid);
+                Assert.IsTrue(false);
             });
         }
 
