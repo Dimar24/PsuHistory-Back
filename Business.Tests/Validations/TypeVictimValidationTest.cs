@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Monuments;
@@ -83,7 +84,7 @@ namespace Business.Tests.Validations
             await MockData();
             var entity = new TypeVictim()
             {
-                Name = "TypeVictimValidationTest"
+                Name = "InsertValidationAsync_Succes"
             };
 
             // Act
@@ -97,6 +98,110 @@ namespace Business.Tests.Validations
             });
         }
 
+        [TestCase(2, "FieldInvalidLength")]
+        [TestCase(555, "FieldInvalidLength")]
+        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        {
+            // Arrange
+            await MockData();
+            var entity = new TypeVictim()
+            {
+                Name = GetString(length)
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
+        {
+            // Arrange
+            await MockData();
+            var entity = new TypeVictim()
+            {
+                Name = null
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_ExistAsync_UnSucces()
+        {
+            // Arrange
+            await MockData(
+                isExist: true
+                );
+            var entity = new TypeVictim()
+            {
+                Name = "1234"
+            };
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(TypeVictim), BaseValidation.ObjectExistWithThisData }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_Null_UnSucces()
+        {
+            // Arrange
+            await MockData();
+
+            // Act
+            var result = await _validation.InsertValidationAsync(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                }
+            });
+        }
+
         [Test]
         public async Task UpdateValidationAsync_Succes()
         {
@@ -106,7 +211,7 @@ namespace Business.Tests.Validations
                 );
             var entity = new TypeVictim()
             {
-                Name = "TypeVictimValidationTest"
+                Name = "1234"
             };
 
             // Act
@@ -117,6 +222,146 @@ namespace Business.Tests.Validations
             {
                 Assert.IsEmpty(result.Errors);
                 Assert.IsTrue(result.IsValid);
+            });
+        }
+
+        [TestCase(2, "FieldInvalidLength")]
+        [TestCase(555, "FieldInvalidLength")]
+        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        {
+            // Arrange
+            await MockData(
+                typeVictim: new TypeVictim()
+                );
+            var entity = new TypeVictim()
+            {
+                Name = GetString(length)
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        {
+            // Arrange
+            await MockData(
+                typeVictim: new TypeVictim()
+                );
+            var entity = new TypeVictim()
+            {
+                Name = null
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_ExistAsync_UnSucces()
+        {
+            // Arrange
+            await MockData(
+                typeVictim: new TypeVictim(),
+                isExist: true
+                );
+            var entity = new TypeVictim()
+            {
+                Name = "1234"
+            };
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(TypeVictim), BaseValidation.ObjectExistWithThisData }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_GetAsync_UnSucces()
+        {
+            // Arrange
+            await MockData(
+                );
+            var entity = new TypeVictim()
+            {
+                Name = "1234"
+            };
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(TypeVictim), BaseValidation.ObjectNotExistById }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_Null_UnSucces()
+        {
+            // Arrange
+            await MockData();
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                }
             });
         }
 
@@ -178,6 +423,8 @@ namespace Business.Tests.Validations
             _validation = new TypeVictimValidation(_service.Object);
         }
 
+        private static string GetString(int length) => new Randomizer().GetString(length);
+
         private string GetBaseValidationResources(string name)
         {
             switch (name)
@@ -186,6 +433,7 @@ namespace Business.Tests.Validations
                 case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
                 case "FieldInvalidLength": return BaseValidation.FieldInvalidLength; break;
                 case "ObjectNotExistById": return BaseValidation.ObjectNotExistById; break;
+                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull; break;
             }
             return null;
         }

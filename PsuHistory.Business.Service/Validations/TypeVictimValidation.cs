@@ -35,21 +35,28 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeVictim>> InsertValidationAsync(TypeVictim newEntity, CancellationToken cancellationToken = default)
         {
-            if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
+            if (newEntity is not null)
+            {
+                if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
             {
                 validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
             }
 
-            if (newEntity.Name is null)
-            {
-                validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                if (newEntity.Name is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                }
+                else
+                {
+                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                    {
+                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    }
+                }
             }
             else
             {
-                if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                }
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -57,26 +64,33 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeVictim>> UpdateValidationAsync(TypeVictim newEntity, CancellationToken cancellationToken = default)
         {
-            if ((await dataTypeVictim.GetAsync(newEntity.Id, cancellationToken)) is null)
+            if (newEntity is not null)
             {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
-            }
+                if ((await dataTypeVictim.GetAsync(newEntity.Id, cancellationToken)) is null)
+                {
+                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
+                }
 
-            if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
-            {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
-            }
+                if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
+                {
+                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
+                }
 
-            if (newEntity.Name is null)
-            {
-                validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                if (newEntity.Name is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                }
+                else
+                {
+                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                    {
+                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    }
+                }
             }
             else
             {
-                if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                }
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

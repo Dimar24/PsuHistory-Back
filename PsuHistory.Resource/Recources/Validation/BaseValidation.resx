@@ -126,6 +126,9 @@
   <data name="ObjectExistWithThisData" xml:space="preserve">
     <value>Объект с такими данными уже существует</value>
   </data>
+  <data name="ObjectNotCanBeNull" xml:space="preserve">
+    <value>Объект не может быть нулевым</value>
+  </data>
   <data name="ObjectNotExistById" xml:space="preserve">
     <value>Не существует объекта с таким ID - {0}</value>
   </data>
