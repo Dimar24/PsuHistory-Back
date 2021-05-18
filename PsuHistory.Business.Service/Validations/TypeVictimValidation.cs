@@ -27,7 +27,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataTypeVictim.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
@@ -37,7 +37,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
             }
 
             if (newEntity.Name is null)
@@ -59,12 +59,12 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataTypeVictim.GetAsync(newEntity.Id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
             }
 
             if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
             }
 
             if (newEntity.Name is null)
@@ -86,7 +86,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataTypeVictim.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
             }
 
             return validation;

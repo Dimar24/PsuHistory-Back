@@ -27,7 +27,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataDutyStation.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
@@ -37,7 +37,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (await dataDutyStation.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectExistWithThisData);
             }
 
             if (newEntity.Place is null)
@@ -59,12 +59,12 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataDutyStation.GetAsync(newEntity.Id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
             }
 
             if (await dataDutyStation.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectExistWithThisData);
             }
 
             if (newEntity.Place is null)
@@ -86,7 +86,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataDutyStation.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
