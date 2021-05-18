@@ -12,16 +12,15 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
-    [TestFixture]
-    class BirthPlaceValidationTest
+    class ConscriptionPlaceValidationTest
     {
-        private Mock<IBaseService<Guid, BirthPlace>> _service;
-        private IBaseValidation<Guid, BirthPlace> _validation;
+        private Mock<IBaseService<Guid, ConscriptionPlace>> _service;
+        private IBaseValidation<Guid, ConscriptionPlace> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, BirthPlace>>();
+            _service = new Mock<IBaseService<Guid, ConscriptionPlace>>();
         }
 
         [TearDown]
@@ -35,7 +34,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                conscriptionPlace: new ConscriptionPlace()
                 );
             var id = Guid.NewGuid();
 
@@ -58,7 +57,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -69,7 +68,7 @@ namespace Business.Tests.Validations
             {
                 Assert.NotNull(result.Errors);
                 Assert.IsFalse(result.IsValid);
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     Assert.IsTrue(listError.ContainsKey(error.Key));
                     Assert.AreEqual(listError[error.Key], error.Value);
@@ -82,8 +81,8 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace() 
-            { 
+            var entity = new ConscriptionPlace()
+            {
                 Place = "г. Полоцк"
             };
 
@@ -103,9 +102,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                conscriptionPlace: new ConscriptionPlace()
                 );
-            var entity = new BirthPlace()
+            var entity = new ConscriptionPlace()
             {
                 Place = "г. Полоцк"
             };
@@ -126,7 +125,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                conscriptionPlace: new ConscriptionPlace()
                 );
             var id = Guid.NewGuid();
 
@@ -149,7 +148,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -169,19 +168,19 @@ namespace Business.Tests.Validations
         }
 
         private async Task MockData(
-            BirthPlace birthPlace = null,
+            ConscriptionPlace conscriptionPlace = null,
             bool isExist = false
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
-            _service.Setup(x => x.ExistAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(conscriptionPlace);
+            _service.Setup(x => x.ExistAsync(It.IsAny<ConscriptionPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
 
-            _validation = new BirthPlaceValidation(_service.Object);
+            _validation = new ConscriptionPlaceValidation(_service.Object);
         }
 
         private string GetBaseValidationResources(string name)
         {
-            switch(name)
+            switch (name)
             {
                 case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData; break;
                 case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
