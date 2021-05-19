@@ -34,7 +34,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
@@ -54,7 +54,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -81,7 +81,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = "InsertValidationAsync_Succes"
@@ -100,10 +100,10 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        public async Task InsertValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = GetString(length)
@@ -125,10 +125,10 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
+        public async Task InsertValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = null
@@ -153,7 +153,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 isExist: true
                 );
             var entity = new TypeVictim()
@@ -185,7 +185,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.InsertValidationAsync(null);
@@ -206,7 +206,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -227,10 +227,10 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        public async Task UpdateValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -254,10 +254,10 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        public async Task UpdateValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -284,7 +284,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim(),
                 isExist: true
                 );
@@ -317,7 +317,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_GetAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 );
             var entity = new TypeVictim()
             {
@@ -348,7 +348,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.UpdateValidationAsync(null);
@@ -369,7 +369,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
@@ -389,7 +389,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -412,7 +412,7 @@ namespace Business.Tests.Validations
             });
         }
 
-        private async Task MockData(
+        private void MockData(
             TypeVictim typeVictim = null,
             bool isExist = false
             )
@@ -429,11 +429,11 @@ namespace Business.Tests.Validations
         {
             switch (name)
             {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData; break;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength; break;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById; break;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull; break;
+                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
+                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
+                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
+                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
+                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
             }
             return null;
         }

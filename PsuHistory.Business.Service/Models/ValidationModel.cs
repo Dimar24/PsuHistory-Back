@@ -8,7 +8,7 @@ namespace PsuHistory.Business.Service.Models
 {
     public class ValidationModel<TResult>
     {
-        public TResult? Result;
+        public TResult Result;
         public Dictionary<string, string> Errors { get; set; } = new Dictionary<string, string>();
 
         private int countError;

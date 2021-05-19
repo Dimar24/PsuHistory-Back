@@ -44,17 +44,17 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataBurial.GetAsync(newEntity.BurialId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.BurialId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentBurial.File), BaseValidation.FieldNotCanBeNull);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -66,22 +66,22 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataAttachmentBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
                 }
 
                 if ((await dataBurial.GetAsync(newEntity.BurialId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.BurialId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentBurial.File), BaseValidation.FieldNotCanBeNull);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
