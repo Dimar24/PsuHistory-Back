@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -11,8 +10,6 @@ using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +38,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 attachmentBurial: new AttachmentBurial()
                 );
             var id = Guid.NewGuid();
@@ -61,7 +58,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -88,7 +85,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 attachmentBurial: new AttachmentBurial(),
                 burial: new Burial()
                 );
@@ -113,7 +110,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_FileIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 burial: new Burial()
                 );
             var entity = new AttachmentBurial()
@@ -140,7 +137,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_GetBurialIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 );
             var entity = new AttachmentBurial()
             {
@@ -172,7 +169,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.InsertValidationAsync(null);
@@ -193,7 +190,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 attachmentBurial: new AttachmentBurial(),
                 burial: new Burial()
                 );
@@ -218,7 +215,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_FileIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 burial: new Burial(),
                 attachmentBurial: new AttachmentBurial()
                 );
@@ -246,7 +243,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_GetBurialIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 attachmentBurial: new AttachmentBurial()
                 );
             var entity = new AttachmentBurial()
@@ -279,7 +276,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_GetAttachmentBurialIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 burial: new Burial()
                 );
             var entity = new AttachmentBurial()
@@ -312,7 +309,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.UpdateValidationAsync(null);
@@ -333,7 +330,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 attachmentBurial: new AttachmentBurial()
                 );
             var id = Guid.NewGuid();
@@ -353,7 +350,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -376,7 +373,7 @@ namespace Business.Tests.Validations
             });
         }
 
-        private async Task MockData(
+        private void MockData(
             AttachmentBurial attachmentBurial = null,
             Burial burial = null
             )

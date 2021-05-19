@@ -3,25 +3,27 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
-using PsuHistory.Data.Domain.Models.Monuments;
+using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
-    class TypeBurialValidationTest
+    class FormValidationTest
     {
-        private Mock<IBaseService<Guid, TypeBurial>> _service;
-        private IBaseValidation<Guid, TypeBurial> _validation;
+        private Mock<IBaseService<Guid, Form>> _service;
+        private IBaseValidation<Guid, Form> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, TypeBurial>>();
+            _service = new Mock<IBaseService<Guid, Form>>();
         }
 
         [TearDown]
@@ -35,7 +37,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial()
+                form: new Form()
                 );
             var id = Guid.NewGuid();
 
@@ -58,7 +60,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(TypeBurial), BaseValidation.ObjectNotExistById }
+                { nameof(Form), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -82,9 +84,11 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData();
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = "InsertValidationAsync_Succes"
+                LastName = "Иванов",
+                FirstName = "Иван",
+                MiddleName = "Иванович"
             };
 
             // Act
@@ -100,13 +104,15 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidName_UnSucces(int length, string nameError)
+        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
         {
             // Arrange
             MockData();
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = GetString(length)
+                LastName = GetString(length),
+                FirstName = GetString(length),
+                MiddleName = GetString(length)
             };
 
             // Act
@@ -125,13 +131,13 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_NameIsNull_UnSucces()
+        public async Task InsertValidationAsync_LastNameIsNull_UnSucces()
         {
             // Arrange
             MockData();
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = null
+                LastName = null
             };
 
             // Act
@@ -156,13 +162,15 @@ namespace Business.Tests.Validations
             MockData(
                 isExist: true
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = "1234"
+                LastName = "Иванов",
+                FirstName = "Иван",
+                MiddleName = "Иванович"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(TypeBurial), BaseValidation.ObjectExistWithThisData }
+                { nameof(Form), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -207,11 +215,13 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial()
+                form: new Form()
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = "1234"
+                LastName = "Иванов",
+                FirstName = "Иван",
+                MiddleName = "Иванович"
             };
 
             // Act
@@ -227,15 +237,17 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidName_UnSucces(int length, string nameError)
+        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial()
+                form: new Form()
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = GetString(length)
+                LastName = GetString(length),
+                FirstName = GetString(length),
+                MiddleName = GetString(length)
             };
 
             // Act
@@ -254,15 +266,15 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_NameIsNull_UnSucces()
+        public async Task UpdateValidationAsync_LastNameIsNull_UnSucces()
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial()
+                form: new Form()
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = null
+                LastName = null
             };
 
             // Act
@@ -285,16 +297,18 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial(),
+                form: new Form(),
                 isExist: true
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = "1234"
+                LastName = "Иванов",
+                FirstName = "Иван",
+                MiddleName = "Иванович"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(TypeBurial), BaseValidation.ObjectExistWithThisData }
+                { nameof(Form), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -319,13 +333,15 @@ namespace Business.Tests.Validations
             // Arrange
             MockData(
                 );
-            var entity = new TypeBurial()
+            var entity = new Form()
             {
-                Name = "1234"
+                LastName = "Иванов",
+                FirstName = "Иван",
+                MiddleName = "Иванович"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(TypeBurial), BaseValidation.ObjectNotExistById }
+                { nameof(Form), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -370,7 +386,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                typeBurial: new TypeBurial()
+                form: new Form()
                 );
             var id = Guid.NewGuid();
 
@@ -393,7 +409,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(TypeBurial), BaseValidation.ObjectNotExistById }
+                { nameof(Form), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -413,14 +429,14 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            TypeBurial typeBurial = null,
+            Form form = null,
             bool isExist = false
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _service.Setup(x => x.ExistAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
+            _service.Setup(x => x.ExistAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
 
-            _validation = new TypeBurialValidation(_service.Object);
+            _validation = new FormValidation(_service.Object);
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);

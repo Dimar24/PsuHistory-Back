@@ -35,7 +35,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace()
                 );
             var id = Guid.NewGuid();
@@ -55,7 +55,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -82,7 +82,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new BirthPlace()
             {
                 Place = "г. Полоцк"
@@ -104,7 +104,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new BirthPlace()
             {
                 Place = GetString(length)
@@ -129,7 +129,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new BirthPlace()
             {
                 Place = null
@@ -154,7 +154,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 isExist: true
                 );
             var entity = new BirthPlace()
@@ -186,7 +186,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.InsertValidationAsync(null);
@@ -207,7 +207,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace()
                 );
             var entity = new BirthPlace()
@@ -231,7 +231,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace()
                 );
             var entity = new BirthPlace()
@@ -258,7 +258,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace()
                 );
             var entity = new BirthPlace()
@@ -285,7 +285,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace(),
                 isExist: true
                 );
@@ -318,7 +318,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_GetAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 );
             var entity = new BirthPlace()
             {
@@ -349,7 +349,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.UpdateValidationAsync(null);
@@ -370,7 +370,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 birthPlace: new BirthPlace()
                 );
             var id = Guid.NewGuid();
@@ -390,7 +390,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -413,7 +413,7 @@ namespace Business.Tests.Validations
             });
         }
 
-        private async Task MockData(
+        private void MockData(
             BirthPlace birthPlace = null,
             bool isExist = false
             )

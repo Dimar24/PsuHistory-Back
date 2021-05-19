@@ -34,7 +34,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
@@ -54,7 +54,7 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -81,7 +81,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = "InsertValidationAsync_Succes"
@@ -103,7 +103,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = GetString(length)
@@ -128,7 +128,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var entity = new TypeVictim()
             {
                 Name = null
@@ -153,7 +153,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 isExist: true
                 );
             var entity = new TypeVictim()
@@ -185,7 +185,7 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.InsertValidationAsync(null);
@@ -206,7 +206,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -230,7 +230,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -257,7 +257,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var entity = new TypeVictim()
@@ -284,7 +284,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_ExistAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim(),
                 isExist: true
                 );
@@ -317,7 +317,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_GetAsync_UnSucces()
         {
             // Arrange
-            await MockData(
+            MockData(
                 );
             var entity = new TypeVictim()
             {
@@ -348,7 +348,7 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
 
             // Act
             var result = await _validation.UpdateValidationAsync(null);
@@ -369,7 +369,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_Succes()
         {
             // Arrange
-            await MockData(
+            MockData(
                 typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
@@ -389,7 +389,7 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            await MockData();
+            MockData();
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -412,7 +412,7 @@ namespace Business.Tests.Validations
             });
         }
 
-        private async Task MockData(
+        private void MockData(
             TypeVictim typeVictim = null,
             bool isExist = false
             )
