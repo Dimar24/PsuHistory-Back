@@ -2,6 +2,7 @@
 using PsuHistory.Business.Service.BusinessServices;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
+using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using System;
 
@@ -18,12 +19,12 @@ namespace PsuHistory.Business.Service
         private static void AddValidationServices(this IServiceCollection services)
         {
             services.AddScoped<IBaseValidation<Guid, AttachmentBurial>, AttachmentBurialValidation>();
-            //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
+            services.AddScoped<IBaseValidation<Guid, AttachmentForm>, AttachmentFormValidation>();
             services.AddScoped<IBaseValidation<Guid, BirthPlace>, BirthPlaceValidation>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
             services.AddScoped<IBaseValidation<Guid, ConscriptionPlace>, ConscriptionPlaceValidation>();
             services.AddScoped<IBaseValidation<Guid, DutyStation>, DutyStationValidation>();
-            //services.AddScoped<IBaseService<Guid, Form>, FormService>();
+            services.AddScoped<IBaseValidation<Guid, Form>, FormValidation>();
             //services.AddScoped<IBaseService<Guid, Role>, RoleService>();
             services.AddScoped<IBaseValidation<Guid, TypeBurial>, TypeBurialValidation>();
             services.AddScoped<IBaseValidation<Guid, TypeVictim>, TypeVictimValidation>();
@@ -42,12 +43,12 @@ namespace PsuHistory.Business.Service
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IBaseBusinessService<Guid, AttachmentBurial>, AttachmentBurialBusinessService>();
-            //services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
+            services.AddScoped<IBaseBusinessService<Guid, AttachmentForm>, AttachmentFormBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, BirthPlace>, BirthPlaceBusinessService>();
             //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
             services.AddScoped<IBaseBusinessService<Guid, ConscriptionPlace>, ConscriptionPlaceBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, DutyStation>, DutyStationBusinessService>();
-            //services.AddScoped<IBaseService<Guid, Form>, FormService>();
+            services.AddScoped<IBaseBusinessService<Guid, Form>, FormBusinessService>();
             //services.AddScoped<IBaseService<Guid, Role>, RoleService>();
             services.AddScoped<IBaseBusinessService<Guid, TypeBurial>, TypeBurialBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, TypeVictim>, TypeVictimBusinessService>();

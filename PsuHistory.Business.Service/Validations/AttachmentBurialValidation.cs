@@ -86,7 +86,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataAttachmentBurial.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
             }
 
             return validation;

@@ -42,7 +42,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] CreateTypeVictim createTypeVictim)
+        public async Task<IActionResult> PostAsync([FromForm] CreateTypeVictim createTypeVictim)
         {
             var typeVictim = mapper.Map<TypeVictim>(createTypeVictim);
 
@@ -52,7 +52,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody] UpdateTypeVictim updateTypeVictim)
+        public async Task<IActionResult> PutAsync([FromForm] UpdateTypeVictim updateTypeVictim)
         {
             var typeVictim = mapper.Map<TypeVictim>(updateTypeVictim);
 

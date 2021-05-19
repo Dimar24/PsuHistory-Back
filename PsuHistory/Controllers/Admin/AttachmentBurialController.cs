@@ -42,7 +42,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] CreateAttachmentBurial createAttachmentBurial)
+        public async Task<IActionResult> PostAsync([FromForm] CreateAttachmentBurial createAttachmentBurial)
         {
             var attachmentBurial = mapper.Map<AttachmentBurial>(createAttachmentBurial);
 
@@ -52,7 +52,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody] UpdateAttachmentBurial updateAttachmentBurial)
+        public async Task<IActionResult> PutAsync([FromForm] UpdateAttachmentBurial updateAttachmentBurial)
         {
             var attachmentBurial = mapper.Map<AttachmentBurial>(updateAttachmentBurial);
 

@@ -42,7 +42,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] CreateTypeBurial createTypeBurial)
+        public async Task<IActionResult> PostAsync([FromForm] CreateTypeBurial createTypeBurial)
         {
             var typeBurial = mapper.Map<TypeBurial>(createTypeBurial);
 
@@ -52,7 +52,7 @@ namespace PsuHistory.API.Host.Controllers.Admin
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody] UpdateTypeBurial updateTypeBurial)
+        public async Task<IActionResult> PutAsync([FromForm] UpdateTypeBurial updateTypeBurial)
         {
             var typeBurial = mapper.Map<TypeBurial>(updateTypeBurial);
 

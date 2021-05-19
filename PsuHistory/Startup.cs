@@ -54,11 +54,11 @@ namespace PsuHistory.API.Host
             var password = Configuration["DatabasePassword"] ?? "Pa55w0rd2021";
 
             services.AddDbContext<PsuHistoryDbContext>(options => {
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
-                /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
+                //options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
+                /**/
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
                 /**/
                 //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));

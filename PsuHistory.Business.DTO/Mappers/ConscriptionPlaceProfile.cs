@@ -9,8 +9,11 @@ namespace PsuHistory.Business.DTO.Mappers
     {
         public ConscriptionPlaceProfile()
         {
-            CreateMap<CreateConscriptionPlace, ConscriptionPlace>();
-            CreateMap<UpdateConscriptionPlace, ConscriptionPlace>();
+            CreateMap<CreateConscriptionPlace, ConscriptionPlace>()
+                .ForMember(f => f.Place, m => m.MapFrom(cf => cf.Place));
+            CreateMap<UpdateConscriptionPlace, ConscriptionPlace>()
+                .ForMember(f => f.Id, m => m.MapFrom(cf => cf.Id))
+                .ForMember(f => f.Place, m => m.MapFrom(cf => cf.Place));
         }
     }
 }
