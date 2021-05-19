@@ -46,12 +46,9 @@ namespace PsuHistory.Business.Service.Validations
                 {
                     validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
                 }
-                else
+                else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
-                    {
-                        validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
-                    }
+                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
                 }
             }
             else
@@ -80,12 +77,9 @@ namespace PsuHistory.Business.Service.Validations
                 {
                     validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
                 }
-                else
+                else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
-                    {
-                        validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
-                    }
+                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
                 }
             }
             else

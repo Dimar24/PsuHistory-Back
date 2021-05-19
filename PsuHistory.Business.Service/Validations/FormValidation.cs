@@ -38,31 +38,35 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> InsertValidationAsync(Form newEntity, CancellationToken cancellationToken = default)
         {
-            if (await dataForm.ExistAsync(newEntity, cancellationToken))
+            if (newEntity is not null)
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
-            }
+                if (await dataForm.ExistAsync(newEntity, cancellationToken))
+                {
+                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                }
 
-            if (newEntity.LastName is null)
-            {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldNotCanBeNull);
-            }
-            else
-            {
-                if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 512)
+                if (newEntity.LastName is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldNotCanBeNull);
+                }
+                else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 512)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                }
+
+                if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                }
+
+                if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
                     validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
                 }
             }
-
-            if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
+            else
             {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
-            }
-
-            if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
-            {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -70,36 +74,40 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> UpdateValidationAsync(Form newEntity, CancellationToken cancellationToken = default)
         {
-            if ((await dataForm.GetAsync(newEntity.Id, cancellationToken)) is null)
+            if (newEntity is not null)
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
-            }
+                if ((await dataForm.GetAsync(newEntity.Id, cancellationToken)) is null)
+                {
+                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
+                }
 
-            if (await dataForm.ExistAsync(newEntity, cancellationToken))
-            {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
-            }
+                if (await dataForm.ExistAsync(newEntity, cancellationToken))
+                {
+                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                }
 
-            if (newEntity.LastName is null)
-            {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldNotCanBeNull);
-            }
-            else
-            {
-                if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 128)
+                if (newEntity.LastName is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldNotCanBeNull);
+                }
+                else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 128)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                }
+
+                if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
+                {
+                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                }
+
+                if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
                     validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
                 }
             }
-
-            if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
+            else
             {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
-            }
-
-            if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
-            {
-                validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

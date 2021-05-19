@@ -38,20 +38,17 @@ namespace PsuHistory.Business.Service.Validations
             if (newEntity is not null)
             {
                 if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
-            {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
-            }
+                {
+                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
+                }
 
                 if (newEntity.Name is null)
                 {
                     validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
                 }
-                else
+                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
                 {
-                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                    {
-                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                    }
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
                 }
             }
             else
@@ -80,13 +77,11 @@ namespace PsuHistory.Business.Service.Validations
                 {
                     validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
                 }
-                else
+                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
                 {
-                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                    {
-                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                    }
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
                 }
+
             }
             else
             {

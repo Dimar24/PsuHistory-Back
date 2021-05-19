@@ -49,7 +49,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.FieldNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -76,7 +76,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.FieldNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
