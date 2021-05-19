@@ -27,7 +27,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataTypeBurial.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
             }
 
             return validation;
@@ -35,21 +35,28 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeBurial>> InsertValidationAsync(TypeBurial newEntity, CancellationToken cancellationToken = default)
         {
-            if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
+            if (newEntity is not null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
+            {
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
             }
 
-            if (newEntity.Name is null)
-            {
-                validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                if (newEntity.Name is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                }
+                else
+                {
+                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                    {
+                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    }
+                }
             }
             else
             {
-                if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                }
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -57,26 +64,33 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeBurial>> UpdateValidationAsync(TypeBurial newEntity, CancellationToken cancellationToken = default)
         {
-            if ((await dataTypeBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
+            if (newEntity is not null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                if ((await dataTypeBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
+            {
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
             }
 
             if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
             }
 
-            if (newEntity.Name is null)
-            {
-                validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                if (newEntity.Name is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                }
+                else
+                {
+                    if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                    {
+                        validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    }
+                }
             }
             else
             {
-                if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
-                {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
-                }
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -86,7 +100,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if ((await dataTypeBurial.GetAsync(id, cancellationToken)) is null)
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
             }
 
             return validation;

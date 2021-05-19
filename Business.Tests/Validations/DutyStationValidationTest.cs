@@ -13,16 +13,15 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
-    [TestFixture]
-    class BirthPlaceValidationTest
+    class DutyStationValidationTest
     {
-        private Mock<IBaseService<Guid, BirthPlace>> _service;
-        private IBaseValidation<Guid, BirthPlace> _validation;
+        private Mock<IBaseService<Guid, DutyStation>> _service;
+        private IBaseValidation<Guid, DutyStation> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, BirthPlace>>();
+            _service = new Mock<IBaseService<Guid, DutyStation>>();
         }
 
         [TearDown]
@@ -36,7 +35,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                dutyStation: new DutyStation()
                 );
             var id = Guid.NewGuid();
 
@@ -59,7 +58,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(DutyStation), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -83,7 +82,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = "г. Полоцк"
             };
@@ -105,7 +104,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = GetString(length)
             };
@@ -130,7 +129,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = null
             };
@@ -157,13 +156,13 @@ namespace Business.Tests.Validations
             await MockData(
                 isExist: true
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(DutyStation), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -208,9 +207,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                dutyStation: new DutyStation()
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = "г. Полоцк"
             };
@@ -232,9 +231,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                dutyStation: new DutyStation()
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = GetString(length)
             };
@@ -259,9 +258,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                dutyStation: new DutyStation()
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = null
             };
@@ -286,16 +285,16 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace(),
+                dutyStation: new DutyStation(),
                 isExist: true
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(DutyStation), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -320,13 +319,13 @@ namespace Business.Tests.Validations
             // Arrange
             await MockData(
                 );
-            var entity = new BirthPlace()
+            var entity = new DutyStation()
             {
                 Place = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(DutyStation), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -371,7 +370,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                dutyStation: new DutyStation()
                 );
             var id = Guid.NewGuid();
 
@@ -394,7 +393,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(DutyStation), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -414,14 +413,14 @@ namespace Business.Tests.Validations
         }
 
         private async Task MockData(
-            BirthPlace birthPlace = null,
+            DutyStation dutyStation = null,
             bool isExist = false
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
-            _service.Setup(x => x.ExistAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(dutyStation);
+            _service.Setup(x => x.ExistAsync(It.IsAny<DutyStation>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
 
-            _validation = new BirthPlaceValidation(_service.Object);
+            _validation = new DutyStationValidation(_service.Object);
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);

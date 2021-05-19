@@ -13,16 +13,15 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
-    [TestFixture]
-    class BirthPlaceValidationTest
+    class TypeVictimValidationTest
     {
-        private Mock<IBaseService<Guid, BirthPlace>> _service;
-        private IBaseValidation<Guid, BirthPlace> _validation;
+        private Mock<IBaseService<Guid, TypeVictim>> _service;
+        private IBaseValidation<Guid, TypeVictim> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, BirthPlace>>();
+            _service = new Mock<IBaseService<Guid, TypeVictim>>();
         }
 
         [TearDown]
@@ -36,7 +35,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
 
@@ -59,7 +58,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(TypeVictim), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -83,9 +82,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = "г. Полоцк"
+                Name = "InsertValidationAsync_Succes"
             };
 
             // Act
@@ -105,9 +104,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = GetString(length)
+                Name = GetString(length)
             };
 
             // Act
@@ -130,9 +129,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData();
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = null
+                Name = null
             };
 
             // Act
@@ -157,13 +156,13 @@ namespace Business.Tests.Validations
             await MockData(
                 isExist: true
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = "1234"
+                Name = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(TypeVictim), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -208,11 +207,11 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                typeVictim: new TypeVictim()
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = "г. Полоцк"
+                Name = "1234"
             };
 
             // Act
@@ -232,11 +231,11 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                typeVictim: new TypeVictim()
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = GetString(length)
+                Name = GetString(length)
             };
 
             // Act
@@ -259,11 +258,11 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                typeVictim: new TypeVictim()
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = null
+                Name = null
             };
 
             // Act
@@ -286,16 +285,16 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace(),
+                typeVictim: new TypeVictim(),
                 isExist: true
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = "1234"
+                Name = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(TypeVictim), BaseValidation.ObjectExistWithThisData }
             };
 
             // Act
@@ -320,13 +319,13 @@ namespace Business.Tests.Validations
             // Arrange
             await MockData(
                 );
-            var entity = new BirthPlace()
+            var entity = new TypeVictim()
             {
-                Place = "1234"
+                Name = "1234"
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(TypeVictim), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -371,7 +370,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                birthPlace: new BirthPlace()
+                typeVictim: new TypeVictim()
                 );
             var id = Guid.NewGuid();
 
@@ -394,7 +393,7 @@ namespace Business.Tests.Validations
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(BirthPlace), BaseValidation.ObjectNotExistById }
+                { nameof(TypeVictim), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -414,14 +413,14 @@ namespace Business.Tests.Validations
         }
 
         private async Task MockData(
-            BirthPlace birthPlace = null,
+            TypeVictim typeVictim = null,
             bool isExist = false
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
-            _service.Setup(x => x.ExistAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
+            _service.Setup(x => x.ExistAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
 
-            _validation = new BirthPlaceValidation(_service.Object);
+            _validation = new TypeVictimValidation(_service.Object);
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);
