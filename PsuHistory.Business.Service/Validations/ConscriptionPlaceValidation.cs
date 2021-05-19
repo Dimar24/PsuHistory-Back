@@ -39,21 +39,21 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldNotCanBeNull);
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldInvalidLength);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -65,26 +65,26 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataConscriptionPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldNotCanBeNull);
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(newEntity.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldInvalidLength);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

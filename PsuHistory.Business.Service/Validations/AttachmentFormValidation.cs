@@ -44,17 +44,17 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.FormId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentForm.File), BaseValidation.FieldNotCanBeNull);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -66,22 +66,22 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataAttachmentForm.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
                 }
 
                 if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.FormId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentForm.File), BaseValidation.FieldNotCanBeNull);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

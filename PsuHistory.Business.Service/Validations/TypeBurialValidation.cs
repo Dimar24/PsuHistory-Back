@@ -39,21 +39,21 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Name is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(TypeBurial.Name), BaseValidation.FieldNotCanBeNull);
                 }
                 else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
                 {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(TypeBurial.Name), BaseValidation.FieldInvalidLength);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -65,21 +65,21 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataTypeBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Name is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(TypeBurial.Name), BaseValidation.FieldNotCanBeNull);
                 }
                 else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
                 {
-                    validation.Errors.Add(nameof(newEntity.Name), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(TypeBurial.Name), BaseValidation.FieldInvalidLength);
                 }
             }
             else
