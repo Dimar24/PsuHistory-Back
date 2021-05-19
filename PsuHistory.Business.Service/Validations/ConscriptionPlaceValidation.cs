@@ -39,7 +39,7 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
@@ -53,7 +53,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -65,12 +65,12 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataConscriptionPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
@@ -84,7 +84,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

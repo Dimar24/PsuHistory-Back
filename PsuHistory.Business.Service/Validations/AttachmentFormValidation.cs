@@ -44,12 +44,17 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity.FormId), BaseValidation.ObjectNotExistById);
+                }
+
+                if (newEntity.File is null)
+                {
+                    validation.Errors.Add(nameof(newEntity.File), BaseValidation.FieldNotCanBeNull);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -61,12 +66,12 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataAttachmentForm.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
                 }
 
                 if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity.FormId), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
@@ -76,7 +81,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

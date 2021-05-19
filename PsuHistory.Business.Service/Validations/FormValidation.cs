@@ -42,7 +42,7 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataForm.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.LastName is null)
@@ -56,17 +56,17 @@ namespace PsuHistory.Business.Service.Validations
 
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(newEntity.FirstName), BaseValidation.FieldInvalidLength);
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(newEntity.MiddleName), BaseValidation.FieldInvalidLength);
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -78,12 +78,12 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataForm.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataForm.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.LastName is null)
@@ -97,12 +97,12 @@ namespace PsuHistory.Business.Service.Validations
 
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(newEntity.FirstName), BaseValidation.FieldInvalidLength);
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(newEntity.MiddleName), BaseValidation.FieldInvalidLength);
                 }
             }
             else

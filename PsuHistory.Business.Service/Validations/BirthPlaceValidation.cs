@@ -39,7 +39,7 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataBirthPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
@@ -53,7 +53,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -65,12 +65,12 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataBirthPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataBirthPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Place is null)
@@ -84,7 +84,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;

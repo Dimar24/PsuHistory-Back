@@ -39,7 +39,7 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Name is null)
@@ -53,7 +53,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
@@ -65,12 +65,12 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if ((await dataTypeBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
                 {
-                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotExistById);
                 }
 
                 if (await dataTypeBurial.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectExistWithThisData);
                 }
 
                 if (newEntity.Name is null)
@@ -84,7 +84,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
             }
 
             return validation;
