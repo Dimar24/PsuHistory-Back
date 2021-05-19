@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
@@ -8,6 +10,7 @@ using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -85,10 +88,14 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            await MockData();
+            await MockData(
+                attachmentBurial: new AttachmentBurial(),
+                burial: new Burial()
+                );
             var entity = new AttachmentBurial()
             {
-                BurialId = Guid.NewGuid()
+                BurialId = Guid.NewGuid(),
+                File = GetFormFile()
             };
 
             // Act
@@ -102,37 +109,13 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            await MockData();
-            var entity = new AttachmentBurial()
-            {
-                BurialId = Guid.NewGuid()
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
+        public async Task InsertValidationAsync_FileIsNull_UnSucces()
         {
             // Arrange
-            await MockData();
+            await MockData(
+                burial: new Burial()
+                );
             var entity = new AttachmentBurial()
             {
                 File = null
@@ -154,19 +137,19 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_ExistAsync_UnSucces()
+        public async Task InsertValidationAsync_GetBurialIsNull_UnSucces()
         {
             // Arrange
             await MockData(
-                isExist: true
                 );
             var entity = new AttachmentBurial()
             {
-                BurialId = Guid.NewGuid()
+                BurialId = Guid.NewGuid(),
+                File = GetFormFile()
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(AttachmentBurial), BaseValidation.ObjectExistWithThisData }
+                { nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -211,11 +194,13 @@ namespace Business.Tests.Validations
         {
             // Arrange
             await MockData(
-                attachmentBurial: new AttachmentBurial()
+                attachmentBurial: new AttachmentBurial(),
+                burial: new Burial()
                 );
             var entity = new AttachmentBurial()
             {
-                BurialId = Guid.NewGuid()
+                BurialId = Guid.NewGuid(),
+                File = GetFormFile()
             };
 
             // Act
@@ -229,39 +214,12 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            await MockData(
-                attachmentBurial: new AttachmentBurial()
-                );
-            var entity = new AttachmentBurial()
-            {
-                BurialId = Guid.NewGuid()
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        public async Task UpdateValidationAsync_FileIsNull_UnSucces()
         {
             // Arrange
             await MockData(
+                burial: new Burial(),
                 attachmentBurial: new AttachmentBurial()
                 );
             var entity = new AttachmentBurial()
@@ -285,20 +243,20 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_ExistAsync_UnSucces()
+        public async Task UpdateValidationAsync_GetBurialIsNull_UnSucces()
         {
             // Arrange
             await MockData(
-                attachmentBurial: new AttachmentBurial(),
-                isExist: true
+                attachmentBurial: new AttachmentBurial()
                 );
             var entity = new AttachmentBurial()
             {
-                BurialId = Guid.NewGuid()
+                BurialId = Guid.NewGuid(),
+                File = GetFormFile()
             };
             var listError = new Dictionary<string, string>()
             {
-                { nameof(AttachmentBurial), BaseValidation.ObjectExistWithThisData }
+                { nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById }
             };
 
             // Act
@@ -318,14 +276,16 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_GetAsync_UnSucces()
+        public async Task UpdateValidationAsync_GetAttachmentBurialIsNull_UnSucces()
         {
             // Arrange
             await MockData(
+                burial: new Burial()
                 );
             var entity = new AttachmentBurial()
             {
-                BurialId = Guid.NewGuid()
+                BurialId = Guid.NewGuid(),
+                File = GetFormFile()
             };
             var listError = new Dictionary<string, string>()
             {
@@ -418,18 +378,31 @@ namespace Business.Tests.Validations
 
         private async Task MockData(
             AttachmentBurial attachmentBurial = null,
-            Burial burial = null,
-            bool isExistBurial = false,
-            bool isExist = false
+            Burial burial = null
             )
         {
             _serviceAttachmentBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentBurial);
-            _serviceAttachmentBurial.Setup(x => x.ExistAsync(It.IsAny<AttachmentBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
 
             _serviceBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(burial);
-            _serviceBurial.Setup(x => x.ExistAsync(It.IsAny<Burial>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistBurial);
 
             _validation = new AttachmentBurialValidation(_serviceAttachmentBurial.Object, _serviceBurial.Object);
+        }
+
+        private IFormFile GetFormFile()
+        {
+            var fileMock = new Mock<IFormFile>();
+            //Setup mock file using a memory stream
+            var content = "Hello World from a Fake File";
+            var fileName = "test.pdf";
+            var ms = new MemoryStream();
+            var writer = new StreamWriter(ms);
+            writer.Write(content);
+            writer.Flush();
+            ms.Position = 0;
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            fileMock.Setup(_ => _.FileName).Returns(fileName);
+            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+            return fileMock.Object;
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);
@@ -438,11 +411,11 @@ namespace Business.Tests.Validations
         {
             switch (name)
             {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData; break;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength; break;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById; break;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull; break;
+                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
+                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
+                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
+                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
+                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
             }
             return null;
         }

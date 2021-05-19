@@ -100,7 +100,7 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        public async Task InsertValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
             await MockData();
@@ -125,7 +125,7 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
+        public async Task InsertValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
             await MockData();
@@ -227,7 +227,7 @@ namespace Business.Tests.Validations
 
         [TestCase(2, "FieldInvalidLength")]
         [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
+        public async Task UpdateValidationAsync_InvalidName_UnSucces(int length, string nameError)
         {
             // Arrange
             await MockData(
@@ -254,7 +254,7 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        public async Task UpdateValidationAsync_NameIsNull_UnSucces()
         {
             // Arrange
             await MockData(
@@ -429,11 +429,11 @@ namespace Business.Tests.Validations
         {
             switch (name)
             {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData; break;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength; break;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById; break;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull; break;
+                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
+                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
+                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
+                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
+                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
             }
             return null;
         }

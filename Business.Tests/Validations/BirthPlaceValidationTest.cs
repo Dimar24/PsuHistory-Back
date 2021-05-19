@@ -430,11 +430,11 @@ namespace Business.Tests.Validations
         {
             switch (name)
             {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData; break;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull; break;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength; break;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById; break;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull; break;
+                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
+                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
+                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
+                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
+                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
             }
             return null;
         }
