@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PsuHistory.Data.Domain.Models.Histories
 {
@@ -10,5 +12,8 @@ namespace PsuHistory.Data.Domain.Models.Histories
 
         public Guid FormId { get; set; }
         public virtual Form Form { get; set; }
+
+        [NotMapped]
+        public IFormFile File { get; set; }
     }
 }
