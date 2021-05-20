@@ -35,6 +35,11 @@ namespace PsuHistory.Data.Service.Services
                     cancellationToken);
         }
 
+        public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await db.AttachmentBurials.AnyAsync(db => db.Id == id, cancellationToken);
+        }
+
         public async Task<IEnumerable<AttachmentBurial>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await db.AttachmentBurials.Include(db => db.Burial).ToListAsync(cancellationToken);

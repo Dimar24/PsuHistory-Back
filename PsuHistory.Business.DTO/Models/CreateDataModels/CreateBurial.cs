@@ -8,7 +8,7 @@ namespace PsuHistory.Business.DTO.Models.CreateDataModels
     {
         public int NumberBurial { get; set; }
         public string Location { get; set; }
-        public int NumberPeople { get; set; }
+        public int KnownNumber { get; set; }
         public int UnknownNumber { get; set; }
         public int Year { get; set; }
         public double Latitude { get; set; }

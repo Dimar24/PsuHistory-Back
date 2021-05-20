@@ -53,7 +53,7 @@ namespace Data.Tests.Services
             {
                 Assert.IsTrue(entity.NumberBurial == result.NumberBurial);
                 Assert.IsTrue(entity.Location == result.Location);
-                Assert.IsTrue(entity.NumberPeople == result.NumberPeople);
+                Assert.IsTrue(entity.KnownNumber == result.KnownNumber);
                 Assert.IsTrue(entity.UnknownNumber == result.UnknownNumber);
                 Assert.IsTrue(entity.Year == result.Year);
                 Assert.IsTrue(entity.Latitude == result.Latitude);
@@ -100,7 +100,7 @@ namespace Data.Tests.Services
                 Id = entity.Id,
                 NumberBurial = 10,
                 Location = "ул. Ленина 42, Глубокое",
-                NumberPeople = 1,
+                KnownNumber = 1,
                 UnknownNumber = 1,
                 Year = 2000,
                 Latitude = 28.01228,
@@ -125,7 +125,7 @@ namespace Data.Tests.Services
             {
                 Assert.IsTrue(entity.NumberBurial == result.NumberBurial);
                 Assert.IsTrue(entity.Location == result.Location);
-                Assert.IsTrue(entity.NumberPeople == result.NumberPeople);
+                Assert.IsTrue(entity.KnownNumber == result.KnownNumber);
                 Assert.IsTrue(entity.UnknownNumber == result.UnknownNumber);
                 Assert.IsTrue(entity.Year == result.Year);
                 Assert.IsTrue(entity.Latitude == result.Latitude);
@@ -173,7 +173,7 @@ namespace Data.Tests.Services
                 {
                     NumberBurial = 1,
                     Location = "ул. Блохина 29, Новополоцк 211440",
-                    NumberPeople = 10,
+                    KnownNumber = 10,
                     UnknownNumber = 10,
                     Year = 2001,
                     Latitude = 28.01,
@@ -188,7 +188,7 @@ namespace Data.Tests.Services
                 {
                     NumberBurial = 2,
                     Location = "Molodezhnaya 69, Новополоцк",
-                    NumberPeople = 20,
+                    KnownNumber = 20,
                     UnknownNumber = 10,
                     Year = 2002,
                     Latitude = 28.02,
@@ -203,7 +203,7 @@ namespace Data.Tests.Services
                 {
                     NumberBurial = 3,
                     Location = "Замковый пр., Полоцк",
-                    NumberPeople = 30,
+                    KnownNumber = 30,
                     UnknownNumber = 10,
                     Year = 2003,
                     Latitude = 28.03,
@@ -218,7 +218,7 @@ namespace Data.Tests.Services
                 {
                     NumberBurial = 4,
                     Location = "Замковая ул. 1, Полоцк",
-                    NumberPeople = 40,
+                    KnownNumber = 40,
                     UnknownNumber = 10,
                     Year = 2004,
                     Latitude = 28.04,
@@ -233,7 +233,7 @@ namespace Data.Tests.Services
                 {
                     NumberBurial = 5,
                     Location = "Вильнюсское ш. 1, Полоцк",
-                    NumberPeople = 50,
+                    KnownNumber = 50,
                     UnknownNumber = 10,
                     Year = 2005,
                     Latitude = 28.05,

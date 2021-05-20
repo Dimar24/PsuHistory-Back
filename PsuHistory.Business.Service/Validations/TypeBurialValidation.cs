@@ -25,7 +25,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeBurial>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataTypeBurial.GetAsync(id, cancellationToken)) is null)
+            if (await dataTypeBurial.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
             }
@@ -63,7 +63,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataTypeBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataTypeBurial.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
                 }
@@ -92,7 +92,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeBurial>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataTypeBurial.GetAsync(id, cancellationToken)) is null)
+            if (await dataTypeBurial.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(TypeBurial), BaseValidation.ObjectNotExistById);
             }

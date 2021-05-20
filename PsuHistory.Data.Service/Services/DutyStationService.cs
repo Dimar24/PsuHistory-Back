@@ -31,6 +31,11 @@ namespace PsuHistory.Data.Service.Services
             return await db.DutyStations.ToListAsync(cancellationToken);
         }
 
+        public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await db.DutyStations.AnyAsync(db => db.Id == id, cancellationToken);
+        }
+
         public async Task<bool> ExistAsync(DutyStation entity, CancellationToken cancellationToken)
         {
             return await db.DutyStations.AnyAsync(db =>

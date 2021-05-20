@@ -211,7 +211,7 @@ namespace Data.Tests.Services
             {
                 NumberBurial = 1,
                 Location = "ул. Блохина 29, Новополоцк 211440",
-                NumberPeople = 10,
+                KnownNumber = 10,
                 UnknownNumber = 10,
                 Year = 2001,
                 Latitude = 28.01,

@@ -28,7 +28,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataForm.GetAsync(id, cancellationToken)) is null)
+            if (await dataForm.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
             }
@@ -76,7 +76,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataForm.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataForm.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
                 }
@@ -88,7 +88,7 @@ namespace PsuHistory.Business.Service.Validations
 
                 if (newEntity.LastName is null)
                 {
-                    validation.Errors.Add(nameof(newEntity.LastName), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(Form.LastName), BaseValidation.FieldNotCanBeNull);
                 }
                 else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 128)
                 {
@@ -115,7 +115,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataForm.GetAsync(id, cancellationToken)) is null)
+            if (await dataForm.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
             }

@@ -30,7 +30,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentForm>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataAttachmentForm.GetAsync(id, cancellationToken)) is null)
+            if (await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
             }
@@ -42,9 +42,9 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
+                if (await dataForm.ExistByIdAsync(newEntity.FormId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm.Form), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
@@ -64,14 +64,14 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataAttachmentForm.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataAttachmentForm.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
                 }
 
-                if ((await dataForm.GetAsync(newEntity.FormId, cancellationToken)) is null)
+                if (await dataForm.ExistByIdAsync(newEntity.FormId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm.Form), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
@@ -89,7 +89,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentForm>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataAttachmentForm.GetAsync(id, cancellationToken)) is null)
+            if (await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
             }

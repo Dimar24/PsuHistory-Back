@@ -58,6 +58,11 @@ namespace PsuHistory.Data.Service.Services
                     cancellationToken);
         }
 
+        public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await db.Victims.AnyAsync(db => db.Id == id, cancellationToken);
+        }
+
         public async Task<Victim> InsertAsync(Victim entity, CancellationToken cancellationToken)
         {
             await db.Victims.AddAsync(entity, cancellationToken);

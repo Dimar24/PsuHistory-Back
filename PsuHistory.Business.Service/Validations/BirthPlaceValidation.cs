@@ -25,7 +25,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<BirthPlace>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataBirthPlace.GetAsync(id, cancellationToken)) is null)
+            if (await dataBirthPlace.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
             }
@@ -63,7 +63,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataBirthPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataBirthPlace.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
                 }
@@ -92,7 +92,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<BirthPlace>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataBirthPlace.GetAsync(id, cancellationToken)) is null)
+            if (await dataBirthPlace.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(BirthPlace), BaseValidation.ObjectNotExistById);
             }

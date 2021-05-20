@@ -30,7 +30,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentBurial>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataAttachmentBurial.GetAsync(id, cancellationToken)) is null)
+            if (await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
             }
@@ -42,9 +42,9 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataBurial.GetAsync(newEntity.BurialId, cancellationToken)) is null)
+                if (await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial.Burial), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
@@ -64,14 +64,14 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataAttachmentBurial.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataAttachmentBurial.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
                 }
 
-                if ((await dataBurial.GetAsync(newEntity.BurialId, cancellationToken)) is null)
+                if (await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial.BurialId), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial.Burial), BaseValidation.ObjectNotExistById);
                 }
 
                 if (newEntity.File is null)
@@ -89,7 +89,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentBurial>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataAttachmentBurial.GetAsync(id, cancellationToken)) is null)
+            if (await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
             }

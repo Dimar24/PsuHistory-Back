@@ -12,7 +12,7 @@ namespace PsuHistory.Data.EF.SQL.Configuration
 
             builder.Property(b => b.NumberBurial).IsRequired();
             builder.Property(b => b.Location).IsRequired().HasMaxLength(512);
-            builder.Property(b => b.NumberPeople).IsRequired();
+            builder.Property(b => b.KnownNumber).IsRequired();
             builder.Property(b => b.UnknownNumber).IsRequired();
             builder.Property(b => b.Year).IsRequired();
             builder.Property(b => b.Latitude).IsRequired();

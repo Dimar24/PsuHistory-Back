@@ -21,7 +21,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseValidation<Guid, AttachmentBurial>, AttachmentBurialValidation>();
             services.AddScoped<IBaseValidation<Guid, AttachmentForm>, AttachmentFormValidation>();
             services.AddScoped<IBaseValidation<Guid, BirthPlace>, BirthPlaceValidation>();
-            //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
+            services.AddScoped<IBaseValidation<Guid, Burial>, BurialValidation>();
             services.AddScoped<IBaseValidation<Guid, ConscriptionPlace>, ConscriptionPlaceValidation>();
             services.AddScoped<IBaseValidation<Guid, DutyStation>, DutyStationValidation>();
             services.AddScoped<IBaseValidation<Guid, Form>, FormValidation>();
@@ -29,7 +29,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseValidation<Guid, TypeBurial>, TypeBurialValidation>();
             services.AddScoped<IBaseValidation<Guid, TypeVictim>, TypeVictimValidation>();
             //services.AddScoped<IBaseService<Guid, User>, UserService>();
-            //services.AddScoped<IBaseService<Guid, Victim>, VictimService>();
+            services.AddScoped<IBaseValidation<Guid, Victim>, VictimValidation>();
 
             //var currentAssembly = typeof(ServiceCollectionExtensions);
             //
@@ -45,7 +45,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseBusinessService<Guid, AttachmentBurial>, AttachmentBurialBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, AttachmentForm>, AttachmentFormBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, BirthPlace>, BirthPlaceBusinessService>();
-            //services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
+            //services.AddScoped<IBaseBusinessService<Guid, Burial>, BurialBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, ConscriptionPlace>, ConscriptionPlaceBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, DutyStation>, DutyStationBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, Form>, FormBusinessService>();
@@ -53,7 +53,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseBusinessService<Guid, TypeBurial>, TypeBurialBusinessService>();
             services.AddScoped<IBaseBusinessService<Guid, TypeVictim>, TypeVictimBusinessService>();
             //services.AddScoped<IBaseService<Guid, User>, UserService>();
-            //services.AddScoped<IBaseService<Guid, Victim>, VictimService>();
+            //services.AddScoped<IBaseBusinessService<Guid, Victim>, VictimBusinessService>();
 
             //var currentAssembly = typeof(ServiceCollectionExtensions);
             //

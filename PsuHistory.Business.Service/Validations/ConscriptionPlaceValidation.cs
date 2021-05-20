@@ -25,7 +25,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<ConscriptionPlace>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataConscriptionPlace.GetAsync(id, cancellationToken)) is null)
+            if (await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
             }
@@ -63,7 +63,7 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if ((await dataConscriptionPlace.GetAsync(newEntity.Id, cancellationToken)) is null)
+                if (await dataConscriptionPlace.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
                     validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
                 }
@@ -92,7 +92,7 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<ConscriptionPlace>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if ((await dataConscriptionPlace.GetAsync(id, cancellationToken)) is null)
+            if (await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
             {
                 validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
             }

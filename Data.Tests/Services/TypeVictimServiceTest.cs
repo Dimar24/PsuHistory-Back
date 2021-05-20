@@ -33,7 +33,7 @@ namespace Data.Tests.Services
         }
 
         [Test]
-        public async Task TestInsertAndGetAsync()
+        public async Task TestInsertAndGetAsync_Succes()
         {
             // Arrange
             var random = new Random(0);
@@ -56,7 +56,7 @@ namespace Data.Tests.Services
         }
 
         [Test]
-        public async Task TestGetAllAsync()
+        public async Task TestGetAllAsync_Succes()
         {
             // Arrange
             var random = new Random(0);
@@ -75,7 +75,35 @@ namespace Data.Tests.Services
         }
 
         [Test]
-        public async Task TestUpdateAsync()
+        public async Task TestExistAsync_Succes()
+        {
+            // Arrange
+            var entity = GetTypeVictim("Тип № Пять");
+            await _service.InsertAsync(entity);
+
+            // Act
+            var result = await _service.ExistAsync(entity);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task TestExistByIdAsync_Succes()
+        {
+            // Arrange
+            var entity = GetTypeVictim("Тип № Пять");
+            await _service.InsertAsync(entity);
+
+            // Act
+            var result = await _service.ExistByIdAsync(entity.Id);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task TestUpdateAsync_Succes()
         {
             // Arrange
             var random = new Random(0);
@@ -108,7 +136,7 @@ namespace Data.Tests.Services
         }
 
         [Test]
-        public async Task TestDeleteAsync()
+        public async Task TestDeleteAsync_Succes()
         {
             // Arrange
             var random = new Random(0);
@@ -132,6 +160,17 @@ namespace Data.Tests.Services
             });
         }
 
+        private TypeVictim GetTypeVictim(
+            string name = null
+            )
+        {
+            return new TypeVictim()
+            {
+                Name = name,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+        }
 
         private List<TypeVictim> GetList()
         {
