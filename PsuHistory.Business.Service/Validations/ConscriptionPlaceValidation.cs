@@ -25,9 +25,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<ConscriptionPlace>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
+            if (!await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(ConscriptionPlace),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), id));
             }
 
             return validation;
@@ -39,21 +40,25 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(ConscriptionPlace),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(ConscriptionPlace)));
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(ConscriptionPlace.Place)));
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(ConscriptionPlace.Place), 3, 512));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(ConscriptionPlace),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(ConscriptionPlace)));
             }
 
             return validation;
@@ -63,28 +68,32 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataConscriptionPlace.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataConscriptionPlace.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(ConscriptionPlace),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), newEntity.Id));
                 }
-
-                if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
+                else if (await dataConscriptionPlace.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(ConscriptionPlace),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(ConscriptionPlace)));
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(ConscriptionPlace.Place)));
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(ConscriptionPlace.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(ConscriptionPlace.Place),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(ConscriptionPlace.Place), 3, 512));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(ConscriptionPlace),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(ConscriptionPlace)));
             }
 
             return validation;
@@ -92,9 +101,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<ConscriptionPlace>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
+            if (!await dataConscriptionPlace.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(ConscriptionPlace),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), id));
             }
 
             return validation;

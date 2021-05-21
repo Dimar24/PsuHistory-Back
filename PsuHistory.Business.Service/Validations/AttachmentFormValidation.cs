@@ -4,9 +4,6 @@ using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,9 +27,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentForm>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
+            if (!await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(AttachmentForm),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), id));
             }
 
             return validation;
@@ -42,11 +40,6 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataForm.ExistByIdAsync(newEntity.FormId, cancellationToken))
-                {
-                    validation.Errors.Add(nameof(AttachmentForm.Form), BaseValidation.ObjectNotExistById);
-                }
-
                 if (newEntity.File is null)
                 {
                     validation.Errors.Add(nameof(AttachmentForm.File), BaseValidation.FieldNotCanBeNull);
@@ -64,24 +57,28 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataAttachmentForm.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataAttachmentForm.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), newEntity.Id));
                 }
 
-                if (await dataForm.ExistByIdAsync(newEntity.FormId, cancellationToken))
+                if (!await dataForm.ExistByIdAsync(newEntity.FormId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentForm.Form), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentForm.Form),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm.Form), newEntity.FormId));
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentForm.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentForm.File),
+                        string.Format(BaseValidation.FileNotCanBeNull));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentForm)));
             }
 
             return validation;
@@ -89,9 +86,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentForm>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
+            if (!await dataAttachmentForm.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(AttachmentForm),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), id));
             }
 
             return validation;

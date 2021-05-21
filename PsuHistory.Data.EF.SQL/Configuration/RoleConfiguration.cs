@@ -12,8 +12,8 @@ namespace PsuHistory.Data.EF.SQL.Configuration
 
             builder.Property(b => b.Name).IsRequired().HasMaxLength(64);
 
-            builder.Property(b => b.CreatedAt).IsRequired();
-            builder.Property(b => b.UpdatedAt).IsRequired();
+            builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETDATE()");
+            builder.Property(b => b.UpdatedAt).HasDefaultValueSql("GETDATE()");
         }
     }
 }

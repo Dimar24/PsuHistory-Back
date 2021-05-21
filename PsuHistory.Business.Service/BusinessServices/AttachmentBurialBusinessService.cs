@@ -1,4 +1,5 @@
-﻿using PsuHistory.Business.Service.Interfaces;
+﻿using PsuHistory.Business.Service.Helpers;
+using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Service.Interfaces;
@@ -16,14 +17,16 @@ namespace PsuHistory.Business.Service.BusinessServices
 
     class AttachmentBurialBusinessService : IAttachmentBurialBusinessService
     {
+        private readonly FileHelper fileHelper;
         private readonly IBaseService<Guid, AttachmentBurial> dataAttachmentBurial;
         private readonly IBaseValidation<Guid, AttachmentBurial> attachmentBurialValidation;
-        private readonly string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public AttachmentBurialBusinessService(
+            FileHelper fileHelper,
             IBaseService<Guid, AttachmentBurial> dataAttachmentBurial,
             IBaseValidation<Guid, AttachmentBurial> attachmentBurialValidation)
         {
+            this.fileHelper = fileHelper;
             this.dataAttachmentBurial = dataAttachmentBurial;
             this.attachmentBurialValidation = attachmentBurialValidation;
         }
@@ -60,8 +63,11 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
-            newEntity = await SaveFile(newEntity);
+            var fileData = await fileHelper.SaveFile(newEntity.File);
 
+            newEntity.FilePath = fileData.FilePath;
+            newEntity.FileName = fileData.FileName;
+            newEntity.FileType = fileData.FileType;
             newEntity.CreatedAt = DateTime.Now;
             newEntity.UpdatedAt = DateTime.Now;
 
@@ -95,41 +101,13 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+            var entity = await dataAttachmentBurial.GetAsync(id, cancellationToken);
+
+            fileHelper.DeleteFile(entity.FilePath + entity.FileName + "." + entity.FileType);
+
             await dataAttachmentBurial.DeleteAsync(id, cancellationToken);
 
             return validation;
-        }
-
-        private async Task<AttachmentBurial> SaveFile(AttachmentBurial entity)
-        {
-            string path = "/Files/" + entity.BurialId.ToString();
-
-            entity.FilePath = path;
-            entity.FileName = Guid.NewGuid().ToString();
-            //entity.FileType = entity.Fi;
-
-            using (var fileStream = new FileStream(applicationPath + path, FileMode.Create))
-            {
-                await entity.File.CopyToAsync(fileStream);
-            }
-
-            return entity;
-        }
-
-        private async Task<AttachmentBurial> DeleteFile(AttachmentBurial entity)
-        {
-            string path = "/Files/" + entity.BurialId.ToString();
-
-            entity.FilePath = path;
-            entity.FileName = Guid.NewGuid().ToString();
-            //entity.FileType = entity.Fi;
-
-            using (var fileStream = new FileStream(applicationPath + path, FileMode.Create))
-            {
-                await entity.File.CopyToAsync(fileStream);
-            }
-
-            return entity;
         }
     }
 }

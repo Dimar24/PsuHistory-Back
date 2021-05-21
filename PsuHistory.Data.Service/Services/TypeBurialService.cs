@@ -81,12 +81,12 @@ namespace PsuHistory.Data.Service.Services
 
         public async Task<TypeBurial> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.TypeBurials.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.TypeBurials.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<TypeBurial>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await db.TypeBurials.ToListAsync(cancellationToken);
+            return await db.TypeBurials.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistAsync(TypeBurial entity, CancellationToken cancellationToken)

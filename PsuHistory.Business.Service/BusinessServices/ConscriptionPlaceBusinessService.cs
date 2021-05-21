@@ -74,6 +74,9 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+            var oldEntity = await dataConscriptionPlace.GetAsync(newEntity.Id, cancellationToken);
+
+            newEntity.CreatedAt = oldEntity.CreatedAt;
             newEntity.UpdatedAt = DateTime.Now;
 
             validation.Result = await dataConscriptionPlace.UpdateAsync(newEntity, cancellationToken);

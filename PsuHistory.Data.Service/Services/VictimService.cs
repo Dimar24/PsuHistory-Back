@@ -24,7 +24,7 @@ namespace PsuHistory.Data.Service.Services
 
         public async Task<Victim> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.Victims
+            return await db.Victims.AsNoTracking()
                 .Include(db => db.TypeVictim)
                 .Include(db => db.DutyStation)
                 .Include(db => db.BirthPlace)
@@ -36,7 +36,7 @@ namespace PsuHistory.Data.Service.Services
 
         public async Task<IEnumerable<Victim>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await db.Victims.ToListAsync(cancellationToken);
+            return await db.Victims.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistAsync(Victim entity, CancellationToken cancellationToken)

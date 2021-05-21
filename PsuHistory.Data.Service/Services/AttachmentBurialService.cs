@@ -23,7 +23,12 @@ namespace PsuHistory.Data.Service.Services
 
         public async Task<AttachmentBurial> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.AttachmentBurials.Include(db => db.Burial).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.AttachmentBurials.AsNoTracking().Include(db => db.Burial).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<AttachmentBurial>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await db.AttachmentBurials.AsNoTracking().Include(db => db.Burial).ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistAsync(AttachmentBurial entity, CancellationToken cancellationToken)
@@ -38,11 +43,6 @@ namespace PsuHistory.Data.Service.Services
         public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await db.AttachmentBurials.AnyAsync(db => db.Id == id, cancellationToken);
-        }
-
-        public async Task<IEnumerable<AttachmentBurial>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            return await db.AttachmentBurials.Include(db => db.Burial).ToListAsync(cancellationToken);
         }
 
         public async Task<AttachmentBurial> InsertAsync(AttachmentBurial entity, CancellationToken cancellationToken)

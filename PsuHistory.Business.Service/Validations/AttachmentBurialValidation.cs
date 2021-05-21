@@ -4,9 +4,6 @@ using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,9 +27,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentBurial>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
+            if (!await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(AttachmentBurial), 
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial), id));
             }
 
             return validation;
@@ -42,19 +40,16 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
-                {
-                    validation.Errors.Add(nameof(AttachmentBurial.Burial), BaseValidation.ObjectNotExistById);
-                }
-
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentBurial.File),
+                        string.Format(BaseValidation.FileNotCanBeNull));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentBurial),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentBurial)));
             }
 
             return validation;
@@ -64,24 +59,28 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataAttachmentBurial.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataAttachmentBurial.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial), newEntity.Id));    
                 }
 
-                if (await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
+                if (!await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial.Burial), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(AttachmentBurial.Burial),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial.Burial), newEntity.BurialId));
                 }
 
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentBurial.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentBurial.File),
+                        string.Format(BaseValidation.FileNotCanBeNull));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentBurial),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentBurial)));
             }
 
             return validation;
@@ -89,9 +88,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<AttachmentBurial>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
+            if (!await dataAttachmentBurial.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(AttachmentBurial), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(AttachmentBurial),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial), id));
             }
 
             return validation;

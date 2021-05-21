@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PsuHistory.Business.DTO.Models.CreateDataModels
 {
-    public class CreateAttachmentForm : KeyGuidEntityBase
+    public class CreateAttachmentForm
     {
         public Guid FormId { get; set; }
         public IFormFile File { get; set; }

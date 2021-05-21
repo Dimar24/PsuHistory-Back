@@ -25,9 +25,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeVictim>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataTypeVictim.ExistByIdAsync(id, cancellationToken))
+            if (!await dataTypeVictim.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeVictim),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(TypeVictim), id));
             }
 
             return validation;
@@ -39,21 +40,25 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(TypeVictim),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(TypeVictim)));
                 }
 
                 if (newEntity.Name is null)
                 {
-                    validation.Errors.Add(nameof(TypeVictim.Name), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(TypeVictim.Name),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(TypeVictim.Name)));
                 }
-                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 128)
                 {
-                    validation.Errors.Add(nameof(TypeVictim.Name), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(TypeVictim.Name),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(TypeVictim.Name), 3, 128));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(TypeVictim),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(TypeVictim)));
             }
 
             return validation;
@@ -63,29 +68,32 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataTypeVictim.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataTypeVictim.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(TypeVictim),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(TypeVictim), newEntity.Id));
                 }
-
-                if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
+                else if (await dataTypeVictim.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(TypeVictim),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(TypeVictim)));
                 }
 
                 if (newEntity.Name is null)
                 {
-                    validation.Errors.Add(nameof(TypeVictim.Name), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(TypeVictim.Name),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(TypeVictim.Name)));
                 }
-                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 512)
+                else if (newEntity.Name.Length < 3 || newEntity.Name.Length > 128)
                 {
-                    validation.Errors.Add(nameof(TypeVictim.Name), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(TypeVictim.Name),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(TypeVictim.Name), 3, 128));
                 }
-
             }
             else
             {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(TypeVictim),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(TypeVictim)));
             }
 
             return validation;
@@ -93,9 +101,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<TypeVictim>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataTypeVictim.ExistByIdAsync(id, cancellationToken))
+            if (!await dataTypeVictim.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(TypeVictim), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(TypeVictim),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(TypeVictim), id));
             }
 
             return validation;

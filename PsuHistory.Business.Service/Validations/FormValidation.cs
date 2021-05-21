@@ -4,9 +4,6 @@ using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,9 +25,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataForm.ExistByIdAsync(id, cancellationToken))
+            if (!await dataForm.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(Form),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(Form), id));
             }
 
             return validation;
@@ -42,31 +40,37 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataForm.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(Form),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(Form)));
                 }
 
                 if (newEntity.LastName is null)
                 {
-                    validation.Errors.Add(nameof(Form.LastName), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(Form.LastName),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(Form.LastName)));
                 }
-                else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 512)
+                else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.LastName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.LastName), 3, 128));
                 }
 
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.FirstName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.FirstName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.FirstName), 128));
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.MiddleName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.MiddleName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.MiddleName), 128));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(Form),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Form)));
             }
 
             return validation;
@@ -76,38 +80,44 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataForm.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataForm.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(Form),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(Form), newEntity.Id));
                 }
-
-                if (await dataForm.ExistAsync(newEntity, cancellationToken))
+                else if (await dataForm.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(Form), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(Form),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(Form)));
                 }
 
                 if (newEntity.LastName is null)
                 {
-                    validation.Errors.Add(nameof(Form.LastName), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(Form.LastName),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(Form.LastName)));
                 }
                 else if (newEntity.LastName.Length < 3 || newEntity.LastName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.LastName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.LastName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.LastName), 3, 128));
                 }
 
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.FirstName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.FirstName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.FirstName), 128));
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
-                    validation.Errors.Add(nameof(Form.MiddleName), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(Form.MiddleName),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.MiddleName), 128));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(Form),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Form)));
             }
 
             return validation;
@@ -115,9 +125,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<Form>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataForm.ExistByIdAsync(id, cancellationToken))
+            if (!await dataForm.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(Form), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(Form),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(Form), id));
             }
 
             return validation;

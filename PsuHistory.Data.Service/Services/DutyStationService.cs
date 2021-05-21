@@ -23,12 +23,12 @@ namespace PsuHistory.Data.Service.Services
 
         public async Task<DutyStation> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.DutyStations.FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.DutyStations.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<DutyStation>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await db.DutyStations.ToListAsync(cancellationToken);
+            return await db.DutyStations.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken)

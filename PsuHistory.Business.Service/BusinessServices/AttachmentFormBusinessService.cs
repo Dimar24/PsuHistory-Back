@@ -1,4 +1,5 @@
-﻿using PsuHistory.Business.Service.Interfaces;
+﻿using PsuHistory.Business.Service.Helpers;
+using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Service.Interfaces;
@@ -18,14 +19,16 @@ namespace PsuHistory.Business.Service.BusinessServices
 
     class AttachmentFormBusinessService : IAttachmentFormBusinessService
     {
+        private readonly FileHelper fileHelper;
         private readonly IBaseService<Guid, AttachmentForm> dataAttachmentForm;
         private readonly IBaseValidation<Guid, AttachmentForm> attachmentFormValidation;
-        private readonly string applicationPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public AttachmentFormBusinessService(
+            FileHelper fileHelper,
             IBaseService<Guid, AttachmentForm> dataAttachmentForm,
             IBaseValidation<Guid, AttachmentForm> attachmentFormValidation)
         {
+            this.fileHelper = fileHelper;
             this.dataAttachmentForm = dataAttachmentForm;
             this.attachmentFormValidation = attachmentFormValidation;
         }
@@ -62,8 +65,11 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
-            newEntity = await SaveFile(newEntity);
+            var fileData = await fileHelper.SaveFile(newEntity.File);
 
+            newEntity.FilePath = fileData.FilePath;
+            newEntity.FileName = fileData.FileName;
+            newEntity.FileType = fileData.FileType;
             newEntity.CreatedAt = DateTime.Now;
             newEntity.UpdatedAt = DateTime.Now;
 
@@ -81,6 +87,9 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+            var oldEntity = await dataAttachmentForm.GetAsync(newEntity.Id, cancellationToken);
+
+            newEntity.CreatedAt = oldEntity.CreatedAt;
             newEntity.UpdatedAt = DateTime.Now;
 
             validation.Result = await dataAttachmentForm.UpdateAsync(newEntity, cancellationToken);
@@ -97,41 +106,13 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+            var entity = await dataAttachmentForm.GetAsync(id, cancellationToken);
+
+            fileHelper.DeleteFile(entity.FilePath + entity.FileName + "." + entity.FileType);
+
             await dataAttachmentForm.DeleteAsync(id, cancellationToken);
 
             return validation;
-        }
-
-        private async Task<AttachmentForm> SaveFile(AttachmentForm entity)
-        {
-            string path = "/Files/" + entity.FormId.ToString();
-
-            entity.FilePath = path;
-            entity.FileName = Guid.NewGuid().ToString();
-            //entity.FileType = entity.Fi;
-
-            using (var fileStream = new FileStream(applicationPath + path, FileMode.Create))
-            {
-                await entity.File.CopyToAsync(fileStream);
-            }
-
-            return entity;
-        }
-
-        private async Task<AttachmentForm> DeleteFile(AttachmentForm entity)
-        {
-            string path = "/Files/" + entity.FormId.ToString();
-
-            entity.FilePath = path;
-            entity.FileName = Guid.NewGuid().ToString();
-            //entity.FileType = entity.Fi;
-
-            using (var fileStream = new FileStream(applicationPath + path, FileMode.Create))
-            {
-                await entity.File.CopyToAsync(fileStream);
-            }
-
-            return entity;
         }
     }
 }

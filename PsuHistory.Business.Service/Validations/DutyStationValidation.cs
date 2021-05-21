@@ -25,9 +25,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<DutyStation>> GetValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataDutyStation.ExistByIdAsync(id, cancellationToken))
+            if (!await dataDutyStation.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(DutyStation),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(DutyStation), id));
             }
 
             return validation;
@@ -39,21 +40,25 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (await dataDutyStation.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(DutyStation),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(DutyStation)));
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(DutyStation.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(DutyStation.Place),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(DutyStation.Place)));
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(DutyStation.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(DutyStation.Place),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(DutyStation.Place), 3, 512));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(DutyStation),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(DutyStation)));
             }
 
             return validation;
@@ -63,28 +68,32 @@ namespace PsuHistory.Business.Service.Validations
         {
             if (newEntity is not null)
             {
-                if (await dataDutyStation.ExistByIdAsync(newEntity.Id, cancellationToken))
+                if (!await dataDutyStation.ExistByIdAsync(newEntity.Id, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
+                    validation.Errors.Add(nameof(DutyStation),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(DutyStation), newEntity.Id));
                 }
-
-                if (await dataDutyStation.ExistAsync(newEntity, cancellationToken))
+                else if (await dataDutyStation.ExistAsync(newEntity, cancellationToken))
                 {
-                    validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectExistWithThisData);
+                    validation.Errors.Add(nameof(DutyStation),
+                        string.Format(BaseValidation.ObjectExistWithThisData, nameof(DutyStation)));
                 }
 
                 if (newEntity.Place is null)
                 {
-                    validation.Errors.Add(nameof(DutyStation.Place), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(DutyStation.Place),
+                        string.Format(BaseValidation.FieldNotCanBeNull, nameof(DutyStation.Place)));
                 }
                 else if (newEntity.Place.Length < 3 || newEntity.Place.Length > 512)
                 {
-                    validation.Errors.Add(nameof(DutyStation.Place), BaseValidation.FieldInvalidLength);
+                    validation.Errors.Add(nameof(DutyStation.Place),
+                        string.Format(BaseValidation.FieldInvalidLength, nameof(DutyStation.Place), 3, 512));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(DutyStation),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(DutyStation)));
             }
 
             return validation;
@@ -92,9 +101,10 @@ namespace PsuHistory.Business.Service.Validations
 
         public async Task<ValidationModel<DutyStation>> DeleteValidationAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (await dataDutyStation.ExistByIdAsync(id, cancellationToken))
+            if (!await dataDutyStation.ExistByIdAsync(id, cancellationToken))
             {
-                validation.Errors.Add(nameof(DutyStation), BaseValidation.ObjectNotExistById);
+                validation.Errors.Add(nameof(DutyStation),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(DutyStation), id));
             }
 
             return validation;

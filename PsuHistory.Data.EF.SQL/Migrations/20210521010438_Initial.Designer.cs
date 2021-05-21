@@ -10,15 +10,15 @@ using PsuHistory.Data.EF.SQL;
 namespace PsuHistory.Data.EF.SQL.Migrations
 {
     [DbContext(typeof(PsuHistoryDbContext))]
-    [Migration("20210510143803_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20210521010438_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.AttachmentForm", b =>
@@ -161,6 +161,9 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasMaxLength(4096)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("KnownNumber")
+                        .HasColumnType("int");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -173,9 +176,6 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("NumberBurial")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberPeople")
                         .HasColumnType("int");
 
                     b.Property<Guid>("TypeBurialId")

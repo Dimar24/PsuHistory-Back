@@ -1,4 +1,5 @@
-﻿using PsuHistory.Business.Service.Interfaces;
+﻿using PsuHistory.Business.Service.Helpers;
+using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Service.Interfaces;
@@ -16,14 +17,20 @@ namespace PsuHistory.Business.Service.BusinessServices
 
     class FormBusinessService : IFormBusinessService
     {
+        private readonly FileHelper fileHelper;
         private readonly IBaseService<Guid, Form> dataForm;
+        private readonly IBaseService<Guid, AttachmentForm> dataAttachmentForm;
         private readonly IBaseValidation<Guid, Form> formValidation;
 
         public FormBusinessService(
+            FileHelper fileHelper,
             IBaseService<Guid, Form> dataForm,
+            IBaseService<Guid, AttachmentForm> dataAttachmentForm,
             IBaseValidation<Guid, Form> formValidation)
         {
+            this.fileHelper = fileHelper;
             this.dataForm = dataForm;
+            this.dataAttachmentForm = dataAttachmentForm;
             this.formValidation = formValidation;
         }
 
@@ -59,10 +66,29 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+
             newEntity.CreatedAt = DateTime.Now;
             newEntity.UpdatedAt = DateTime.Now;
 
             validation.Result = await dataForm.InsertAsync(newEntity, cancellationToken);
+
+            if(newEntity.Files is not null)
+            {
+                var fileDatas = await fileHelper.SaveFileRange(newEntity.Files);
+
+                foreach(var file in fileDatas)
+                {
+                    var attachmentForm = new AttachmentForm()
+                    {
+                        FilePath = file.FilePath,
+                        FileName = file.FileName,
+                        FileType = file.FileType,
+                        FormId = validation.Result.Id
+                    };
+
+                    await dataAttachmentForm.InsertAsync(attachmentForm, cancellationToken);
+                }
+            }
 
             return validation;
         }
@@ -76,9 +102,30 @@ namespace PsuHistory.Business.Service.BusinessServices
                 return validation;
             }
 
+            var oldEntity = await dataForm.GetAsync(newEntity.Id, cancellationToken);
+
+            newEntity.CreatedAt = oldEntity.CreatedAt;
             newEntity.UpdatedAt = DateTime.Now;
 
             validation.Result = await dataForm.UpdateAsync(newEntity, cancellationToken);
+
+            if (newEntity.Files is not null)
+            {
+                var fileDatas = await fileHelper.SaveFileRange(newEntity.Files);
+
+                foreach (var file in fileDatas)
+                {
+                    var attachmentForm = new AttachmentForm()
+                    {
+                        FilePath = file.FilePath,
+                        FileName = file.FileName,
+                        FileType = file.FileType,
+                        FormId = validation.Result.Id
+                    };
+
+                    await dataAttachmentForm.InsertAsync(attachmentForm, cancellationToken);
+                }
+            }
 
             return validation;
         }
@@ -93,6 +140,14 @@ namespace PsuHistory.Business.Service.BusinessServices
             }
 
             await dataForm.DeleteAsync(id, cancellationToken);
+
+            var allFiles = await dataAttachmentForm.GetAllAsync();
+
+            foreach (var file in allFiles.Where(af => af.FormId == id).ToList())
+            {
+                await dataAttachmentForm.DeleteAsync(file.Id, cancellationToken);
+                fileHelper.DeleteFile(file.FilePath + file.FileName + "." + file.FileType);
+            }
 
             return validation;
         }

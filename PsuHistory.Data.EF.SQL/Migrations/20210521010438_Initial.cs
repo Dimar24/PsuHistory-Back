@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PsuHistory.Data.EF.SQL.Migrations
 {
-    public partial class InitialMigrations : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -159,7 +159,7 @@ namespace PsuHistory.Data.EF.SQL.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NumberBurial = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    NumberPeople = table.Column<int>(type: "int", nullable: false),
+                    KnownNumber = table.Column<int>(type: "int", nullable: false),
                     UnknownNumber = table.Column<int>(type: "int", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),

@@ -20,8 +20,8 @@ namespace PsuHistory.Data.EF.SQL.Configuration
 
             builder.HasOne(b => b.Role).WithMany(b => b.Users).HasForeignKey(b => b.RoleId);
 
-            builder.Property(b => b.CreatedAt).IsRequired();
-            builder.Property(b => b.UpdatedAt).IsRequired();
+            builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETDATE()");
+            builder.Property(b => b.UpdatedAt).HasDefaultValueSql("GETDATE()");
         }
     }
 }

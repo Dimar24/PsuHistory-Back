@@ -16,8 +16,8 @@ namespace PsuHistory.Data.EF.SQL.Configuration
 
             builder.HasOne(b => b.Form).WithMany(b => b.AttachmentForms).HasForeignKey(b => b.FormId);
 
-            builder.Property(b => b.CreatedAt).IsRequired();
-            builder.Property(b => b.UpdatedAt).IsRequired();
+            builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETDATE()");
+            builder.Property(b => b.UpdatedAt).HasDefaultValueSql("GETDATE()");
         }
     }
 }

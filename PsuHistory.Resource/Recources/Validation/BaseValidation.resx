@@ -118,18 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FieldInvalidLength" xml:space="preserve">
-    <value>Значение поля выходит за рамки</value>
+    <value>Значение {0} выходит за рамки размера (размер от {1} до {2})</value>
+  </data>
+  <data name="FieldInvalidMaxLength" xml:space="preserve">
+    <value>Значение {0} выходит за рамки (размер до {1})</value>
+  </data>
+  <data name="FieldInvalidNumber" xml:space="preserve">
+    <value>Значение {0} выходит за числовые рамки (от {1} до {2})</value>
+  </data>
+  <data name="FieldNotCanBeNegative" xml:space="preserve">
+    <value>Значение {0} поля не может быть отрицательным</value>
   </data>
   <data name="FieldNotCanBeNull" xml:space="preserve">
-    <value>Значение не может быть нулевым</value>
+    <value>Значение {0} не может быть нулевым</value>
+  </data>
+  <data name="FileNotCanBeNull" xml:space="preserve">
+    <value>Требуется добавить файл</value>
   </data>
   <data name="ObjectExistWithThisData" xml:space="preserve">
-    <value>Объект с такими данными уже существует</value>
+    <value>Объект {0} с такими данными уже существует</value>
   </data>
   <data name="ObjectNotCanBeNull" xml:space="preserve">
-    <value>Объект не может быть нулевым</value>
+    <value>Объект {0} не может быть нулевым</value>
   </data>
   <data name="ObjectNotExistById" xml:space="preserve">
-    <value>Не существует объекта с таким ID - {0}</value>
+    <value>Не существует объекта {0} с ID - {1}</value>
   </data>
 </root>
