@@ -27,4 +27,8 @@
     <ProjectReference Include="..\PsuHistory.Data.Service\PsuHistory.Data.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Files\" />
+  </ItemGroup>
+
 </Project>

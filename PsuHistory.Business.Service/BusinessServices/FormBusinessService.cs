@@ -72,7 +72,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
             validation.Result = await dataForm.InsertAsync(newEntity, cancellationToken);
 
-            if(newEntity.Files is not null)
+            if(newEntity.Files is not null && !newEntity.Files.Count().Equals(0))
             {
                 var fileDatas = await fileHelper.SaveFileRange(newEntity.Files);
 
@@ -109,7 +109,7 @@ namespace PsuHistory.Business.Service.BusinessServices
 
             validation.Result = await dataForm.UpdateAsync(newEntity, cancellationToken);
 
-            if (newEntity.Files is not null)
+            if (newEntity.Files is not null && !newEntity.Files.Count().Equals(0))
             {
                 var fileDatas = await fileHelper.SaveFileRange(newEntity.Files);
 

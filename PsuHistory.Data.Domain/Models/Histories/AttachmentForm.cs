@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PsuHistory.Data.Domain.Models.Histories
 {
@@ -11,9 +12,11 @@ namespace PsuHistory.Data.Domain.Models.Histories
         public string FileType { get; set; }
 
         public Guid FormId { get; set; }
+        //[JsonIgnore]
         public virtual Form Form { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public IFormFile File { get; set; }
     }
 }
