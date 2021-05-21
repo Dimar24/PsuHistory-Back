@@ -39,7 +39,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentBurial: new AttachmentBurial()
+                isExsitAttachmentBurial: true
                 );
             var id = Guid.NewGuid();
 
@@ -58,11 +58,16 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentBurial: false
+                );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(AttachmentBurial), BaseValidation.ObjectNotExistById }
+                { 
+                    nameof(AttachmentBurial),
+                    string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial), id)
+                }
             };
 
             // Act
@@ -72,6 +77,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -86,8 +92,6 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentBurial: new AttachmentBurial(),
-                burial: new Burial()
                 );
             var entity = new AttachmentBurial()
             {
@@ -111,7 +115,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                burial: new Burial()
+                isExsitBurial: true
                 );
             var entity = new AttachmentBurial()
             {
@@ -169,7 +173,9 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentBurial: false
+                );
 
             // Act
             var result = await _validation.InsertValidationAsync(null);
@@ -191,8 +197,8 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentBurial: new AttachmentBurial(),
-                burial: new Burial()
+                isExsitAttachmentBurial: true,
+                isExsitBurial: true
                 );
             var entity = new AttachmentBurial()
             {
@@ -216,8 +222,8 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                burial: new Burial(),
-                attachmentBurial: new AttachmentBurial()
+                isExsitBurial: true,
+                isExsitAttachmentBurial: true
                 );
             var entity = new AttachmentBurial()
             {
@@ -244,7 +250,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentBurial: new AttachmentBurial()
+                isExsitAttachmentBurial:true
                 );
             var entity = new AttachmentBurial()
             {
@@ -277,7 +283,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                burial: new Burial()
+                isExsitBurial: true
                 );
             var entity = new AttachmentBurial()
             {
@@ -309,7 +315,9 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentBurial: false
+                );
 
             // Act
             var result = await _validation.UpdateValidationAsync(null);
@@ -331,7 +339,7 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentBurial: new AttachmentBurial()
+                isExsitAttachmentBurial: true
                 );
             var id = Guid.NewGuid();
 
@@ -350,7 +358,9 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentBurial: false
+                );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
@@ -364,6 +374,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                //Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -374,13 +385,13 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            AttachmentBurial attachmentBurial = null,
-            Burial burial = null
+            bool isExsitAttachmentBurial = true,
+            bool isExsitBurial = true
             )
         {
-            _serviceAttachmentBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentBurial);
+            _serviceAttachmentBurial.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitAttachmentBurial);
 
-            _serviceBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(burial);
+            _serviceBurial.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitBurial);
 
             _validation = new AttachmentBurialValidation(_serviceAttachmentBurial.Object, _serviceBurial.Object);
         }
