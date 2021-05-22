@@ -414,14 +414,26 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            BirthPlace birthPlace = null,
-            bool isExist = false
+            bool isExistBirthPlace = false,
+            bool isExistBirthPlaceById = false
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
-            _service.Setup(x => x.ExistAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _service.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistBirthPlace);
+            _service.Setup(x => x.ExistAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistBirthPlaceById);
 
             _validation = new BirthPlaceValidation(_service.Object);
+        }
+
+        private BirthPlace GetBirthPlace(
+            Guid id,
+            string place = null
+            )
+        {
+            return new BirthPlace()
+            {
+                Id = id,
+                Place = place
+            };
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);
