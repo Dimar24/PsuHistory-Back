@@ -141,6 +141,648 @@ namespace Business.Tests.Validations
         }
 
         [Test]
+        public async Task InsertValidationAsync_Succes()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsEmpty(result.Errors);
+                Assert.IsTrue(result.IsValid);
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_VictimExist_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: true,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim), string.Format(BaseValidation.ObjectExistWithThisData, nameof(Victim)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_TypeVictimExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: false,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.TypeVictim), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.TypeVictim), entity.TypeVictimId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_DutyStationExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: false,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DutyStation), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.DutyStation), entity.DutyStationId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_BirthPlaceExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: false,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.BirthPlace), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.BirthPlace), entity.BirthPlaceId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_ConscriptionPlaceExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: false,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.ConscriptionPlace),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.ConscriptionPlace), entity.ConscriptionPlaceId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_BurialExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: false
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.Burial), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.Burial), entity.BurialId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_LastNameIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: null,
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.LastName), string.Format(BaseValidation.FieldNotCanBeNull, nameof(Victim.LastName)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(555)]
+        public async Task InsertValidationAsync_LastNameInvalid_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: GetString(length),
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.LastName), string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.LastName), 3, 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_FirstNameInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: GetString(135),
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.FirstName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.FirstName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_MiddleNameInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: GetString(135),
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.MiddleName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.MiddleName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_DateOfBirthInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: GetString(135),
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_DateOfDeathInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "02.02.1944",
+                dateOfDeath: GetString(135),
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
@@ -161,6 +803,648 @@ namespace Business.Tests.Validations
 
             // Act
             var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_Succes()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsEmpty(result.Errors);
+                Assert.IsTrue(result.IsValid);
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_VictimExist_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: true,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim), string.Format(BaseValidation.ObjectExistWithThisData, nameof(Victim)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_TypeVictimExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: false,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.TypeVictim), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.TypeVictim), entity.TypeVictimId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_DutyStationExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: false,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DutyStation), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.DutyStation), entity.DutyStationId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_BirthPlaceExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: false,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.BirthPlace), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.BirthPlace), entity.BirthPlaceId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_ConscriptionPlaceExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: false,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.ConscriptionPlace),
+                        string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.ConscriptionPlace), entity.ConscriptionPlaceId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_BurialExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: false
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.Burial), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.Burial), entity.BurialId) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_LastNameIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: null,
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.LastName), string.Format(BaseValidation.FieldNotCanBeNull, nameof(Victim.LastName)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(555)]
+        public async Task UpdateValidationAsync_LastNameInvalid_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: GetString(length),
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.LastName), string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.LastName), 3, 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_FirstNameInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: GetString(135),
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.FirstName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.FirstName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_MiddleNameInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: GetString(135),
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.MiddleName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.MiddleName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_DateOfBirthInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: GetString(135),
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_DateOfDeathInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "02.02.1944",
+                dateOfDeath: GetString(135),
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -270,7 +1554,16 @@ namespace Business.Tests.Validations
             Guid id,
             string lastName = default,
             string firstName = default,
-            string middleName = default
+            string middleName = default,
+            bool isHeroSoviet = default,
+            bool isPartisan = default,
+            string dateOfBirth = default,
+            string dateOfDeath = default,
+            Guid typeVictimId = default,
+            Guid dutyStationId = default,
+            Guid birthPlaceId = default,
+            Guid conscriptionPlaceId = default,
+            Guid burialId = default
             )
         {
             return new Victim()
@@ -279,6 +1572,15 @@ namespace Business.Tests.Validations
                 LastName = lastName,
                 FirstName = firstName,
                 MiddleName = middleName,
+                IsHeroSoviet = isHeroSoviet,
+                IsPartisan = isPartisan,
+                DateOfBirth = dateOfBirth,
+                DateOfDeath = dateOfDeath,
+                TypeVictimId = typeVictimId,
+                DutyStationId = dutyStationId,
+                BirthPlaceId = birthPlaceId,
+                ConscriptionPlaceId = conscriptionPlaceId,
+                BurialId = burialId
             };
         }
 

@@ -84,7 +84,7 @@ namespace PsuHistory.Business.Service.Validations
                         string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.ConscriptionPlace), newEntity.ConscriptionPlaceId));
                 }
 
-                if (await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
+                if (!await dataBurial.ExistByIdAsync(newEntity.BurialId, cancellationToken))
                 {
                     validation.Errors.Add(nameof(Victim.Burial),
                         string.Format(BaseValidation.ObjectNotExistById, nameof(Victim.Burial), newEntity.BurialId));
@@ -104,25 +104,25 @@ namespace PsuHistory.Business.Service.Validations
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Victim.FirstName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.FirstName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.FirstName), 128));
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Victim.MiddleName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.MiddleName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.MiddleName), 128));
                 }
 
                 if (newEntity.DateOfBirth is not null && newEntity.DateOfBirth.Length > 128)
                 {
                     validation.Errors.Add(nameof(Victim.DateOfBirth),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.DateOfBirth), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 128));
                 }
 
                 if (newEntity.DateOfDeath is not null && newEntity.DateOfDeath.Length > 128)
                 {
                     validation.Errors.Add(nameof(Victim.DateOfDeath),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Victim.DateOfDeath), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 128));
                 }
             }
             else
