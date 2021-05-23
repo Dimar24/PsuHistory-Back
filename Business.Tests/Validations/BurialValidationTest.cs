@@ -89,12 +89,89 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_Null_UnSucces()
+        public async Task InsertValidationAsync_Succes()
+        {
+            // Arrange
+            MockData(
+                isExistBurial: false,
+                isExistBurialById: true,
+                isExistTypeBurialById: true
+            );
+            var entity = GetBurial(
+                id: Guid.NewGuid(),
+                numberBurial: 1234,
+                location: "Test location",
+                knownNumber: 10,
+                unknownNumber: 10,
+                year: 1950,
+                latitude: 20.20,
+                longitude: 20.20,
+                description: "Test description",
+                typeBurialId: Guid.NewGuid()
+            );
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsEmpty(result.Errors);
+                Assert.IsTrue(result.IsValid);
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_BurialExist_UnSucces()
         {
             // Arrange
             MockData(
                 isExistBurial: true,
-                isExistBurialById: false
+                isExistBurialById: true,
+                isExistTypeBurialById: true
+            );
+            var entity = GetBurial(
+                id: Guid.NewGuid(),
+                numberBurial: 1234,
+                location: "Test location",
+                knownNumber: 10,
+                unknownNumber: 10,
+                year: 1950,
+                latitude: 20.20,
+                longitude: 20.20,
+                description: "Test description",
+                typeBurialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Burial), string.Format(BaseValidation.ObjectExistWithThisData, nameof(Burial)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_Null_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistBurial: false,
+                isExistBurialById: true,
+                isExistTypeBurialById: true
             );
             Burial entity = null;
             var listError = new Dictionary<string, string>()
