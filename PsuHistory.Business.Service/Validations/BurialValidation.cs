@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -18,10 +18,10 @@ namespace PsuHistory.Business.Service.Validations
     public class BurialValidation : IBurialValidation
     {
         private ValidationModel<Burial> validation;
-        private readonly IBaseService<Guid, Burial> dataBurial;
-        private readonly IBaseService<Guid, TypeBurial> dataTypeBurial;
+        private readonly IBaseRepository<Guid, Burial> dataBurial;
+        private readonly IBaseRepository<Guid, TypeBurial> dataTypeBurial;
 
-        public BurialValidation(IBaseService<Guid, Burial> dataBurial, IBaseService<Guid, TypeBurial> dataTypeBurial)
+        public BurialValidation(IBaseRepository<Guid, Burial> dataBurial, IBaseRepository<Guid, TypeBurial> dataTypeBurial)
         {
             this.dataBurial = dataBurial;
             this.dataTypeBurial = dataTypeBurial;

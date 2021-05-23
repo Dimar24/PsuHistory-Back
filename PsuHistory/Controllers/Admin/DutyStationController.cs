@@ -15,11 +15,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class DutyStationController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, DutyStation> dutyStationService;
+        private readonly IBaseService<Guid, DutyStation> dutyStationService;
 
         public DutyStationController(
-            IMapper mapper, 
-            IBaseBusinessService<Guid, DutyStation> dutyStationService)
+            IMapper mapper,
+            IBaseService<Guid, DutyStation> dutyStationService)
         {
             this.mapper = mapper;
             this.dutyStationService = dutyStationService;

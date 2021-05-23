@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Histories;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,10 +15,10 @@ namespace PsuHistory.Business.Service.Validations
     public class AttachmentFormValidation : IAttachmentFormValidation
     {
         private ValidationModel<AttachmentForm> validation;
-        private readonly IBaseService<Guid, AttachmentForm> dataAttachmentForm;
-        private readonly IBaseService<Guid, Form> dataForm;
+        private readonly IBaseRepository<Guid, AttachmentForm> dataAttachmentForm;
+        private readonly IBaseRepository<Guid, Form> dataForm;
 
-        public AttachmentFormValidation(IBaseService<Guid, AttachmentForm> dataAttachmentForm, IBaseService<Guid, Form> dataForm)
+        public AttachmentFormValidation(IBaseRepository<Guid, AttachmentForm> dataAttachmentForm, IBaseRepository<Guid, Form> dataForm)
         {
             this.dataAttachmentForm = dataAttachmentForm;
             this.dataForm = dataForm;

@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,20 +15,20 @@ namespace PsuHistory.Business.Service.Validations
     public class VictimValidation : IVictimValidation
     {
         private ValidationModel<Victim> validation;
-        private readonly IBaseService<Guid, Victim> dataVictim;
-        private readonly IBaseService<Guid, TypeVictim> dataTypeVictim;
-        private readonly IBaseService<Guid, DutyStation> dataDutyStation;
-        private readonly IBaseService<Guid, BirthPlace> dataBirthPlace;
-        private readonly IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace;
-        private readonly IBaseService<Guid, Burial> dataBurial;
+        private readonly IBaseRepository<Guid, Victim> dataVictim;
+        private readonly IBaseRepository<Guid, TypeVictim> dataTypeVictim;
+        private readonly IBaseRepository<Guid, DutyStation> dataDutyStation;
+        private readonly IBaseRepository<Guid, BirthPlace> dataBirthPlace;
+        private readonly IBaseRepository<Guid, ConscriptionPlace> dataConscriptionPlace;
+        private readonly IBaseRepository<Guid, Burial> dataBurial;
 
         public VictimValidation(
-            IBaseService<Guid, Victim> dataVictim,
-            IBaseService<Guid, TypeVictim> dataTypeVictim,
-            IBaseService<Guid, DutyStation> dataDutyStation,
-            IBaseService<Guid, BirthPlace> dataBirthPlace,
-            IBaseService<Guid, ConscriptionPlace> dataConscriptionPlace,
-            IBaseService<Guid, Burial> dataBurial)
+            IBaseRepository<Guid, Victim> dataVictim,
+            IBaseRepository<Guid, TypeVictim> dataTypeVictim,
+            IBaseRepository<Guid, DutyStation> dataDutyStation,
+            IBaseRepository<Guid, BirthPlace> dataBirthPlace,
+            IBaseRepository<Guid, ConscriptionPlace> dataConscriptionPlace,
+            IBaseRepository<Guid, Burial> dataBurial)
         {
             this.dataVictim = dataVictim;
             this.dataTypeVictim = dataTypeVictim;

@@ -15,11 +15,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class ConscriptionPlaceController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, ConscriptionPlace> conscriptionPlaceService;
+        private readonly IBaseService<Guid, ConscriptionPlace> conscriptionPlaceService;
 
         public ConscriptionPlaceController(
-            IMapper mapper, 
-            IBaseBusinessService<Guid, ConscriptionPlace> conscriptionPlaceService)
+            IMapper mapper,
+            IBaseService<Guid, ConscriptionPlace> conscriptionPlaceService)
         {
             this.mapper = mapper;
             this.conscriptionPlaceService = conscriptionPlaceService;

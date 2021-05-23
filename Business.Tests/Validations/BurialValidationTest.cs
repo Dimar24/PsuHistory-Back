@@ -5,7 +5,7 @@ using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -17,15 +17,15 @@ namespace Business.Tests.Validations
     [TestFixture]
     class BurialValidationTest
     {
-        private Mock<IBaseService<Guid, Burial>> _serviceBurial;
-        private Mock<IBaseService<Guid, TypeBurial>> _serviceTypeBurial;
+        private Mock<IBaseRepository<Guid, Burial>> _serviceBurial;
+        private Mock<IBaseRepository<Guid, TypeBurial>> _serviceTypeBurial;
         private IBaseValidation<Guid, Burial> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceBurial = new Mock<IBaseService<Guid, Burial>>();
-            _serviceTypeBurial = new Mock<IBaseService<Guid, TypeBurial>>();
+            _serviceBurial = new Mock<IBaseRepository<Guid, Burial>>();
+            _serviceTypeBurial = new Mock<IBaseRepository<Guid, TypeBurial>>();
         }
 
         [TearDown]

@@ -15,11 +15,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class AttachmentBurialController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, AttachmentBurial> attachmentBurialService;
+        private readonly IBaseService<Guid, AttachmentBurial> attachmentBurialService;
 
         public AttachmentBurialController(
             IMapper mapper,
-            IBaseBusinessService<Guid, AttachmentBurial> attachmentBurialService)
+            IBaseService<Guid, AttachmentBurial> attachmentBurialService)
         {
             this.mapper = mapper;
             this.attachmentBurialService = attachmentBurialService;

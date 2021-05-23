@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,9 +15,9 @@ namespace PsuHistory.Business.Service.Validations
     public class BirthPlaceValidation : IBirthPlaceValidation
     {
         private ValidationModel<BirthPlace> validation;
-        private readonly IBaseService<Guid, BirthPlace> dataBirthPlace;
+        private readonly IBaseRepository<Guid, BirthPlace> dataBirthPlace;
 
-        public BirthPlaceValidation(IBaseService<Guid, BirthPlace> dataBirthPlace)
+        public BirthPlaceValidation(IBaseRepository<Guid, BirthPlace> dataBirthPlace)
         {
             this.dataBirthPlace = dataBirthPlace;
             validation = new ValidationModel<BirthPlace>();

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data.Domain", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data.EF.SQL", "PsuHistory.Data.EF.SQL\PsuHistory.Data.EF.SQL.csproj", "{1FCF7B02-A2BF-4086-9C00-E87D3060A9CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data.Service", "PsuHistory.Data.Service\PsuHistory.Data.Service.csproj", "{A5BDAE1B-3D34-4273-898E-65B0075FAD66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Data.Repository", "PsuHistory.Data.Service\PsuHistory.Data.Repository.csproj", "{A5BDAE1B-3D34-4273-898E-65B0075FAD66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9B7A9775-4E35-436B-AF97-75EBB93D6F92}"
 EndProject
@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Business.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Resource", "PsuHistory.Resource\PsuHistory.Resource.csproj", "{F233A2C4-7513-4AB1-807C-D143DF21BBA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{93F5CAF8-60D6-4E4E-81A1-DB5BAA0E0376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{93F5CAF8-60D6-4E4E-81A1-DB5BAA0E0376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Tests", "Business.Tests\Business.Tests.csproj", "{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Tests", "Business.Tests\Business.Tests.csproj", "{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

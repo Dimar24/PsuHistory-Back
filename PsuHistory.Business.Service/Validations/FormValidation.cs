@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Histories;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,9 +15,9 @@ namespace PsuHistory.Business.Service.Validations
     public class FormValidation : IFormValidation
     {
         private ValidationModel<Form> validation;
-        private readonly IBaseService<Guid, Form> dataForm;
+        private readonly IBaseRepository<Guid, Form> dataForm;
 
-        public FormValidation(IBaseService<Guid, Form> dataForm)
+        public FormValidation(IBaseRepository<Guid, Form> dataForm)
         {
             this.dataForm = dataForm;
             validation = new ValidationModel<Form>();

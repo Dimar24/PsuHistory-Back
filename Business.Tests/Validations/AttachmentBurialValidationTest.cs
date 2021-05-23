@@ -5,7 +5,7 @@ using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -17,15 +17,15 @@ namespace Business.Tests.Validations
 {
     class AttachmentBurialValidationTest
     {
-        private Mock<IBaseService<Guid, AttachmentBurial>> _serviceAttachmentBurial;
-        private Mock<IBaseService<Guid, Burial>> _serviceBurial;
+        private Mock<IBaseRepository<Guid, AttachmentBurial>> _serviceAttachmentBurial;
+        private Mock<IBaseRepository<Guid, Burial>> _serviceBurial;
         private IBaseValidation<Guid, AttachmentBurial> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceAttachmentBurial = new Mock<IBaseService<Guid, AttachmentBurial>>();
-            _serviceBurial = new Mock<IBaseService<Guid, Burial>>();
+            _serviceAttachmentBurial = new Mock<IBaseRepository<Guid, AttachmentBurial>>();
+            _serviceBurial = new Mock<IBaseRepository<Guid, Burial>>();
         }
 
         [TearDown]

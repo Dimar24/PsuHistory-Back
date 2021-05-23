@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,10 +15,10 @@ namespace PsuHistory.Business.Service.Validations
     public class AttachmentBurialValidation : IAttachmentBurialValidation
     {
         private ValidationModel<AttachmentBurial> validation;
-        private readonly IBaseService<Guid, AttachmentBurial> dataAttachmentBurial;
-        private readonly IBaseService<Guid, Burial> dataBurial;
+        private readonly IBaseRepository<Guid, AttachmentBurial> dataAttachmentBurial;
+        private readonly IBaseRepository<Guid, Burial> dataBurial;
 
-        public AttachmentBurialValidation(IBaseService<Guid, AttachmentBurial> dataAttachmentBurial, IBaseService<Guid, Burial> dataBurial)
+        public AttachmentBurialValidation(IBaseRepository<Guid, AttachmentBurial> dataAttachmentBurial, IBaseRepository<Guid, Burial> dataBurial)
         {
             this.dataAttachmentBurial = dataAttachmentBurial;
             this.dataBurial = dataBurial;

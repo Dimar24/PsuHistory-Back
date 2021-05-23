@@ -3,8 +3,8 @@ using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Domain.Models.Users;
 using PsuHistory.Data.EF.SQL;
-using PsuHistory.Data.Service.Interfaces;
-using PsuHistory.Data.Service.Services;
+using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Data.Repository.Repositories;
 using System;
 
 namespace PsuHistory.Data.Service
@@ -19,18 +19,18 @@ namespace PsuHistory.Data.Service
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IBaseService <Guid, AttachmentBurial>, AttachmentBurialService>();
-            services.AddScoped<IBaseService<Guid, AttachmentForm>, AttachmentFormService>();
-            services.AddScoped<IBaseService<Guid, BirthPlace>, BirthPlaceService>();
-            services.AddScoped<IBaseService<Guid, Burial>, BurialService>();
-            services.AddScoped<IBaseService<Guid, ConscriptionPlace>, ConscriptionPlaceService>();
-            services.AddScoped<IBaseService<Guid, DutyStation>, DutyStationService>();
-            services.AddScoped<IBaseService<Guid, Form>, FormService>();
-            services.AddScoped<IBaseService<Guid, Role>, RoleService>();
-            services.AddScoped<IBaseService<Guid, TypeBurial>, TypeBurialService>();
-            services.AddScoped<IBaseService<Guid, TypeVictim>, TypeVictimService>();
-            services.AddScoped<IBaseService<Guid, User>, UserService>();
-            services.AddScoped<IBaseService<Guid, Victim>, VictimService>();
+            services.AddScoped<IBaseRepository <Guid, AttachmentBurial>, AttachmentBurialRepository>();
+            services.AddScoped<IBaseRepository<Guid, AttachmentForm>, AttachmentFormRepository>();
+            services.AddScoped<IBaseRepository<Guid, BirthPlace>, BirthPlaceRepository>();
+            services.AddScoped<IBaseRepository<Guid, Burial>, BurialRepository>();
+            services.AddScoped<IBaseRepository<Guid, ConscriptionPlace>, ConscriptionPlaceRepository>();
+            services.AddScoped<IBaseRepository<Guid, DutyStation>, DutyStationRepository>();
+            services.AddScoped<IBaseRepository<Guid, Form>, FormRepository>();
+            services.AddScoped<IBaseRepository<Guid, Role>, RoleRepository>();
+            services.AddScoped<IBaseRepository<Guid, TypeBurial>, TypeBurialRepository>();
+            services.AddScoped<IBaseRepository<Guid, TypeVictim>, TypeVictimRepository>();
+            services.AddScoped<IBaseRepository<Guid, User>, UserRepository>();
+            services.AddScoped<IBaseRepository<Guid, Victim>, VictimRepository>();
 
             //var currentAssembly = typeof(ServiceCollectionExtensions);
             //
