@@ -5,7 +5,7 @@ using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Histories;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -17,15 +17,15 @@ namespace Business.Tests.Validations
 {
     class AttachmentFormValidationTest
     {
-        private Mock<IBaseService<Guid, AttachmentForm>> _serviceAttachmentForm;
-        private Mock<IBaseService<Guid, Form>> _serviceForm;
+        private Mock<IBaseRepository<Guid, AttachmentForm>> _serviceAttachmentForm;
+        private Mock<IBaseRepository<Guid, Form>> _serviceForm;
         private IBaseValidation<Guid, AttachmentForm> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceAttachmentForm = new Mock<IBaseService<Guid, AttachmentForm>>();
-            _serviceForm = new Mock<IBaseService<Guid, Form>>();
+            _serviceAttachmentForm = new Mock<IBaseRepository<Guid, AttachmentForm>>();
+            _serviceForm = new Mock<IBaseRepository<Guid, Form>>();
         }
 
         [TearDown]

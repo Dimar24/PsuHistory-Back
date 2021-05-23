@@ -4,7 +4,7 @@ using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,13 @@ namespace Business.Tests.Validations
     [TestFixture]
     class TypeVictimValidationTest
     {
-        private Mock<IBaseService<Guid, TypeVictim>> _serviceTypeVictim;
+        private Mock<IBaseRepository<Guid, TypeVictim>> _serviceTypeVictim;
         private IBaseValidation<Guid, TypeVictim> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceTypeVictim = new Mock<IBaseService<Guid, TypeVictim>>();
+            _serviceTypeVictim = new Mock<IBaseRepository<Guid, TypeVictim>>();
         }
 
         [TearDown]

@@ -4,7 +4,7 @@ using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,13 @@ namespace Business.Tests.Validations
     [TestFixture]
     class ConscriptionPlaceValidationTest
     {
-        private Mock<IBaseService<Guid, ConscriptionPlace>> _serviceConscriptionPlace;
+        private Mock<IBaseRepository<Guid, ConscriptionPlace>> _serviceConscriptionPlace;
         private IBaseValidation<Guid, ConscriptionPlace> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceConscriptionPlace = new Mock<IBaseService<Guid, ConscriptionPlace>>();
+            _serviceConscriptionPlace = new Mock<IBaseRepository<Guid, ConscriptionPlace>>();
         }
 
         [TearDown]

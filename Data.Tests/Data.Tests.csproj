@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PsuHistory.Data.EF.SQL\PsuHistory.Data.EF.SQL.csproj" />
-    <ProjectReference Include="..\PsuHistory.Data.Service\PsuHistory.Data.Service.csproj" />
+    <ProjectReference Include="..\PsuHistory.Data.Service\PsuHistory.Data.Repository.csproj" />
   </ItemGroup>
 
 </Project>

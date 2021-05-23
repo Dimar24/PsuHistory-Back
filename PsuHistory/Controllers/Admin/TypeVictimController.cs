@@ -15,11 +15,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class TypeVictimController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, TypeVictim> typeVictimService;
+        private readonly IBaseService<Guid, TypeVictim> typeVictimService;
 
         public TypeVictimController(
             IMapper mapper,
-            IBaseBusinessService<Guid, TypeVictim> typeVictimService)
+            IBaseService<Guid, TypeVictim> typeVictimService)
         {
             this.mapper = mapper;
             this.typeVictimService = typeVictimService;

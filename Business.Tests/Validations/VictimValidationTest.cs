@@ -5,7 +5,7 @@ using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
@@ -17,23 +17,23 @@ namespace Business.Tests.Validations
     [TestFixture]
     class VictimValidationTest
     {
-        private Mock<IBaseService<Guid, Victim>> _serviceVictim;
-        private Mock<IBaseService<Guid, TypeVictim>> _serviceTypeVictim;
-        private Mock<IBaseService<Guid, DutyStation>> _serviceDutyStation;
-        private Mock<IBaseService<Guid, BirthPlace>> _serviceBirthPlace;
-        private Mock<IBaseService<Guid, ConscriptionPlace>> _serviceConscriptionPlace;
-        private Mock<IBaseService<Guid, Burial>> _serviceBurial;
+        private Mock<IBaseRepository<Guid, Victim>> _serviceVictim;
+        private Mock<IBaseRepository<Guid, TypeVictim>> _serviceTypeVictim;
+        private Mock<IBaseRepository<Guid, DutyStation>> _serviceDutyStation;
+        private Mock<IBaseRepository<Guid, BirthPlace>> _serviceBirthPlace;
+        private Mock<IBaseRepository<Guid, ConscriptionPlace>> _serviceConscriptionPlace;
+        private Mock<IBaseRepository<Guid, Burial>> _serviceBurial;
         private IBaseValidation<Guid, Victim> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _serviceVictim = new Mock<IBaseService<Guid, Victim>>();
-            _serviceTypeVictim = new Mock<IBaseService<Guid, TypeVictim>>();
-            _serviceDutyStation = new Mock<IBaseService<Guid, DutyStation>>();
-            _serviceBirthPlace = new Mock<IBaseService<Guid, BirthPlace>>();
-            _serviceConscriptionPlace = new Mock<IBaseService<Guid, ConscriptionPlace>>();
-            _serviceBurial = new Mock<IBaseService<Guid, Burial>>();
+            _serviceVictim = new Mock<IBaseRepository<Guid, Victim>>();
+            _serviceTypeVictim = new Mock<IBaseRepository<Guid, TypeVictim>>();
+            _serviceDutyStation = new Mock<IBaseRepository<Guid, DutyStation>>();
+            _serviceBirthPlace = new Mock<IBaseRepository<Guid, BirthPlace>>();
+            _serviceConscriptionPlace = new Mock<IBaseRepository<Guid, ConscriptionPlace>>();
+            _serviceBurial = new Mock<IBaseRepository<Guid, Burial>>();
         }
 
         [TearDown]

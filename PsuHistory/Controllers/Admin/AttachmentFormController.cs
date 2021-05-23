@@ -19,11 +19,11 @@ namespace PsuHistory.Controllers.Admin
     public class AttachmentFormController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, AttachmentForm> attachmentFormService;
+        private readonly IBaseService<Guid, AttachmentForm> attachmentFormService;
 
         public AttachmentFormController(
             IMapper mapper,
-            IBaseBusinessService<Guid, AttachmentForm> attachmentFormService)
+            IBaseService<Guid, AttachmentForm> attachmentFormService)
         {
             this.mapper = mapper;
             this.attachmentFormService = attachmentFormService;

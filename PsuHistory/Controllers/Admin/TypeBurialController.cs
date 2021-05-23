@@ -15,11 +15,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class TypeBurialController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, TypeBurial> typeBurialService;
+        private readonly IBaseService<Guid, TypeBurial> typeBurialService;
 
         public TypeBurialController(
             IMapper mapper,
-            IBaseBusinessService<Guid, TypeBurial> typeBurialService)
+            IBaseService<Guid, TypeBurial> typeBurialService)
         {
             this.mapper = mapper;
             this.typeBurialService = typeBurialService;

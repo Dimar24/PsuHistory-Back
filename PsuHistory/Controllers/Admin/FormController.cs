@@ -16,11 +16,11 @@ namespace PsuHistory.API.Host.Controllers.Admin
     public class FormController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseBusinessService<Guid, Form> formService;
+        private readonly IBaseService<Guid, Form> formService;
 
         public FormController(
             IMapper mapper,
-            IBaseBusinessService<Guid, Form> formService)
+            IBaseService<Guid, Form> formService)
         {
             this.mapper = mapper;
             this.formService = formService;

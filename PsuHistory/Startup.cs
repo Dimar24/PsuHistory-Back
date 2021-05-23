@@ -64,7 +64,7 @@ namespace PsuHistory.API.Host
                 //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
             });
             services.AddPsuHistoryDataService();
-            services.AddPsuHistoryBusinessService();
+            services.AddPsuHistoryService();
             services.AddSwaggerGen(s =>
             {
                 s.EnableAnnotations();

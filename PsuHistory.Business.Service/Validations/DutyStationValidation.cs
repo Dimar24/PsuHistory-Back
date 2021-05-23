@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.Service.Interfaces;
+using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Threading;
@@ -15,9 +15,9 @@ namespace PsuHistory.Business.Service.Validations
     public class DutyStationValidation : IDutyStationValidation
     {
         private ValidationModel<DutyStation> validation;
-        private readonly IBaseService<Guid, DutyStation> dataDutyStation;
+        private readonly IBaseRepository<Guid, DutyStation> dataDutyStation;
 
-        public DutyStationValidation(IBaseService<Guid, DutyStation> dataDutyStation)
+        public DutyStationValidation(IBaseRepository<Guid, DutyStation> dataDutyStation)
         {
             this.dataDutyStation = dataDutyStation;
             validation = new ValidationModel<DutyStation>();
