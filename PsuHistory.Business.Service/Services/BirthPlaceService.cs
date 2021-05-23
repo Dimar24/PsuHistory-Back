@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,7 +12,7 @@ namespace PsuHistory.Business.Service.Services
     public interface IBirthPlaceService : IBaseService<Guid, BirthPlace>
     { }
 
-    class BirthPlaceService : IBirthPlaceService
+    public class BirthPlaceService : IBirthPlaceService
     {
         private readonly IBaseRepository<Guid, BirthPlace> dataBirthPlace;
         private readonly IBaseValidation<Guid, BirthPlace> birthPlaceValidation;

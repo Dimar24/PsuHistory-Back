@@ -1,12 +1,9 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
 using PsuHistory.Resource.Recources.Validation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

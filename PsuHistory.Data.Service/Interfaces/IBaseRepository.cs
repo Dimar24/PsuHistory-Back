@@ -9,6 +9,7 @@ namespace PsuHistory.Data.Repository.Interfaces
     {
         Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken = default(CancellationToken));
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken));
+        //Task<IEnumerable<TEntity>> GetAllByFilterAsync(CancellationToken cancellationToken = default(CancellationToken));
         Task<bool> ExistAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
         Task<bool> ExistByIdAsync(TKey id, CancellationToken cancellationToken = default(CancellationToken));
         Task<TEntity> InsertAsync(TEntity newEntity, CancellationToken cancellationToken = default(CancellationToken));

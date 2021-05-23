@@ -1,7 +1,7 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,7 +12,7 @@ namespace PsuHistory.Business.Service.Services
     public interface ITypeVictimService : IBaseService<Guid, TypeVictim>
     { }
 
-    class TypeVictimService : ITypeVictimService
+    public class TypeVictimService : ITypeVictimService
     {
         private readonly IBaseRepository<Guid, TypeVictim> dataTypeVictim;
         private readonly IBaseValidation<Guid, TypeVictim> typeVictimValidation;

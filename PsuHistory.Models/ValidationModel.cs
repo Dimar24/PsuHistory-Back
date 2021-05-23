@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PsuHistory.Business.Service.Models
+namespace PsuHistory.Models
 {
     public class ValidationModel<TResult>
     {
@@ -12,9 +12,9 @@ namespace PsuHistory.Business.Service.Models
         public Dictionary<string, string> Errors { get; set; } = new Dictionary<string, string>();
 
         private int countError;
-        public int CountError 
-        { 
-            get 
+        public int CountError
+        {
+            get
             {
                 return Errors?.Count() ?? default;
             }
@@ -25,15 +25,15 @@ namespace PsuHistory.Business.Service.Models
         }
 
         private bool isValid;
-        public bool IsValid 
+        public bool IsValid
         {
-            get 
+            get
             {
-                return (CountError == 0); 
+                return (CountError == 0);
             }
-            private set 
-            { 
-                isValid = value; 
+            private set
+            {
+                isValid = value;
             }
         }
     }

@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsuHistory.Business.Service.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PsuHistory.Models;
 
 namespace PsuHistory.Controllers.Abstraction
 {

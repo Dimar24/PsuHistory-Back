@@ -1,8 +1,8 @@
 ﻿using PsuHistory.Business.Service.Helpers;
 using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace PsuHistory.Business.Service.Services
     public interface IBurialService : IBaseService<Guid, Burial>
     { }
 
-    class BurialService : IBurialService
+    public class BurialService : IBurialService
     {
         private readonly FileHelper fileHelper;
         private readonly IBaseRepository<Guid, Burial> dataBurial;

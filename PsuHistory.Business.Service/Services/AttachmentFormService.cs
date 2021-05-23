@@ -1,14 +1,10 @@
 ﻿using PsuHistory.Business.Service.Helpers;
 using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Business.Service.Models;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +13,7 @@ namespace PsuHistory.Business.Service.Services
     public interface IAttachmentFormService : IBaseService<Guid, AttachmentForm>
     { }
 
-    class AttachmentFormService : IAttachmentFormService
+    public class AttachmentFormService : IAttachmentFormService
     {
         private readonly FileHelper fileHelper;
         private readonly IBaseRepository<Guid, AttachmentForm> dataAttachmentForm;
