@@ -42,12 +42,14 @@ namespace PsuHistory.Business.Service.Validations
             {
                 if (newEntity.File is null)
                 {
-                    validation.Errors.Add(nameof(AttachmentForm.File), BaseValidation.FieldNotCanBeNull);
+                    validation.Errors.Add(nameof(AttachmentForm.File),
+                        string.Format(BaseValidation.FileNotCanBeNull));
                 }
             }
             else
             {
-                validation.Errors.Add(nameof(AttachmentForm), BaseValidation.ObjectNotCanBeNull);
+                validation.Errors.Add(nameof(AttachmentForm),
+                    string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentForm)));
             }
 
             return validation;

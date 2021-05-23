@@ -39,8 +39,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentForm: new AttachmentForm()
-                );
+                isExsitAttachmentFormById: true,
+                isExsitFormById: false
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -58,11 +59,13 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
             var id = Guid.NewGuid();
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(AttachmentForm), BaseValidation.ObjectNotExistById }
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm), string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), id) }
             };
 
             // Act
@@ -72,6 +75,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -86,14 +90,14 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentForm: new AttachmentForm(),
-                form: new Form()
-                );
-            var entity = new AttachmentForm()
-            {
-                FormId = Guid.NewGuid(),
-                File = GetFormFile()
-            };
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: GetFormFile()
+            );
 
             // Act
             var result = await _validation.InsertValidationAsync(entity);
@@ -111,11 +115,16 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
-            var entity = new AttachmentForm()
-            {
-                File = null
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: null
+            );
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm.File), string.Format(BaseValidation.FileNotCanBeNull) }
             };
 
             // Act
@@ -124,37 +133,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task InsertValidationAsync_GetBurialIsNull_UnSucces()
-        {
-            // Arrange
-            MockData(
-                );
-            var entity = new AttachmentForm()
-            {
-                FormId = Guid.NewGuid(),
-                File = GetFormFile()
-            };
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById }
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -169,19 +148,28 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
+            AttachmentForm entity = null;
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentForm)) }
+            };
 
             // Act
-            var result = await _validation.InsertValidationAsync(null);
+            var result = await _validation.InsertValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -191,14 +179,14 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentForm: new AttachmentForm(),
-                form: new Form()
-                );
-            var entity = new AttachmentForm()
-            {
-                FormId = Guid.NewGuid(),
-                File = GetFormFile()
-            };
+                isExsitAttachmentFormById: true,
+                isExsitFormById: true
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: GetFormFile()
+            );
 
             // Act
             var result = await _validation.UpdateValidationAsync(entity);
@@ -216,12 +204,16 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                form: new Form(),
-                attachmentForm: new AttachmentForm()
-                );
-            var entity = new AttachmentForm()
-            {
-                File = null
+                isExsitAttachmentFormById: true,
+                isExsitFormById: true
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: null
+            );
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm.File), string.Format(BaseValidation.FileNotCanBeNull) }
             };
 
             // Act
@@ -230,38 +222,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task UpdateValidationAsync_GetBurialIsNull_UnSucces()
-        {
-            // Arrange
-            MockData(
-                attachmentForm: new AttachmentForm()
-                );
-            var entity = new AttachmentForm()
-            {
-                FormId = Guid.NewGuid(),
-                File = GetFormFile()
-            };
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(AttachmentForm.FormId), BaseValidation.ObjectNotExistById }
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -273,20 +234,20 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_GetAttachmentBurialIsNull_UnSucces()
+        public async Task UpdateValidationAsync_ExistFormIdInvalid_UnSucces()
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
-            var entity = new AttachmentForm()
-            {
-                FormId = Guid.NewGuid(),
-                File = GetFormFile()
-            };
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(AttachmentForm), BaseValidation.ObjectNotExistById }
+                isExsitAttachmentFormById: true,
+                isExsitFormById: false
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: GetFormFile()
+            );
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm.Form), string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm.Form), entity.FormId) }
             };
 
             // Act
@@ -295,6 +256,41 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_ExistAttachmentFormIdInvalid_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExsitAttachmentFormById: false,
+                isExsitFormById: true
+            );
+            var entity = GetAttachmentForm(
+                id: Guid.NewGuid(),
+                formId: Guid.NewGuid(),
+                file: GetFormFile()
+            );
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm), string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), entity.Id) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -309,19 +305,28 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
+            AttachmentForm entity = null;
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(AttachmentForm)) }
+            };
 
             // Act
-            var result = await _validation.UpdateValidationAsync(null);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -331,8 +336,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                attachmentForm: new AttachmentForm()
-                );
+                isExsitAttachmentFormById: true,
+                isExsitFormById: false
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -350,11 +356,13 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExsitAttachmentFormById: false,
+                isExsitFormById: false
+            );
             var id = Guid.NewGuid();
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(AttachmentForm), BaseValidation.ObjectNotExistById }
+            var listError = new Dictionary<string, string>() {
+                { nameof(AttachmentForm), string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentForm), id) }
             };
 
             // Act
@@ -364,6 +372,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -374,15 +383,29 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            AttachmentForm attachmentForm = null,
-            Form form = null
+            bool isExsitAttachmentFormById = default,
+            bool isExsitFormById = default
             )
         {
-            _serviceAttachmentForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
+            _serviceAttachmentForm.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitAttachmentFormById);
 
-            _serviceForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
+            _serviceForm.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitFormById);
 
             _validation = new AttachmentFormValidation(_serviceAttachmentForm.Object, _serviceForm.Object);
+        }
+
+        private AttachmentForm GetAttachmentForm(
+            Guid id = default,
+            Guid formId = default,
+            IFormFile file = default
+            )
+        {
+            return new AttachmentForm()
+            {
+                Id = id,
+                FormId = formId,
+                File = file
+            };
         }
 
         private IFormFile GetFormFile()
@@ -400,21 +423,6 @@ namespace Business.Tests.Validations
             fileMock.Setup(_ => _.FileName).Returns(fileName);
             fileMock.Setup(_ => _.Length).Returns(ms.Length);
             return fileMock.Object;
-        }
-
-        private static string GetString(int length) => new Randomizer().GetString(length);
-
-        private string GetBaseValidationResources(string name)
-        {
-            switch (name)
-            {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
-            }
-            return null;
         }
     }
 }

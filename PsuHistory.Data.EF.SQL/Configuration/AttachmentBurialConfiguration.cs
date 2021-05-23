@@ -17,8 +17,8 @@ namespace PsuHistory.Data.EF.SQL.Configuration
 
             builder.HasOne(b => b.Burial).WithMany(b => b.AttachmentBurials).HasForeignKey(b => b.BurialId);
 
-            builder.Property(b => b.CreatedAt).HasDefaultValueSql("GETDATE()");
-            builder.Property(b => b.UpdatedAt).HasDefaultValueSql("GETDATE()");
+            builder.Property(b => b.CreatedAt);
+            builder.Property(b => b.UpdatedAt);
         }
     }
 }

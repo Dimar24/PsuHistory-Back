@@ -15,7 +15,7 @@ namespace PsuHistory.Data.Domain.Models.Histories
         public virtual ICollection<AttachmentForm> AttachmentForms { get; set; } = new List<AttachmentForm>();
 
         [NotMapped]
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<IFormFile> Files { get; set; }
     }
 }

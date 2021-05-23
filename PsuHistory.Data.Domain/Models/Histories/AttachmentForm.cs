@@ -16,7 +16,7 @@ namespace PsuHistory.Data.Domain.Models.Histories
         public virtual Form Form { get; set; }
 
         [NotMapped]
-        [JsonIgnore]
+        //[JsonIgnore]
         public IFormFile File { get; set; }
     }
 }

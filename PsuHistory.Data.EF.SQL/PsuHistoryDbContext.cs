@@ -30,8 +30,8 @@ namespace PsuHistory.Data.EF.SQL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .UseLazyLoadingProxies();
+            //optionsBuilder
+            //    .UseLazyLoadingProxies();
             base.OnConfiguring(optionsBuilder);
         }
 
