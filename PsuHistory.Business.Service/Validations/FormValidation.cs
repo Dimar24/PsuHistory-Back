@@ -58,13 +58,13 @@ namespace PsuHistory.Business.Service.Validations
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Form.FirstName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.FirstName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.FirstName), 128));
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Form.MiddleName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.MiddleName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.MiddleName), 128));
                 }
             }
             else
@@ -105,13 +105,13 @@ namespace PsuHistory.Business.Service.Validations
                 if (newEntity.FirstName is not null && newEntity.FirstName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Form.FirstName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.FirstName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.FirstName), 128));
                 }
 
                 if (newEntity.MiddleName is not null && newEntity.MiddleName.Length > 128)
                 {
                     validation.Errors.Add(nameof(Form.MiddleName),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Form.MiddleName), 128));
+                        string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.MiddleName), 128));
                 }
             }
             else

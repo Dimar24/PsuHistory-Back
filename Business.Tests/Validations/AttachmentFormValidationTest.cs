@@ -383,8 +383,8 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            bool isExsitAttachmentFormById = true,
-            bool isExsitFormById = true
+            bool isExsitAttachmentFormById = default,
+            bool isExsitFormById = default
             )
         {
             _serviceAttachmentForm.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitAttachmentFormById);
@@ -395,9 +395,9 @@ namespace Business.Tests.Validations
         }
 
         private AttachmentForm GetAttachmentForm(
-            Guid id,
-            Guid formId,
-            IFormFile file = null
+            Guid id = default,
+            Guid formId = default,
+            IFormFile file = default
             )
         {
             return new AttachmentForm()

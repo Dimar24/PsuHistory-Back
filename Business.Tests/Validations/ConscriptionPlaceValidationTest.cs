@@ -13,15 +13,16 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
+    [TestFixture]
     class ConscriptionPlaceValidationTest
     {
-        private Mock<IBaseService<Guid, ConscriptionPlace>> _service;
+        private Mock<IBaseService<Guid, ConscriptionPlace>> _serviceConscriptionPlace;
         private IBaseValidation<Guid, ConscriptionPlace> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, ConscriptionPlace>>();
+            _serviceConscriptionPlace = new Mock<IBaseService<Guid, ConscriptionPlace>>();
         }
 
         [TearDown]
@@ -35,8 +36,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                conscriptionPlace: new ConscriptionPlace()
-                );
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: true
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -54,11 +56,14 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: false
+            );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById }
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), id) }
             };
 
             // Act
@@ -68,6 +73,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -81,11 +87,14 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            MockData();
-            var entity = new ConscriptionPlace()
-            {
-                Place = "г. Полоцк"
-            };
+            MockData(
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: false
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: "Test Place"
+            );
 
             // Act
             var result = await _validation.InsertValidationAsync(entity);
@@ -98,71 +107,21 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            MockData();
-            var entity = new ConscriptionPlace()
-            {
-                Place = GetString(length)
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
-        {
-            // Arrange
-            MockData();
-            var entity = new ConscriptionPlace()
-            {
-                Place = null
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task InsertValidationAsync_ExistAsync_UnSucces()
+        public async Task InsertValidationAsync_Exist_UnSucces()
         {
             // Arrange
             MockData(
-                isExist: true
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = "1234"
-            };
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: false
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: "Test Place"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectExistWithThisData, nameof(ConscriptionPlace)) }
             };
 
             // Act
@@ -171,6 +130,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -185,19 +145,98 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: false
+            );
+            ConscriptionPlace entity = null;
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(ConscriptionPlace)) }
+            };
 
             // Act
-            var result = await _validation.InsertValidationAsync(null);
+            var result = await _validation.InsertValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(555)]
+        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: false
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace.Place), string.Format(BaseValidation.FieldInvalidLength, nameof(ConscriptionPlace.Place), 3, 512) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_PlaceIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: false
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: null
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace.Place), string.Format(BaseValidation.FieldNotCanBeNull, nameof(ConscriptionPlace.Place)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -207,12 +246,13 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                conscriptionPlace: new ConscriptionPlace()
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = "г. Полоцк"
-            };
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: true
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: "Test Place"
+            );
 
             // Act
             var result = await _validation.UpdateValidationAsync(entity);
@@ -225,76 +265,21 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            MockData(
-                conscriptionPlace: new ConscriptionPlace()
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = GetString(length)
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        public async Task UpdateValidationAsync_ExistById_UnSucces()
         {
             // Arrange
             MockData(
-                conscriptionPlace: new ConscriptionPlace()
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = null
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task UpdateValidationAsync_ExistAsync_UnSucces()
-        {
-            // Arrange
-            MockData(
-                conscriptionPlace: new ConscriptionPlace(),
-                isExist: true
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = "1234"
-            };
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: false
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: "Test Place"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(ConscriptionPlace), BaseValidation.ObjectExistWithThisData }
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), entity.Id) }
             };
 
             // Act
@@ -303,6 +288,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -314,18 +300,20 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_GetAsync_UnSucces()
+        public async Task UpdateValidationAsync_Exist_UnSucces()
         {
             // Arrange
             MockData(
-                );
-            var entity = new ConscriptionPlace()
-            {
-                Place = "1234"
-            };
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: true
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: "Test Place"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById }
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectExistWithThisData, nameof(ConscriptionPlace)) }
             };
 
             // Act
@@ -334,6 +322,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -348,19 +337,98 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: true
+            );
+            ConscriptionPlace entity = null;
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(ConscriptionPlace)) }
+            };
 
             // Act
-            var result = await _validation.UpdateValidationAsync(null);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(555)]
+        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: true
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace.Place), string.Format(BaseValidation.FieldInvalidLength, nameof(ConscriptionPlace.Place), 3, 512) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_PlaceIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistConscriptionPlace: false,
+                isExistConscriptionPlaceById: true
+            );
+            var entity = GetConscriptionPlace(
+                id: Guid.NewGuid(),
+                place: null
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(ConscriptionPlace.Place), string.Format(BaseValidation.FieldNotCanBeNull, nameof(ConscriptionPlace.Place)) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -370,8 +438,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                conscriptionPlace: new ConscriptionPlace()
-                );
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: true
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -389,11 +458,14 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistConscriptionPlace: true,
+                isExistConscriptionPlaceById: false
+            );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(ConscriptionPlace), BaseValidation.ObjectNotExistById }
+                { nameof(ConscriptionPlace), string.Format(BaseValidation.ObjectNotExistById, nameof(ConscriptionPlace), id) }
             };
 
             // Act
@@ -403,6 +475,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -413,29 +486,28 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            ConscriptionPlace conscriptionPlace = null,
-            bool isExist = false
+            bool isExistConscriptionPlace = default,
+            bool isExistConscriptionPlaceById = default
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(conscriptionPlace);
-            _service.Setup(x => x.ExistAsync(It.IsAny<ConscriptionPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _serviceConscriptionPlace.Setup(x => x.ExistAsync(It.IsAny<ConscriptionPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistConscriptionPlace);
+            _serviceConscriptionPlace.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistConscriptionPlaceById);
 
-            _validation = new ConscriptionPlaceValidation(_service.Object);
+            _validation = new ConscriptionPlaceValidation(_serviceConscriptionPlace.Object);
+        }
+
+        private ConscriptionPlace GetConscriptionPlace(
+            Guid id = default,
+            string place = default
+            )
+        {
+            return new ConscriptionPlace()
+            {
+                Id = id,
+                Place = place
+            };
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);
-
-        private string GetBaseValidationResources(string name)
-        {
-            switch (name)
-            {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
-            }
-            return null;
-        }
     }
 }

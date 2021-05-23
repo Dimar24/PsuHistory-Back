@@ -92,7 +92,7 @@ namespace PsuHistory.Business.Service.Validations
             }
             else
             {
-                validation.Errors.Add(nameof(newEntity),
+                validation.Errors.Add(nameof(TypeBurial),
                     string.Format(BaseValidation.ObjectNotCanBeNull, nameof(TypeBurial)));
             }
 

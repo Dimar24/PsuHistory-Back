@@ -8,22 +8,21 @@ using PsuHistory.Data.Service.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Business.Tests.Validations
 {
+    [TestFixture]
     class FormValidationTest
     {
-        private Mock<IBaseService<Guid, Form>> _service;
+        private Mock<IBaseService<Guid, Form>> _serviceForm;
         private IBaseValidation<Guid, Form> _validation;
 
         [SetUp]
         public void Setup()
         {
-            _service = new Mock<IBaseService<Guid, Form>>();
+            _serviceForm = new Mock<IBaseService<Guid, Form>>();
         }
 
         [TearDown]
@@ -37,8 +36,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
+                isExistForm: true,
+                isExistFormById: true
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -56,11 +56,14 @@ namespace Business.Tests.Validations
         public async Task GetValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistForm: true,
+                isExistFormById: false
+            );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Form), BaseValidation.ObjectNotExistById }
+                { nameof(Form), string.Format(BaseValidation.ObjectNotExistById, nameof(Form), id) }
             };
 
             // Act
@@ -70,6 +73,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -83,13 +87,14 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
-            MockData();
-            var entity = new Form()
-            {
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович"
-            };
+            MockData(
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName"
+            );
 
             // Act
             var result = await _validation.InsertValidationAsync(entity);
@@ -102,75 +107,21 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task InsertValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            MockData();
-            var entity = new Form()
-            {
-                LastName = GetString(length),
-                FirstName = GetString(length),
-                MiddleName = GetString(length)
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task InsertValidationAsync_LastNameIsNull_UnSucces()
-        {
-            // Arrange
-            MockData();
-            var entity = new Form()
-            {
-                LastName = null
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task InsertValidationAsync_ExistAsync_UnSucces()
+        public async Task InsertValidationAsync_Exist_UnSucces()
         {
             // Arrange
             MockData(
-                isExist: true
-                );
-            var entity = new Form()
-            {
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович"
-            };
+                isExistForm: true,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Form), BaseValidation.ObjectExistWithThisData }
+                { nameof(Form), string.Format(BaseValidation.ObjectExistWithThisData, nameof(Form)) }
             };
 
             // Act
@@ -179,6 +130,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -193,19 +145,168 @@ namespace Business.Tests.Validations
         public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistForm: true,
+                isExistFormById: false
+            );
+            Form entity = null;
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Form)) }
+            };
 
             // Act
-            var result = await _validation.InsertValidationAsync(null);
+            var result = await _validation.InsertValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(135)]
+        public async Task InsertValidationAsync_InvalidLastName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.LastName), string.Format(BaseValidation.FieldInvalidLength, nameof(Form.LastName), 3, 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task InsertValidationAsync_LastNameIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: null
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.LastName), string.Format(BaseValidation.FieldNotCanBeNull, nameof(Form.LastName)) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(135)]
+        public async Task InsertValidationAsync_InvalidFirstName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName",
+                firstName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.FirstName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.FirstName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(135)]
+        public async Task InsertValidationAsync_InvalidMiddleName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName",
+                middleName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.MiddleName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.MiddleName), 128) }
+            };
+
+            // Act
+            var result = await _validation.InsertValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -215,14 +316,13 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
-            var entity = new Form()
-            {
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович"
-            };
+                isExistForm: false,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName"
+            );
 
             // Act
             var result = await _validation.UpdateValidationAsync(entity);
@@ -235,80 +335,21 @@ namespace Business.Tests.Validations
             });
         }
 
-        [TestCase(2, "FieldInvalidLength")]
-        [TestCase(555, "FieldInvalidLength")]
-        public async Task UpdateValidationAsync_InvalidPlace_UnSucces(int length, string nameError)
-        {
-            // Arrange
-            MockData(
-                form: new Form()
-                );
-            var entity = new Form()
-            {
-                LastName = GetString(length),
-                FirstName = GetString(length),
-                MiddleName = GetString(length)
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources(nameError), error.Value);
-                }
-            });
-        }
-
         [Test]
-        public async Task UpdateValidationAsync_LastNameIsNull_UnSucces()
+        public async Task UpdateValidationAsync_ExistById_UnSucces()
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
-            var entity = new Form()
-            {
-                LastName = null
-            };
-
-            // Act
-            var result = await _validation.UpdateValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.AreEqual(GetBaseValidationResources("FieldNotCanBeNull"), error.Value);
-                }
-            });
-        }
-
-        [Test]
-        public async Task UpdateValidationAsync_ExistAsync_UnSucces()
-        {
-            // Arrange
-            MockData(
-                form: new Form(),
-                isExist: true
-                );
-            var entity = new Form()
-            {
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович"
-            };
+                isExistForm: false,
+                isExistFormById: false
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Form), BaseValidation.ObjectExistWithThisData }
+                { nameof(Form), string.Format(BaseValidation.ObjectNotExistById, nameof(Form), entity.Id) }
             };
 
             // Act
@@ -317,6 +358,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -328,20 +370,20 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_GetAsync_UnSucces()
+        public async Task UpdateValidationAsync_Exist_UnSucces()
         {
             // Arrange
             MockData(
-                );
-            var entity = new Form()
-            {
-                LastName = "Иванов",
-                FirstName = "Иван",
-                MiddleName = "Иванович"
-            };
+                isExistForm: true,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName"
+            );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Form), BaseValidation.ObjectNotExistById }
+                { nameof(Form), string.Format(BaseValidation.ObjectExistWithThisData, nameof(Form)) }
             };
 
             // Act
@@ -350,6 +392,7 @@ namespace Business.Tests.Validations
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.NotNull(result.Errors);
                 Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
@@ -364,19 +407,168 @@ namespace Business.Tests.Validations
         public async Task UpdateValidationAsync_Null_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistForm: true,
+                isExistFormById: true
+            );
+            Form entity = null;
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Form)) }
+            };
 
             // Act
-            var result = await _validation.UpdateValidationAsync(null);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
-                    Assert.AreEqual(GetBaseValidationResources("ObjectNotCanBeNull"), error.Value);
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(2)]
+        [TestCase(135)]
+        public async Task UpdateValidationAsync_InvalidLastName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.LastName), string.Format(BaseValidation.FieldInvalidLength, nameof(Form.LastName), 3, 128) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_LastNameIsNull_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: null
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.LastName), string.Format(BaseValidation.FieldNotCanBeNull, nameof(Form.LastName)) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(135)]
+        public async Task UpdateValidationAsync_InvalidFirstName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName",
+                firstName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.FirstName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.FirstName), 128) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [TestCase(135)]
+        public async Task UpdateValidationAsync_InvalidMiddleName_UnSucces(int length)
+        {
+            // Arrange
+            MockData(
+                isExistForm: false,
+                isExistFormById: true
+            );
+            var entity = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "Test LastName",
+                middleName: GetString(length)
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Form.MiddleName), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Form.MiddleName), 128) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
                 }
             });
         }
@@ -386,8 +578,9 @@ namespace Business.Tests.Validations
         {
             // Arrange
             MockData(
-                form: new Form()
-                );
+                isExistForm: true,
+                isExistFormById: true
+            );
             var id = Guid.NewGuid();
 
             // Act
@@ -405,11 +598,14 @@ namespace Business.Tests.Validations
         public async Task DeleteValidationAsync_UnSucces()
         {
             // Arrange
-            MockData();
+            MockData(
+                isExistForm: true,
+                isExistFormById: false
+            );
             var id = Guid.NewGuid();
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Form), BaseValidation.ObjectNotExistById }
+                { nameof(Form), string.Format(BaseValidation.ObjectNotExistById, nameof(Form), id) }
             };
 
             // Act
@@ -419,6 +615,7 @@ namespace Business.Tests.Validations
             Assert.Multiple(() =>
             {
                 Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
                 Assert.IsFalse(result.IsValid);
                 foreach (var error in result.Errors)
                 {
@@ -429,29 +626,32 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            Form form = null,
-            bool isExist = false
+            bool isExistForm = default,
+            bool isExistFormById = default
             )
         {
-            _service.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
-            _service.Setup(x => x.ExistAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExist);
+            _serviceForm.Setup(x => x.ExistAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistForm);
+            _serviceForm.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExistFormById);
 
-            _validation = new FormValidation(_service.Object);
+            _validation = new FormValidation(_serviceForm.Object);
+        }
+
+        private Form GetForm(
+            Guid id = default,
+            string lastName = default,
+            string firstName = default,
+            string middleName = default
+            )
+        {
+            return new Form()
+            {
+                Id = id,
+                LastName = lastName,
+                FirstName = firstName,
+                MiddleName = middleName,
+            };
         }
 
         private static string GetString(int length) => new Randomizer().GetString(length);
-
-        private string GetBaseValidationResources(string name)
-        {
-            switch (name)
-            {
-                case "ObjectExistWithThisData": return BaseValidation.ObjectExistWithThisData;
-                case "FieldNotCanBeNull": return BaseValidation.FieldNotCanBeNull;
-                case "FieldInvalidLength": return BaseValidation.FieldInvalidLength;
-                case "ObjectNotExistById": return BaseValidation.ObjectNotExistById;
-                case "ObjectNotCanBeNull": return BaseValidation.ObjectNotCanBeNull;
-            }
-            return null;
-        }
     }
 }

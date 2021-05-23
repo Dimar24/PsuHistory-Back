@@ -383,8 +383,8 @@ namespace Business.Tests.Validations
         }
 
         private void MockData(
-            bool isExsitAttachmentBurial = true,
-            bool isExsitBurial = true
+            bool isExsitAttachmentBurial = default,
+            bool isExsitBurial = default
             )
         {
             _serviceAttachmentBurial.Setup(x => x.ExistByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(isExsitAttachmentBurial);
@@ -395,9 +395,9 @@ namespace Business.Tests.Validations
         }
 
         private AttachmentBurial GetAttachmentBurial(
-            Guid id,
-            Guid burialId,
-            IFormFile file = null
+            Guid id = default,
+            Guid burialId = default,
+            IFormFile file = default
             )
         {
             return new AttachmentBurial()
