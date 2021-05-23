@@ -41,8 +41,7 @@ namespace PsuHistory.Data.Repository.Repositories
 
         public async Task<bool> ExistAsync(Victim entity, CancellationToken cancellationToken)
         {
-            return await db.Victims.Include(d => d.TypeVictim).Include(d => d.DutyStation).Include(d => d.BirthPlace)
-                .Include(d => d.ConscriptionPlace).Include(d => d.Burial).AnyAsync(db =>
+            return await db.Victims.AnyAsync(db =>
                     db.LastName == entity.LastName &&
                     db.FirstName == entity.FirstName &&
                     db.MiddleName == entity.MiddleName &&
@@ -50,11 +49,11 @@ namespace PsuHistory.Data.Repository.Repositories
                     db.IsPartisan == entity.IsPartisan &&
                     db.DateOfBirth == entity.DateOfBirth &&
                     db.DateOfDeath == entity.DateOfDeath &&
-                    db.TypeVictim.Name == entity.TypeVictim.Name &&
-                    db.DutyStation.Place == entity.DutyStation.Place &&
-                    db.BirthPlace.Place == entity.BirthPlace.Place &&
-                    db.ConscriptionPlace.Place == entity.ConscriptionPlace.Place &&
-                    db.Burial.Id == entity.Burial.Id,
+                    db.TypeVictimId == entity.TypeVictimId &&
+                    db.DutyStationId == entity.DutyStationId &&
+                    db.BirthPlaceId == entity.BirthPlaceId &&
+                    db.ConscriptionPlaceId == entity.ConscriptionPlaceId &&
+                    db.BurialId == entity.BurialId,
                     cancellationToken);
         }
 

@@ -21,7 +21,7 @@ namespace PsuHistory.Business.Service.Helpers
 
         public async Task<List<FileModel>> SaveFileRange(ICollection<IFormFile> saveFiles)
         {
-            List<FileModel> fileModels = null;
+            List<FileModel> fileModels = new List<FileModel>();
 
             foreach(var file in saveFiles)
             {

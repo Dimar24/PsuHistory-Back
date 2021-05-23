@@ -23,17 +23,17 @@ namespace PsuHistory.Data.Repository.Repositories
 
         public async Task<Burial> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.Burials.AsNoTracking().Include(db => db.TypeBurial).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.Burials.AsNoTracking().Include(db => db.TypeBurial).Include(db => db.AttachmentBurials).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<Burial>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await db.Burials.AsNoTracking().Include(db => db.TypeBurial).ToListAsync(cancellationToken);
+            return await db.Burials.AsNoTracking().Include(db => db.TypeBurial).Include(db => db.AttachmentBurials).ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistAsync(Burial entity, CancellationToken cancellationToken)
         {
-            return await db.Burials.Include(d => d.TypeBurial).AnyAsync(db =>
+            return await db.Burials.AnyAsync(db =>
                     db.NumberBurial == entity.NumberBurial &&
                     db.Location == entity.Location &&
                     db.KnownNumber == entity.KnownNumber &&
@@ -42,7 +42,7 @@ namespace PsuHistory.Data.Repository.Repositories
                     db.Latitude == entity.Latitude &&
                     db.Longitude == entity.Longitude &&
                     db.Description == entity.Description &&
-                    db.TypeBurial.Name == entity.TypeBurial.Name,
+                    db.TypeBurialId == entity.TypeBurialId,
                     cancellationToken);
         }
 

@@ -105,42 +105,6 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task InsertValidationAsync_Null_UnSucces()
-        {
-            // Arrange
-            MockData(
-                isExistVictim: true,
-                isExistVictimById: false,
-                isExistTypeVictimById: true,
-                isExistDutyStationById: true,
-                isExistBirthPlaceById: true,
-                isExistConscriptionPlaceById: true,
-                isExistBurialById: true
-            );
-            Victim entity = null;
-            var listError = new Dictionary<string, string>()
-            {
-                { nameof(Victim), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Victim)) }
-            };
-
-            // Act
-            var result = await _validation.InsertValidationAsync(entity);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.NotNull(result.Errors);
-                Assert.IsNotEmpty(result.Errors);
-                Assert.IsFalse(result.IsValid);
-                foreach (var error in result.Errors)
-                {
-                    Assert.IsTrue(listError.ContainsKey(error.Key));
-                    Assert.AreEqual(listError[error.Key], error.Value);
-                }
-            });
-        }
-
-        [Test]
         public async Task InsertValidationAsync_Succes()
         {
             // Arrange
@@ -712,7 +676,7 @@ namespace Business.Tests.Validations
             );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 128) }
+                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 64) }
             };
 
             // Act
@@ -762,7 +726,7 @@ namespace Business.Tests.Validations
             );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 128) }
+                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 64) }
             };
 
             // Act
@@ -783,12 +747,12 @@ namespace Business.Tests.Validations
         }
 
         [Test]
-        public async Task UpdateValidationAsync_Null_UnSucces()
+        public async Task InsertValidationAsync_Null_UnSucces()
         {
             // Arrange
             MockData(
                 isExistVictim: true,
-                isExistVictimById: true,
+                isExistVictimById: false,
                 isExistTypeVictimById: true,
                 isExistDutyStationById: true,
                 isExistBirthPlaceById: true,
@@ -802,7 +766,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.UpdateValidationAsync(entity);
+            var result = await _validation.InsertValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -848,7 +812,7 @@ namespace Business.Tests.Validations
             );
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -892,7 +856,57 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_VictimExistById_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: false,
+                isExistVictimById: false,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            var entity = GetVictim(
+                id: Guid.NewGuid(),
+                lastName: "Иванов",
+                firstName: "Иван",
+                middleName: "Иванович",
+                isHeroSoviet: true,
+                isPartisan: true,
+                dateOfBirth: "01.01.1921",
+                dateOfDeath: "02.02.1944",
+                typeVictimId: Guid.NewGuid(),
+                dutyStationId: Guid.NewGuid(),
+                birthPlaceId: Guid.NewGuid(),
+                conscriptionPlaceId: Guid.NewGuid(),
+                burialId: Guid.NewGuid()
+            );
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim), string.Format(BaseValidation.ObjectNotExistById, nameof(Victim), entity.Id) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -942,7 +956,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -992,7 +1006,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1042,7 +1056,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1093,7 +1107,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1143,7 +1157,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1193,7 +1207,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1244,7 +1258,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1294,7 +1308,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1344,7 +1358,7 @@ namespace Business.Tests.Validations
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1390,11 +1404,11 @@ namespace Business.Tests.Validations
             );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 128) }
+                { nameof(Victim.DateOfBirth), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfBirth), 64) }
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>
@@ -1440,11 +1454,47 @@ namespace Business.Tests.Validations
             );
             var listError = new Dictionary<string, string>()
             {
-                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 128) }
+                { nameof(Victim.DateOfDeath), string.Format(BaseValidation.FieldInvalidMaxLength, nameof(Victim.DateOfDeath), 64) }
             };
 
             // Act
-            var result = await _validation.InsertValidationAsync(entity);
+            var result = await _validation.UpdateValidationAsync(entity);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.NotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+                Assert.IsFalse(result.IsValid);
+                foreach (var error in result.Errors)
+                {
+                    Assert.IsTrue(listError.ContainsKey(error.Key));
+                    Assert.AreEqual(listError[error.Key], error.Value);
+                }
+            });
+        }
+
+        [Test]
+        public async Task UpdateValidationAsync_Null_UnSucces()
+        {
+            // Arrange
+            MockData(
+                isExistVictim: true,
+                isExistVictimById: true,
+                isExistTypeVictimById: true,
+                isExistDutyStationById: true,
+                isExistBirthPlaceById: true,
+                isExistConscriptionPlaceById: true,
+                isExistBurialById: true
+            );
+            Victim entity = null;
+            var listError = new Dictionary<string, string>()
+            {
+                { nameof(Victim), string.Format(BaseValidation.ObjectNotCanBeNull, nameof(Victim)) }
+            };
+
+            // Act
+            var result = await _validation.UpdateValidationAsync(entity);
 
             // Assert
             Assert.Multiple(() =>

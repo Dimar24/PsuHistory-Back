@@ -23,12 +23,12 @@ namespace PsuHistory.Data.Repository.Repositories
 
         public async Task<Form> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await db.Forms.AsNoTracking().FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
+            return await db.Forms.AsNoTracking().Include(db => db.AttachmentForms).FirstOrDefaultAsync(db => db.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<Form>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await db.Forms.AsNoTracking().ToListAsync(cancellationToken);
+            return await db.Forms.AsNoTracking().Include(db => db.AttachmentForms).ToListAsync(cancellationToken);
         }
 
         public async Task<bool> ExistAsync(Form entity, CancellationToken cancellationToken)

@@ -29,7 +29,9 @@ namespace PsuHistory.API.Host
         {
             services.AddAutoMapper(typeof(KeyGuidEntityBase).Assembly);
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            ); ;
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -106,6 +108,8 @@ namespace PsuHistory.API.Host
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 
