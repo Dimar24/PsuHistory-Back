@@ -1,351 +1,370 @@
-﻿//using Moq;
-//using NUnit.Framework;
-//using PsuHistory.Business.Service.Interfaces;
-//using PsuHistory.Data.Domain.Models.Histories;
-//using PsuHistory.Data.Repository.Interfaces;
-//using PsuHistory.Models;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
-//using System.Threading.Tasks;
+﻿using Moq;
+using NUnit.Framework;
+using PsuHistory.Business.Service.Helpers;
+using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Business.Service.Services;
+using PsuHistory.Data.Domain.Models.Histories;
+using PsuHistory.Data.Repository.Interfaces;
+using PsuHistory.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
-//namespace Business.Tests.Services
-//{
-//    class FormServiceTest
-//    {
-//        private IBaseService<Guid, Form> _service;
-//        private Mock<IBaseRepository<Guid, Form>> _dataForm;
-//        //private Mock<IBaseRepository<Guid, AttachmentForm>> _dataAttachmentForm;
-//        private Mock<IBaseValidation<Guid, Form>> _formValidation;
 
-//        [SetUp]
-//        public void Setup()
-//        {
-//            _dataForm = new Mock<IBaseRepository<Guid, Form>>();
-//            _formValidation = new Mock<IBaseValidation<Guid, Form>>();
-//            //_dataAttachmentForm = new Mock<IBaseValidation<Guid, AttachmentForm>>();
-//        }
+namespace Business.Tests.Services
+{
+    class FormServiceTest
+    {
+        private IBaseService<Guid, Form> _service;
+        private Mock<FileHelper> _fileHelper;
+        private Mock<IBaseRepository<Guid, Form>> _dataForm;
+        private Mock<IBaseRepository<Guid, AttachmentForm>> _dataAttachmentForm;
+        private Mock<IBaseValidation<Guid, Form>> _formValidation;
 
-//        [TearDown]
-//        public void Teardown()
-//        { }
+        [SetUp]
+        public void Setup()
+        {
+            _fileHelper = new Mock<FileHelper>(null);
+            _dataForm = new Mock<IBaseRepository<Guid, Form>>();
+            _dataAttachmentForm = new Mock<IBaseRepository<Guid, AttachmentForm>>();
+            _formValidation = new Mock<IBaseValidation<Guid, Form>>();
+        }
 
-//        [Test]
-//        public async Task GetAsync_Succes()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim(
-//                id: Guid.NewGuid(),
-//                name: "test data"
-//            );
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: null
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+        [TearDown]
+        public void Teardown()
+        { }
 
-//            // Act
-//            var result = await _service.GetAsync(typeVictim.Id);
+        [Test]
+        public async Task GetAsync_Succes()
+        {
+            // Arrange
+            var form = GetForm(
+                lastName: "test data",
+                firstName: "test data",
+                middleName: "test data"
+            );
+            var validationModel = GetValidationModel<Form>(
+                errors: null
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsTrue(result.IsValid);
-//                Assert.NotNull(result.Result);
-//                Assert.AreEqual(typeVictim.Id, result.Result.Id);
-//                Assert.AreEqual(typeVictim.Name, result.Result.Name);
-//            });
-//        }
+            // Act
+            var result = await _service.GetAsync(form.Id);
 
-//        [Test]
-//        public async Task GetAsync_UnSucces()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim();
-//            var errorList = new Dictionary<string, string>() {
-//                { "TestKey", "TestValue" }
-//            };
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: errorList
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result.IsValid);
+                Assert.NotNull(result.Result);
+                Assert.AreEqual(form.Id, result.Result.Id);
+                Assert.AreEqual(form.LastName, result.Result.LastName);
+                Assert.AreEqual(form.FirstName, result.Result.FirstName);
+                Assert.AreEqual(form.MiddleName, result.Result.MiddleName);
+            });
+        }
 
-//            // Act
-//            var result = await _service.GetAsync(typeVictim.Id);
+        [Test]
+        public async Task GetAsync_UnSucces()
+        {
+            // Arrange
+            var form = GetForm();
+            var errorList = new Dictionary<string, string>() {
+                { "TestKey", "TestValue" }
+            };
+            var validationModel = GetValidationModel<Form>(
+                errors: errorList
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsFalse(result.IsValid);
-//                Assert.IsNull(result.Result);
-//                Assert.IsNotNull(result.Errors);
-//                Assert.IsNotEmpty(result.Errors);
-//            });
-//        }
+            // Act
+            var result = await _service.GetAsync(form.Id);
 
-//        [Test]
-//        public async Task GetAllAsync_Succes()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim();
-//            var typeVictimList = new List<TypeVictim>() {
-//                GetTypeVictim(id: Guid.NewGuid(), name: "test data" )
-//            };
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: null
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                typeVictimList: typeVictimList,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(result.IsValid);
+                Assert.IsNull(result.Result);
+                Assert.IsNotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+            });
+        }
 
-//            // Act
-//            var result = await _service.GetAllAsync();
+        [Test]
+        public async Task GetAllAsync_Succes()
+        {
+            // Arrange
+            var form = GetForm();
+            var formList = new List<Form>() {
+                GetForm(id: Guid.NewGuid(),
+                lastName: "test data",
+                firstName: "test data",
+                middleName: "test data"
+                )
+            };
+            var validationModel = GetValidationModel<Form>(
+                errors: null
+            );
+            MockData(
+                form: form,
+                formList: formList,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsTrue(result.IsValid);
-//                Assert.IsNotNull(result.Result);
-//                Assert.IsNotEmpty(result.Result);
-//            });
-//        }
+            // Act
+            var result = await _service.GetAllAsync();
 
-//        [Test]
-//        public async Task InsertAsync_Succes()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim();
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: null
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result.IsValid);
+                Assert.IsNotNull(result.Result);
+                Assert.IsNotEmpty(result.Result);
+            });
+        }
 
-//            // Act
-//            var result = await _service.InsertAsync(typeVictim);
+        [Test]
+        public async Task InsertAsync_Succes()
+        {
+            // Arrange
+            var form = GetForm();
+            var validationModel = GetValidationModel<Form>(
+                errors: null
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsTrue(result.IsValid);
-//                Assert.NotNull(result.Result);
-//                Assert.AreEqual(typeVictim.Id, result.Result.Id);
-//                Assert.AreEqual(typeVictim.Name, result.Result.Name);
-//            });
-//        }
+            // Act
+            var result = await _service.InsertAsync(form);
 
-//        [Test]
-//        public async Task InsertAsync_UnSucces()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim(
-//                id: Guid.NewGuid(),
-//                name: "test data"
-//            );
-//            var errorList = new Dictionary<string, string>() {
-//                { "TestKey", "TestValue" }
-//            };
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: errorList
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result.IsValid);
+                Assert.NotNull(result.Result);
+                Assert.AreEqual(form.Id, result.Result.Id);
+                Assert.AreEqual(form.LastName, result.Result.LastName);
+                Assert.AreEqual(form.FirstName, result.Result.FirstName);
+                Assert.AreEqual(form.MiddleName, result.Result.MiddleName);
+            });
+        }
 
-//            // Act
-//            var result = await _service.InsertAsync(typeVictim);
+        [Test]
+        public async Task InsertAsync_UnSucces()
+        {
+            // Arrange
+            var form = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "test data",
+                firstName: "test data",
+                middleName: "test data"
+            );
+            var errorList = new Dictionary<string, string>() {
+                { "TestKey", "TestValue" }
+            };
+            var validationModel = GetValidationModel<Form>(
+                errors: errorList
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsFalse(result.IsValid);
-//                Assert.IsNull(result.Result);
-//                Assert.IsNotNull(result.Errors);
-//                Assert.IsNotEmpty(result.Errors);
-//            });
-//        }
+            // Act
+            var result = await _service.InsertAsync(form);
 
-//        [Test]
-//        public async Task UpdateAsync_Succes()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim();
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: null
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(result.IsValid);
+                Assert.IsNull(result.Result);
+                Assert.IsNotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+            });
+        }
 
-//            // Act
-//            var result = await _service.UpdateAsync(typeVictim);
+        [Test]
+        public async Task UpdateAsync_Succes()
+        {
+            // Arrange
+            var form = GetForm();
+            var validationModel = GetValidationModel<Form>(
+                errors: null
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsTrue(result.IsValid);
-//                Assert.NotNull(result.Result);
-//                Assert.IsNull(result.Errors);
-//                Assert.AreEqual(typeVictim.Id, result.Result.Id);
-//                Assert.AreEqual(typeVictim.Name, result.Result.Name);
-//            });
-//        }
+            // Act
+            var result = await _service.UpdateAsync(form);
 
-//        [Test]
-//        public async Task UpdateAsync_UnSucces()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim(
-//                id: Guid.NewGuid(),
-//                name: "test data"
-//            );
-//            var errorList = new Dictionary<string, string>() {
-//                { "TestKey", "TestValue" }
-//            };
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: errorList
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result.IsValid);
+                Assert.NotNull(result.Result);
+                Assert.IsNull(result.Errors);
+                Assert.AreEqual(form.Id, result.Result.Id);
+                Assert.AreEqual(form.LastName, result.Result.LastName);
+                Assert.AreEqual(form.FirstName, result.Result.FirstName);
+                Assert.AreEqual(form.MiddleName, result.Result.MiddleName);
+            });
+        }
 
-//            // Act
-//            var result = await _service.UpdateAsync(typeVictim);
+        [Test]
+        public async Task UpdateAsync_UnSucces()
+        {
+            // Arrange
+            var form = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "test data",
+                firstName: "test data",
+                middleName: "test data"
+            );
+            var errorList = new Dictionary<string, string>() {
+                { "TestKey", "TestValue" }
+            };
+            var validationModel = GetValidationModel<Form>(
+                errors: errorList
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsFalse(result.IsValid);
-//                Assert.IsNull(result.Result);
-//                Assert.IsNotNull(result.Errors);
-//                Assert.IsNotEmpty(result.Errors);
-//            });
-//        }
+            // Act
+            var result = await _service.UpdateAsync(form);
 
-//        [Test]
-//        public async Task DeleteAsync_Succes()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim(
-//                id: Guid.NewGuid(),
-//                name: "test data"
-//            );
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: null
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(result.IsValid);
+                Assert.IsNull(result.Result);
+                Assert.IsNotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+            });
+        }
 
-//            // Act
-//            var result = await _service.DeleteAsync(typeVictim.Id);
+        [Test]
+        public async Task DeleteAsync_Succes()
+        {
+            // Arrange
+            var form = GetForm(
+                id: Guid.NewGuid(),
+                lastName: "test data",
+                firstName: "test data",
+                middleName: "test data"
+            );
+            var validationModel = GetValidationModel<Form>(
+                errors: null
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsTrue(result.IsValid);
-//                Assert.IsNull(result.Result);
-//                Assert.IsNull(result.Errors);
-//            });
-//        }
+            // Act
+            var result = await _service.DeleteAsync(form.Id);
 
-//        [Test]
-//        public async Task DeleteAsync_UnSucces()
-//        {
-//            // Arrange
-//            var typeVictim = GetTypeVictim();
-//            var errorList = new Dictionary<string, string>() {
-//                { "TestKey", "TestValue" }
-//            };
-//            var validationModel = GetValidationModel<TypeVictim>(
-//                errors: errorList
-//            );
-//            MockData(
-//                typeVictim: typeVictim,
-//                validationTypeVictim: validationModel
-//            );
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result.IsValid);
+                Assert.IsNull(result.Result);
+                Assert.IsNull(result.Errors);
+            });
+        }
 
-//            // Act
-//            var result = await _service.DeleteAsync(typeVictim.Id);
+        [Test]
+        public async Task DeleteAsync_UnSucces()
+        {
+            // Arrange
+            var form = GetForm();
+            var errorList = new Dictionary<string, string>() {
+                { "TestKey", "TestValue" }
+            };
+            var validationModel = GetValidationModel<Form>(
+                errors: errorList
+            );
+            MockData(
+                form: form,
+                validationForm: validationModel
+            );
 
-//            // Assert
-//            Assert.Multiple(() =>
-//            {
-//                Assert.IsFalse(result.IsValid);
-//                Assert.IsNull(result.Result);
-//                Assert.IsNotNull(result.Errors);
-//                Assert.IsNotEmpty(result.Errors);
-//            });
-//        }
+            // Act
+            var result = await _service.DeleteAsync(form.Id);
 
-//        private void MockData(
-//            Form form = default,
-//            //AttachmentForm attachmentForm = default,
-//            IEnumerable<Form> formList = default,
-//            //IEnumerable<AttachmentForm> attachmentFormList = default,
-//            ValidationModel<Form> validationForm = default
-//            )
-//        {
-//            if (form is null)
-//            {
-//                throw new ArgumentNullException(nameof(form));
-//            }
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(result.IsValid);
+                Assert.IsNull(result.Result);
+                Assert.IsNotNull(result.Errors);
+                Assert.IsNotEmpty(result.Errors);
+            });
+        }
 
-//            _dataForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
-//            _dataForm.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(formList);
-//            _dataForm.Setup(x => x.InsertAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
-//            _dataForm.Setup(x => x.UpdateAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
-//            _dataForm.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
+        private void MockData(
+            Form form = default,
+            AttachmentForm attachmentForm = default,
+            IEnumerable<Form> formList = default,
+            IEnumerable<AttachmentForm> attachmentFormList = default,
+            ValidationModel<Form> validationForm = default
+            )
+        {
+            _dataForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
+            _dataForm.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(formList);
+            _dataForm.Setup(x => x.InsertAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
+            _dataForm.Setup(x => x.UpdateAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(form);
+            _dataForm.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
 
-//            //_dataAttachmentForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
-//            //_dataAttachmentForm.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(attachmentFormList);
-//            //_dataAttachmentForm.Setup(x => x.InsertAsync(It.IsAny<AttachmentForm>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
-//            //_dataAttachmentForm.Setup(x => x.UpdateAsync(It.IsAny<AttachmentForm>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
-//            //_dataAttachmentForm.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
+            _dataAttachmentForm.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
+            _dataAttachmentForm.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(attachmentFormList);
+            _dataAttachmentForm.Setup(x => x.InsertAsync(It.IsAny<AttachmentForm>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
+            _dataAttachmentForm.Setup(x => x.UpdateAsync(It.IsAny<AttachmentForm>(), It.IsAny<CancellationToken>())).ReturnsAsync(attachmentForm);
+            _dataAttachmentForm.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
 
-//            _formValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
-//            _formValidation.Setup(x => x.InsertValidationAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
-//            _formValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
-//            _formValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
+            _formValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
+            _formValidation.Setup(x => x.InsertValidationAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
+            _formValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<Form>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
+            _formValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationForm);
 
-//            _service = new FormService(_dataForm.Object, _formValidation.Object);
-//        }
+            _service = new FormService(_fileHelper.Object, _dataForm.Object, _dataAttachmentForm.Object, _formValidation.Object);
+        }
 
-//        private Form GetForm(
-//            Guid id = default,
-//            string lastName = default
-//            )
-//        {
-//            return new Form()
-//            {
-//                Id = id,
-//                LastName = lastName
-//            };
-//        }
+        private Form GetForm(
+            Guid id = default,
+            string lastName = default,
+            string firstName = default,
+            string middleName = default
+            )
+        {
+            return new Form()
+            {
+                Id = id,
+                LastName = lastName,
+                FirstName = firstName,
+                MiddleName = middleName
+            };
+        }
 
-//        private ValidationModel<TResult> GetValidationModel<TResult>(
-//            Dictionary<string, string> errors = default
-//            )
-//        {
-//            return new ValidationModel<TResult>()
-//            {
-//                Errors = errors
-//            };
-//        }
-//    }
-//}
+        private ValidationModel<TResult> GetValidationModel<TResult>(
+            Dictionary<string, string> errors = default
+            )
+        {
+            return new ValidationModel<TResult>()
+            {
+                Errors = errors
+            };
+        }
+    }
+}

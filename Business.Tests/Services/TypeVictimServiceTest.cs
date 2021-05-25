@@ -296,11 +296,6 @@ namespace Business.Tests.Services
             ValidationModel<TypeVictim> validationTypeVictim = default
             )
         {
-            if (typeVictim is null)
-            {
-                throw new ArgumentNullException(nameof(typeVictim));
-            }
-
             _dataTypeVictim.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
             _dataTypeVictim.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(typeVictimList);
             _dataTypeVictim.Setup(x => x.InsertAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
