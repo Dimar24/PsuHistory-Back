@@ -17,7 +17,7 @@ namespace PsuHistory.Business.Service.Helpers
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task<List<FileModel>> SaveFileRange(ICollection<IFormFile> saveFiles)
+        public virtual async Task<List<FileModel>> SaveFileRange(ICollection<IFormFile> saveFiles)
         {
             List<FileModel> fileModels = new List<FileModel>();
 
@@ -29,7 +29,7 @@ namespace PsuHistory.Business.Service.Helpers
             return fileModels;
         }
 
-        public async Task<FileModel> SaveFile(IFormFile saveFile)
+        public virtual async Task<FileModel> SaveFile(IFormFile saveFile)
         {
             FileModel fileModel = null;
 
@@ -52,7 +52,7 @@ namespace PsuHistory.Business.Service.Helpers
             return fileModel;
         }
 
-        public void DeleteFile(string fullPath)
+        public virtual void DeleteFile(string fullPath)
         {
             File.Delete(fullPath);
         }

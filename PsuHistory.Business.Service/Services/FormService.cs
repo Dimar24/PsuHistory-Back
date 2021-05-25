@@ -14,7 +14,7 @@ namespace PsuHistory.Business.Service.Services
     public interface IFormService : IBaseService<Guid, Form>
     { }
 
-    class FormService : IFormService
+    public class FormService : IFormService
     {
         private readonly FileHelper fileHelper;
         private readonly IBaseRepository<Guid, Form> dataForm;
@@ -140,13 +140,13 @@ namespace PsuHistory.Business.Service.Services
 
             await dataForm.DeleteAsync(id, cancellationToken);
 
-            var allFiles = await dataAttachmentForm.GetAllAsync();
-
-            foreach (var file in allFiles.Where(af => af.FormId == id).ToList())
-            {
-                await dataAttachmentForm.DeleteAsync(file.Id, cancellationToken);
-                fileHelper.DeleteFile(file.FilePath + file.FileName + "." + file.FileType);
-            }
+            //var allFiles = await dataAttachmentForm.GetAllAsync();
+            //
+            //foreach (var file in allFiles.Where(af => af.FormId == id).ToList())
+            //{
+            //    await dataAttachmentForm.DeleteAsync(file.Id, cancellationToken);
+            //    fileHelper.DeleteFile(file.FilePath + file.FileName + "." + file.FileType);
+            //}
 
             return validation;
         }

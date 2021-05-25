@@ -3,7 +3,6 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Validations;
-using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
 using PsuHistory.Resource.Recources.Validation;
