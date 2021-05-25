@@ -33,7 +33,7 @@ namespace PsuHistory.Business.Service.Validations
                     string.Format(BaseValidation.ObjectNotExistById, nameof(AttachmentBurial), id));
             }
 
-            return null;
+            return validation;
         }
 
         public async Task<ValidationModel<AttachmentBurial>> InsertValidationAsync(AttachmentBurial newEntity, CancellationToken cancellationToken = default)
