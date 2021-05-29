@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsuHistory.Business.DTO.Models.CreateDataModels;
 using PsuHistory.Business.DTO.Models.UpdateDataModels;
@@ -6,15 +7,12 @@ using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Histories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PsuHistory.Controllers.Admin
 {
     [ApiController]
+    [Authorize(Roles = "Admin, Moderator")]
     [Route("api/admin/[controller]")]
     public class AttachmentFormController : AbstractionControllerBase
     {

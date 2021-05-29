@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.EF.SQL;
+using PsuHistory.Data.EF.SQL.Context;
 using PsuHistory.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,9 +14,9 @@ namespace PsuHistory.Data.Repository.Repositories
 
     public class VictimRepository : IVictimRepository
     {
-        private readonly PsuHistoryDbContext db;
+        private readonly DbContextBase db;
 
-        public VictimRepository(PsuHistoryDbContext db)
+        public VictimRepository(DbContextBase db)
         {
             this.db = db;
         }

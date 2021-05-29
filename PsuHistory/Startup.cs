@@ -7,12 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PsuHistory.API.Host.Helpers;
+using PsuHistory.API.Host.Options;
 using PsuHistory.Business.DTO.Models;
 using PsuHistory.Business.Service;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service;
-using System.Text;
 
 namespace PsuHistory.API.Host
 {
@@ -31,7 +30,12 @@ namespace PsuHistory.API.Host
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            ); ;
+            );
+
+            var aurhOptionsConfiguration = Configuration.GetSection("Auth");
+            services.Configure<AuthOptions>(aurhOptionsConfiguration);
+            var authOptions = aurhOptionsConfiguration.Get<AuthOptions>();
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,31 +46,37 @@ namespace PsuHistory.API.Host
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidIssuer = authOptions.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = authOptions.Audience,
+
+                    ValidateLifetime = true,
+
+                    IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true
                 };
             });
-
-            var server = Configuration["DatabaseServer"] ?? "database";// "database|mssql"
-            var port = Configuration["DatabasePort"] ?? "1433"; // Default SQL Server port
-            var name = Configuration["DatabaseName"] ?? "psuhistorydb";
-            var user = Configuration["DatabaseUser"] ?? "SA"; // Warning do not use the SA account
-            var password = Configuration["DatabasePassword"] ?? "Pa55w0rd2021";
-
-            services.AddDbContext<PsuHistoryDbContext>(options => {
-                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseSqlServer($"Server={server}, {port}; Initial Catalog={name}; User ID={user}; Password={password}");
-                /**/
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlServer(Configuration.GetConnectionString("MSSQLDbContext"));
-                /**/
-                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                //options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDbContext"));
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
             });
-            services.AddPsuHistoryDataService();
-            services.AddPsuHistoryService();
+
+
+
+            //Add Logic
+            var typeDatabase = Configuration.GetSection("DbContextProvider").GetSection("Type").Value;
+            services.AddPsuHistoryDataLogic(typeDatabase, Configuration);
+            services.AddPsuHistoryBusinessLogic();
+
+            //Swagger
             services.AddSwaggerGen(s =>
             {
                 s.EnableAnnotations();
@@ -92,7 +102,6 @@ namespace PsuHistory.API.Host
                                 }
                             },
                             new string[] {}
-
                     }
                 });
             });
@@ -100,7 +109,8 @@ namespace PsuHistory.API.Host
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            DatabaseManagement.MigrationInitialisation(app);
+            var typeDatabase = Configuration.GetSection("DbContextProvider").GetSection("Type").Value;
+            DatabaseManagement.MigrationInitialisation(app, typeDatabase);
 
             if (env.IsDevelopment())
             {
@@ -112,9 +122,13 @@ namespace PsuHistory.API.Host
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+
 
             app.UseEndpoints(endpoints =>
             {

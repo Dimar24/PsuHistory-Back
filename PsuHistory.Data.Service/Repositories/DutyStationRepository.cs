@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.EF.SQL;
+using PsuHistory.Data.EF.SQL.Context;
 using PsuHistory.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace PsuHistory.Data.Repository.Repositories
 
     public class DutyStationRepository : IDutyStationRepository
     {
-        private readonly PsuHistoryDbContext db;
+        private readonly DbContextBase db;
 
-        public DutyStationRepository(PsuHistoryDbContext db)
+        public DutyStationRepository(DbContextBase db)
         {
             this.db = db;
         }

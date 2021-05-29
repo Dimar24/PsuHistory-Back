@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsuHistory.Business.DTO.Models.CreateDataModels;
 using PsuHistory.Business.DTO.Models.UpdateDataModels;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace PsuHistory.API.Host.Controllers.Admin
 {
     [ApiController]
+    [Authorize(Roles = "Admin, Moderator")]
     [Route("api/admin/[controller]")]
     public class BurialController : AbstractionControllerBase
     {

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace PsuHistory.API.Host.Controllers.Admin
 {
     [ApiController]
+    [Authorize(Roles = "Admin, Moderator")]
     [Route("api/admin/[controller]")]
     public class FormController : AbstractionControllerBase
     {

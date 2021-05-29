@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Domain.Models.Users;
@@ -11,13 +12,13 @@ namespace PsuHistory.Data.Service
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddPsuHistoryDataService(this IServiceCollection services)
+        public static void AddPsuHistoryDataLogic(this IServiceCollection services, string typeDatabase, IConfiguration configuration)
         {
-            services.AddPsuHistoryServiceDataAccess();
-            services.AddServices();
+            services.AddPsuHistoryDbContext(typeDatabase, configuration);
+            services.AddRepositories();
         }
 
-        private static void AddServices(this IServiceCollection services)
+        private static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IBaseRepository <Guid, AttachmentBurial>, AttachmentBurialRepository>();
             services.AddScoped<IBaseRepository<Guid, AttachmentForm>, AttachmentFormRepository>();

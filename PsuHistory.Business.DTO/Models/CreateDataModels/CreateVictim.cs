@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PsuHistory.Business.DTO.Models.CreateDataModels
 {
-    class CreateVictim
+    public class CreateVictim
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }

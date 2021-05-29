@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PsuHistory.API.Host.Helpers;
+using PsuHistory.API.Host.Options;
+using PsuHistory.Business.DTO.Models.AccountDataModels;
+using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Data.Domain.Models.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -17,62 +21,64 @@ namespace PsuHistory.API.Host.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IOptions<AuthOptions> authOptions;
+
+        public AccountController(IOptions<AuthOptions> authOptions)
+        {
+            this.authOptions = authOptions;
+        }
+
         // тестовые данные вместо использования базы данных
         private List<User> users = new List<User>
         {
-            new User { Mail = "admin", Password = "secret", Role = new Role() { Name = "admin" } },
+            new User { Mail = "Admin", Password = "secret", Role = new Role() { Name = "Admin" } },
+            new User { Mail = "Moderator", Password = "secret", Role = new Role() { Name = "Moderator" } },
             new User { Mail = "user", Password = "secret", Role = new Role() { Name = "user" } }
         };
-    
-        [HttpPost("/token")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerOperation(Summary = "Search Type Burial", OperationId = "SearchTypeBurial")]
-        public async Task<IActionResult> Token(User user)
+
+        [Route("login")]
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] Login login)
         {
-            var identity = GetIdentity(user.Mail, user.Password);
-            if (identity == null)
+            var user = AuthenticateUser(login.Mail, login.Password);
+
+            if(user is null)
             {
-                return BadRequest(new { errorText = "Invalid username or password." });
+                return Unauthorized();
             }
-    
-            var now = DateTime.UtcNow;
-            // создаем JWT-токен
-            var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
-                    notBefore: now,
-                    claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-    
-            var response = new
-            {
-                access_token = encodedJwt,
-                mail = identity.Name
-            };
-    
-            return Ok(response);
+
+            var token = GenerateJWT(user);
+
+            return Ok(token);
+        } 
+
+        private User AuthenticateUser(string mail, string password)
+        {
+            return users.SingleOrDefault(u => u.Mail == mail && u.Password == password);
         }
-    
-        private ClaimsIdentity GetIdentity(string mail, string password)
+
+        private string GenerateJWT(User user)
         {
-            User user = users.FirstOrDefault(x => x.Mail == mail && x.Password == password);
-            if (user != null)
+            var authParams = authOptions.Value;
+
+            var securityKey = authParams.GetSymmetricSecurityKey();
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>()
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Mail),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
-                };
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
-    
-            // если пользователя не найдено
-            return null;
+                new Claim(JwtRegisteredClaimNames.Email, user.Mail),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim("role", user.Role.Name)
+            };
+
+            var token = new JwtSecurityToken(
+                authParams.Issuer,
+                authParams.Audience,
+                claims,
+                expires: DateTime.Now.AddSeconds(authParams.TokenLifetime),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

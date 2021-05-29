@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PsuHistory.Data.Domain.Models.Users;
-using PsuHistory.Data.EF.SQL;
+using PsuHistory.Data.EF.SQL.Context;
 using PsuHistory.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace PsuHistory.Data.Repository.Repositories
 
     public class RoleRepository : IRoleRepository
     {
-        private readonly PsuHistoryDbContext db;
+        private readonly DbContextBase db;
 
-        public RoleRepository(PsuHistoryDbContext db)
+        public RoleRepository(DbContextBase db)
         {
             this.db = db;
         }

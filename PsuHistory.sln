@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "Data.Tests\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Tests", "Business.Tests\Business.Tests.csproj", "{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Models", "PsuHistory.Models\PsuHistory.Models.csproj", "{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Models", "PsuHistory.Models\PsuHistory.Models.csproj", "{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

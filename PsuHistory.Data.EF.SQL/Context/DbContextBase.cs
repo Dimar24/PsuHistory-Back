@@ -1,14 +1,21 @@
-﻿using PsuHistory.Data.Domain.Models.Monuments;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PsuHistory.Data.Domain.Models.Histories;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using PsuHistory.Data.EF.SQL.Configuration;
+using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Domain.Models.Users;
+using PsuHistory.Data.EF.SQL.Configuration;
 
-namespace PsuHistory.Data.EF.SQL
+namespace PsuHistory.Data.EF.SQL.Context
 {
-    public class PsuHistoryDbContext : DbContext
+    public abstract class DbContextBase : DbContext
     {
+        /// <summary>
+        /// Метод используется для тестов
+        /// </summary>
+        /// <param name="options"></param>
+        protected DbContextBase(DbContextOptions options) : base(options)
+        { }
+
         public DbSet<Burial> Burials { get; set; }
         public DbSet<TypeBurial> TypeBurials { get; set; }
         public DbSet<AttachmentBurial> AttachmentBurials { get; set; }
@@ -23,17 +30,6 @@ namespace PsuHistory.Data.EF.SQL
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
-
-        public PsuHistoryDbContext(DbContextOptions<PsuHistoryDbContext> options) 
-            : base(options)
-        { }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder
-            //    .UseLazyLoadingProxies();
-            base.OnConfiguring(optionsBuilder);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

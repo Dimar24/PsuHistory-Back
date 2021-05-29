@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using PsuHistory.Data.Domain.Models.Monuments;
-using PsuHistory.Data.EF.SQL;
+using PsuHistory.Data.EF.SQL.Context;
 using PsuHistory.Data.Repository.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,16 +13,13 @@ namespace Data.Tests.Repositories
     [TestFixture]
     public class AttachmentBurialRepositoryTest
     {
-        private PsuHistoryDbContext _dbContext;
+        private DbContextBase _dbContext;
         private IAttachmentBurialRepository _service;
 
         [SetUp]
         public void Setup()
         {
-            var options = new DbContextOptionsBuilder<PsuHistoryDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            _dbContext = new PsuHistoryDbContext(options.Options);
+            _dbContext = FakeDbContext.GetInstance();
             _service = new AttachmentBurialRepository(_dbContext);
         }
 
