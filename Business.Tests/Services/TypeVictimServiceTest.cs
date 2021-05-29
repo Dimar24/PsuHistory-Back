@@ -12,18 +12,17 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Services
 {
-    [TestFixture]
-    class TypeBurialServiceTest
+    class TypeVictimServiceTest
     {
-        private IBaseService<Guid, TypeBurial> _service;
-        private Mock<IBaseRepository<Guid, TypeBurial>> _dataTypeBurial;
-        private Mock<IBaseValidation<Guid, TypeBurial>> _typeBurialValidation;
+        private IBaseService<Guid, TypeVictim> _service;
+        private Mock<IBaseRepository<Guid, TypeVictim>> _dataTypeVictim;
+        private Mock<IBaseValidation<Guid, TypeVictim>> _typeVictimValidation;
 
         [SetUp]
         public void Setup()
         {
-            _dataTypeBurial = new Mock<IBaseRepository<Guid, TypeBurial>>();
-            _typeBurialValidation = new Mock<IBaseValidation<Guid, TypeBurial>>();
+            _dataTypeVictim = new Mock<IBaseRepository<Guid, TypeVictim>>();
+            _typeVictimValidation = new Mock<IBaseValidation<Guid, TypeVictim>>();
         }
 
         [TearDown]
@@ -34,28 +33,28 @@ namespace Business.Tests.Services
         public async Task GetAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var typeVictim = GetTypeVictim(
                 id: Guid.NewGuid(),
                 name: "test data"
             );
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.GetAsync(typeBurial.Id);
+            var result = await _service.GetAsync(typeVictim.Id);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name ,result.Result.Name);
+                Assert.AreEqual(typeVictim.Id, result.Result.Id);
+                Assert.AreEqual(typeVictim.Name, result.Result.Name);
             });
         }
 
@@ -63,20 +62,20 @@ namespace Business.Tests.Services
         public async Task GetAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
+            var typeVictim = GetTypeVictim();
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.GetAsync(typeBurial.Id);
+            var result = await _service.GetAsync(typeVictim.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -92,17 +91,17 @@ namespace Business.Tests.Services
         public async Task GetAllAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var typeBurialList = new List<TypeBurial>() {
-                GetTypeBurial(id: Guid.NewGuid(), name: "test data" )
+            var typeVictim = GetTypeVictim();
+            var typeVictimList = new List<TypeVictim>() {
+                GetTypeVictim(id: Guid.NewGuid(), name: "test data" )
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                typeBurialList: typeBurialList,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                typeVictimList: typeVictimList,
+                validationTypeVictim: validationModel
             );
 
             // Act
@@ -121,25 +120,25 @@ namespace Business.Tests.Services
         public async Task InsertAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var validationModel = GetValidationModel<TypeBurial>(
+            var typeVictim = GetTypeVictim();
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.InsertAsync(typeBurial);
+            var result = await _service.InsertAsync(typeVictim);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name, result.Result.Name);
+                Assert.AreEqual(typeVictim.Id, result.Result.Id);
+                Assert.AreEqual(typeVictim.Name, result.Result.Name);
             });
         }
 
@@ -147,23 +146,23 @@ namespace Business.Tests.Services
         public async Task InsertAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var typeVictim = GetTypeVictim(
                 id: Guid.NewGuid(),
                 name: "test data"
             );
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.InsertAsync(typeBurial);
+            var result = await _service.InsertAsync(typeVictim);
 
             // Assert
             Assert.Multiple(() =>
@@ -179,17 +178,17 @@ namespace Business.Tests.Services
         public async Task UpdateAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var validationModel = GetValidationModel<TypeBurial>(
+            var typeVictim = GetTypeVictim();
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.UpdateAsync(typeBurial);
+            var result = await _service.UpdateAsync(typeVictim);
 
             // Assert
             Assert.Multiple(() =>
@@ -197,8 +196,8 @@ namespace Business.Tests.Services
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
                 Assert.IsNull(result.Errors);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name, result.Result.Name);
+                Assert.AreEqual(typeVictim.Id, result.Result.Id);
+                Assert.AreEqual(typeVictim.Name, result.Result.Name);
             });
         }
 
@@ -206,23 +205,23 @@ namespace Business.Tests.Services
         public async Task UpdateAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var typeVictim = GetTypeVictim(
                 id: Guid.NewGuid(),
                 name: "test data"
             );
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.UpdateAsync(typeBurial);
+            var result = await _service.UpdateAsync(typeVictim);
 
             // Assert
             Assert.Multiple(() =>
@@ -238,20 +237,20 @@ namespace Business.Tests.Services
         public async Task DeleteAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var typeVictim = GetTypeVictim(
                 id: Guid.NewGuid(),
                 name: "test data"
             );
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.DeleteAsync(typeBurial.Id);
+            var result = await _service.DeleteAsync(typeVictim.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -266,20 +265,20 @@ namespace Business.Tests.Services
         public async Task DeleteAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
+            var typeVictim = GetTypeVictim();
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<TypeVictim>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                typeVictim: typeVictim,
+                validationTypeVictim: validationModel
             );
 
             // Act
-            var result = await _service.DeleteAsync(typeBurial.Id);
+            var result = await _service.DeleteAsync(typeVictim.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -292,31 +291,31 @@ namespace Business.Tests.Services
         }
 
         private void MockData(
-            TypeBurial typeBurial = default,
-            IEnumerable<TypeBurial> typeBurialList = default,
-            ValidationModel<TypeBurial> validationTypeBurial = default
+            TypeVictim typeVictim = default,
+            IEnumerable<TypeVictim> typeVictimList = default,
+            ValidationModel<TypeVictim> validationTypeVictim = default
             )
         {
-            _dataTypeBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(typeBurialList);
-            _dataTypeBurial.Setup(x => x.InsertAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.UpdateAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
+            _dataTypeVictim.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
+            _dataTypeVictim.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(typeVictimList);
+            _dataTypeVictim.Setup(x => x.InsertAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
+            _dataTypeVictim.Setup(x => x.UpdateAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeVictim);
+            _dataTypeVictim.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
 
-            _typeBurialValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.InsertValidationAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
+            _typeVictimValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeVictim);
+            _typeVictimValidation.Setup(x => x.InsertValidationAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeVictim);
+            _typeVictimValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<TypeVictim>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeVictim);
+            _typeVictimValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeVictim);
 
-            _service = new TypeBurialService(_dataTypeBurial.Object, _typeBurialValidation.Object);
+            _service = new TypeVictimService(_dataTypeVictim.Object, _typeVictimValidation.Object);
         }
 
-        private TypeBurial GetTypeBurial(
+        private TypeVictim GetTypeVictim(
             Guid id = default,
             string name = default
             )
         {
-            return new TypeBurial()
+            return new TypeVictim()
             {
                 Id = id,
                 Name = name

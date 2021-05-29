@@ -12,18 +12,17 @@ using System.Threading.Tasks;
 
 namespace Business.Tests.Services
 {
-    [TestFixture]
-    class TypeBurialServiceTest
+    class BirthPlaceServiceTest
     {
-        private IBaseService<Guid, TypeBurial> _service;
-        private Mock<IBaseRepository<Guid, TypeBurial>> _dataTypeBurial;
-        private Mock<IBaseValidation<Guid, TypeBurial>> _typeBurialValidation;
+        private IBaseService<Guid, BirthPlace> _service;
+        private Mock<IBaseRepository<Guid, BirthPlace>> _dataBirthPlace;
+        private Mock<IBaseValidation<Guid, BirthPlace>> _birthPlaceValidation;
 
         [SetUp]
         public void Setup()
         {
-            _dataTypeBurial = new Mock<IBaseRepository<Guid, TypeBurial>>();
-            _typeBurialValidation = new Mock<IBaseValidation<Guid, TypeBurial>>();
+            _dataBirthPlace = new Mock<IBaseRepository<Guid, BirthPlace>>();
+            _birthPlaceValidation = new Mock<IBaseValidation<Guid, BirthPlace>>();
         }
 
         [TearDown]
@@ -34,28 +33,28 @@ namespace Business.Tests.Services
         public async Task GetAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var birthPlace = GetBirthPlace(
                 id: Guid.NewGuid(),
-                name: "test data"
+                place: "test data"
             );
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.GetAsync(typeBurial.Id);
+            var result = await _service.GetAsync(birthPlace.Id);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name ,result.Result.Name);
+                Assert.AreEqual(birthPlace.Id, result.Result.Id);
+                Assert.AreEqual(birthPlace.Place, result.Result.Place);
             });
         }
 
@@ -63,20 +62,20 @@ namespace Business.Tests.Services
         public async Task GetAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
+            var birthPlace = GetBirthPlace();
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.GetAsync(typeBurial.Id);
+            var result = await _service.GetAsync(birthPlace.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -92,17 +91,18 @@ namespace Business.Tests.Services
         public async Task GetAllAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var typeBurialList = new List<TypeBurial>() {
-                GetTypeBurial(id: Guid.NewGuid(), name: "test data" )
+            var birthPlace = GetBirthPlace();
+            var birthPlaceList = new List<BirthPlace>() {
+                GetBirthPlace(id: Guid.NewGuid(),
+                place: "test data" )
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                typeBurialList: typeBurialList,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                birthPlaceList: birthPlaceList,
+                validationBirthPlace: validationModel
             );
 
             // Act
@@ -121,25 +121,25 @@ namespace Business.Tests.Services
         public async Task InsertAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var validationModel = GetValidationModel<TypeBurial>(
+            var birthPlace = GetBirthPlace();
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.InsertAsync(typeBurial);
+            var result = await _service.InsertAsync(birthPlace);
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name, result.Result.Name);
+                Assert.AreEqual(birthPlace.Id, result.Result.Id);
+                Assert.AreEqual(birthPlace.Place, result.Result.Place);
             });
         }
 
@@ -147,23 +147,23 @@ namespace Business.Tests.Services
         public async Task InsertAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var birthPlace = GetBirthPlace(
                 id: Guid.NewGuid(),
-                name: "test data"
+                place: "test data"
             );
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.InsertAsync(typeBurial);
+            var result = await _service.InsertAsync(birthPlace);
 
             // Assert
             Assert.Multiple(() =>
@@ -179,17 +179,17 @@ namespace Business.Tests.Services
         public async Task UpdateAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
-            var validationModel = GetValidationModel<TypeBurial>(
+            var birthPlace = GetBirthPlace();
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.UpdateAsync(typeBurial);
+            var result = await _service.UpdateAsync(birthPlace);
 
             // Assert
             Assert.Multiple(() =>
@@ -197,8 +197,8 @@ namespace Business.Tests.Services
                 Assert.IsTrue(result.IsValid);
                 Assert.NotNull(result.Result);
                 Assert.IsNull(result.Errors);
-                Assert.AreEqual(typeBurial.Id, result.Result.Id);
-                Assert.AreEqual(typeBurial.Name, result.Result.Name);
+                Assert.AreEqual(birthPlace.Id, result.Result.Id);
+                Assert.AreEqual(birthPlace.Place, result.Result.Place);
             });
         }
 
@@ -206,23 +206,23 @@ namespace Business.Tests.Services
         public async Task UpdateAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var birthPlace = GetBirthPlace(
                 id: Guid.NewGuid(),
-                name: "test data"
+                place: "test data"
             );
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.UpdateAsync(typeBurial);
+            var result = await _service.UpdateAsync(birthPlace);
 
             // Assert
             Assert.Multiple(() =>
@@ -238,20 +238,20 @@ namespace Business.Tests.Services
         public async Task DeleteAsync_Succes()
         {
             // Arrange
-            var typeBurial = GetTypeBurial(
+            var birthPlace = GetBirthPlace(
                 id: Guid.NewGuid(),
-                name: "test data"
+                place: "test data"
             );
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: null
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.DeleteAsync(typeBurial.Id);
+            var result = await _service.DeleteAsync(birthPlace.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -266,20 +266,20 @@ namespace Business.Tests.Services
         public async Task DeleteAsync_UnSucces()
         {
             // Arrange
-            var typeBurial = GetTypeBurial();
+            var birthPlace = GetBirthPlace();
             var errorList = new Dictionary<string, string>() {
                 { "TestKey", "TestValue" }
             };
-            var validationModel = GetValidationModel<TypeBurial>(
+            var validationModel = GetValidationModel<BirthPlace>(
                 errors: errorList
             );
             MockData(
-                typeBurial: typeBurial,
-                validationTypeBurial: validationModel
+                birthPlace: birthPlace,
+                validationBirthPlace: validationModel
             );
 
             // Act
-            var result = await _service.DeleteAsync(typeBurial.Id);
+            var result = await _service.DeleteAsync(birthPlace.Id);
 
             // Assert
             Assert.Multiple(() =>
@@ -292,34 +292,34 @@ namespace Business.Tests.Services
         }
 
         private void MockData(
-            TypeBurial typeBurial = default,
-            IEnumerable<TypeBurial> typeBurialList = default,
-            ValidationModel<TypeBurial> validationTypeBurial = default
+            BirthPlace birthPlace = default,
+            IEnumerable<BirthPlace> birthPlaceList = default,
+            ValidationModel<BirthPlace> validationBirthPlace = default
             )
         {
-            _dataTypeBurial.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(typeBurialList);
-            _dataTypeBurial.Setup(x => x.InsertAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.UpdateAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(typeBurial);
-            _dataTypeBurial.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
+            _dataBirthPlace.Setup(x => x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
+            _dataBirthPlace.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(birthPlaceList);
+            _dataBirthPlace.Setup(x => x.InsertAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
+            _dataBirthPlace.Setup(x => x.UpdateAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(birthPlace);
+            _dataBirthPlace.Setup(x => x.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
 
-            _typeBurialValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.InsertValidationAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<TypeBurial>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
-            _typeBurialValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationTypeBurial);
+            _birthPlaceValidation.Setup(x => x.GetValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationBirthPlace);
+            _birthPlaceValidation.Setup(x => x.InsertValidationAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationBirthPlace);
+            _birthPlaceValidation.Setup(x => x.UpdateValidationAsync(It.IsAny<BirthPlace>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationBirthPlace);
+            _birthPlaceValidation.Setup(x => x.DeleteValidationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationBirthPlace);
 
-            _service = new TypeBurialService(_dataTypeBurial.Object, _typeBurialValidation.Object);
+            _service = new BirthPlaceService(_dataBirthPlace.Object, _birthPlaceValidation.Object);
         }
 
-        private TypeBurial GetTypeBurial(
+        private BirthPlace GetBirthPlace(
             Guid id = default,
-            string name = default
+            string place = default
             )
         {
-            return new TypeBurial()
+            return new BirthPlace()
             {
                 Id = id,
-                Name = name
+                Place = place
             };
         }
 
