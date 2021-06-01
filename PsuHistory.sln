@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory", "PsuHistory\PsuHistory.csproj", "{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.API", "PsuHistory\PsuHistory.API.csproj", "{4AE88544-521D-4AC9-AD15-7BC3C8F39D45}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{B616024A-15F6-4D77-A7EC-8C3F1153D17A}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "Data.Tests\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Tests", "Business.Tests\Business.Tests.csproj", "{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsuHistory.Models", "PsuHistory.Models\PsuHistory.Models.csproj", "{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsuHistory.Common", "PsuHistory.Common\PsuHistory.Common.csproj", "{69CCD676-F060-467E-B7D5-D0C423C53DAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +73,10 @@ Global
 		{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69CCD676-F060-467E-B7D5-D0C423C53DAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69CCD676-F060-467E-B7D5-D0C423C53DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69CCD676-F060-467E-B7D5-D0C423C53DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69CCD676-F060-467E-B7D5-D0C423C53DAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,7 +91,7 @@ Global
 		{F233A2C4-7513-4AB1-807C-D143DF21BBA1} = {B616024A-15F6-4D77-A7EC-8C3F1153D17A}
 		{93F5CAF8-60D6-4E4E-81A1-DB5BAA0E0376} = {9B7A9775-4E35-436B-AF97-75EBB93D6F92}
 		{3FE0D5F4-C01F-434A-BBC2-D45FBCC985B2} = {9B7A9775-4E35-436B-AF97-75EBB93D6F92}
-		{4006C5B6-A0DE-447E-BD1E-E1EA6B40127C} = {B616024A-15F6-4D77-A7EC-8C3F1153D17A}
+		{69CCD676-F060-467E-B7D5-D0C423C53DAC} = {B616024A-15F6-4D77-A7EC-8C3F1153D17A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18F49147-BAC5-493E-9C89-1BFEA22C5E99}

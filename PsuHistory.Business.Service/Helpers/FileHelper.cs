@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using PsuHistory.Models;
+using PsuHistory.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

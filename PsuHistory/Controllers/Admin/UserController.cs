@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PsuHistory.API.Controllers.Abstraction;
 using PsuHistory.Business.DTO.Models.CreateDataModels;
 using PsuHistory.Business.DTO.Models.UpdateDataModels;
 using PsuHistory.Business.Service.Interfaces;
-using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Data.Domain.Models.Users;
 using System;
 using System.Threading.Tasks;
 
-namespace PsuHistory.Controllers.Admin
+namespace PsuHistory.API.Controllers.Admin
 {
     [ApiController]
     [Authorize(Roles = "Admin")]

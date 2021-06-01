@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsuHistory.Models;
+using PsuHistory.Common.Models;
 
-namespace PsuHistory.Controllers.Abstraction
+namespace PsuHistory.API.Controllers.Abstraction
 {
     public class AbstractionControllerBase : ControllerBase
     {

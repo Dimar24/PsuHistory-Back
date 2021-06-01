@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PsuHistory.API.Host.Options;
+using PsuHistory.API.Controllers.Abstraction;
 using PsuHistory.Business.DTO.Models.AccountDataModels;
 using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Common.Models;
 using PsuHistory.Data.Domain.Models.Users;
-using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,17 +14,21 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace PsuHistory.API.Host.Controllers
+namespace PsuHistory.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : AbstractionControllerBase
     {
-        private readonly IOptions<AuthOptions> authOptions;
+        private readonly IMapper mapper;
+        private readonly IBaseAccoutService<Token> accountService;
 
-        public AccountController(IOptions<AuthOptions> authOptions)
+        public AccountController(
+            IMapper mapper,
+            IBaseAccoutService<Token> accountService)
         {
-            this.authOptions = authOptions;
+            this.mapper = mapper;
+            this.accountService = accountService;
         }
 
         // тестовые данные вместо использования базы данных
@@ -38,47 +41,11 @@ namespace PsuHistory.API.Host.Controllers
 
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        public async Task<IActionResult> LoginAsync([FromBody] Login login)
         {
-            var user = AuthenticateUser(login.Mail, login.Password);
+            var validation = await accountService.LoginAsync(login);
 
-            if(user is null)
-            {
-                return Unauthorized();
-            }
-
-            var token = GenerateJWT(user);
-
-            return Ok(token);
-        } 
-
-        private User AuthenticateUser(string mail, string password)
-        {
-            return users.SingleOrDefault(u => u.Mail == mail && u.Password == password);
-        }
-
-        private string GenerateJWT(User user)
-        {
-            var authParams = authOptions.Value;
-
-            var securityKey = authParams.GetSymmetricSecurityKey();
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>()
-            {
-                new Claim(JwtRegisteredClaimNames.Email, user.Mail),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim("role", user.Role.Name)
-            };
-
-            var token = new JwtSecurityToken(
-                authParams.Issuer,
-                authParams.Audience,
-                claims,
-                expires: DateTime.Now.AddSeconds(authParams.TokenLifetime),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return CreateObjectResult(validation);
         }
     }
 }

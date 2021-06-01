@@ -1,8 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace PsuHistory.API.Host.Options
-
+namespace PsuHistory.Common.Options
 {
     public class AuthOptions
     {

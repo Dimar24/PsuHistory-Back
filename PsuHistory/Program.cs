@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using PsuHistory.API.Host;
+using PsuHistory.API;
 
 namespace PsuHistory
 {
