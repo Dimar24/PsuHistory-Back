@@ -1,4 +1,4 @@
-﻿using PsuHistory.Models;
+﻿using PsuHistory.Common.Models;
 using System.Threading;
 using System.Threading.Tasks;
 

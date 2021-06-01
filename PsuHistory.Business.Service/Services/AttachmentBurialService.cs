@@ -1,8 +1,8 @@
 ﻿using PsuHistory.Business.Service.Helpers;
 using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Common.Models;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
-using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;

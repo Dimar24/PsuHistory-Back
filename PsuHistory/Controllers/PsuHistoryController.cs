@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsuHistory.Controllers.Abstraction;
+using PsuHistory.API.Controllers.Abstraction;
 
-namespace PsuHistory.Controllers
+namespace PsuHistory.API.Controllers
 {
     [ApiController]
     [Route("api/")]

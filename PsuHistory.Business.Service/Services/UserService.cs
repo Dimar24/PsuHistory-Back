@@ -1,11 +1,9 @@
 ﻿using PsuHistory.Business.Service.Interfaces;
+using PsuHistory.Common.Models;
 using PsuHistory.Data.Domain.Models.Users;
 using PsuHistory.Data.Repository.Interfaces;
-using PsuHistory.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

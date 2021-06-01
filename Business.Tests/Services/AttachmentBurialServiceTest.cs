@@ -6,7 +6,7 @@ using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Services;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Repository.Interfaces;
-using PsuHistory.Models;
+using PsuHistory.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

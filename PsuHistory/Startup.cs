@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PsuHistory.API.Host.Options;
 using PsuHistory.Business.DTO.Models;
 using PsuHistory.Business.Service;
+using PsuHistory.Common.Options;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service;
 
-namespace PsuHistory.API.Host
+namespace PsuHistory.API
 {
     public class Startup
     {

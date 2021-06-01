@@ -46,6 +46,8 @@ namespace PsuHistory.Data.EF.SQL.Context
             modelBuilder.ApplyConfiguration(new TypeVictimConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new VictimConfiguration());
+
+            //modelBuilder.Entity<User>().HasData();
         }
     }
 }

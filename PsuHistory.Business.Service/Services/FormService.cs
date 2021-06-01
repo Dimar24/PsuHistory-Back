@@ -2,7 +2,7 @@
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Repository.Interfaces;
-using PsuHistory.Models;
+using PsuHistory.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
