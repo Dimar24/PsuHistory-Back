@@ -44,11 +44,6 @@ namespace PsuHistory.Business.Service.Validations
                     validation.Errors.Add(nameof(Login.Password),
                         string.Format(BaseValidation.FieldNotCanBeNull, nameof(Login.Password)));
                 }
-                else if (login.Password.Length < 6 || login.Password.Length > 64)
-                {
-                    validation.Errors.Add(nameof(Login.Password),
-                        string.Format(BaseValidation.FieldInvalidLength, nameof(Login.Password), 6, 64));
-                }
 
                 var users = await dataUser.GetAllAsync();
                 if (!users.Any(u => u.Mail == login.Mail && u.Password == login.Password))

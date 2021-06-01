@@ -4,6 +4,7 @@ using PsuHistory.Data.Domain.Models.Histories;
 using PsuHistory.Data.Domain.Models.Monuments;
 using PsuHistory.Data.Domain.Models.Users;
 using PsuHistory.Data.EF.SQL.Configuration;
+using System;
 
 namespace PsuHistory.Data.EF.SQL.Context
 {
@@ -33,7 +34,7 @@ namespace PsuHistory.Data.EF.SQL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Вынести потом
+            //TODO Вынести потом, Возможно
             modelBuilder.ApplyConfiguration(new AttachmentBurialConfiguration());
             modelBuilder.ApplyConfiguration(new AttachmentFormConfiguration());
             modelBuilder.ApplyConfiguration(new BirthPlaceConfiguration());
@@ -47,7 +48,24 @@ namespace PsuHistory.Data.EF.SQL.Context
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new VictimConfiguration());
 
-            //modelBuilder.Entity<User>().HasData();
+            //TODO Вынести потом, Возможно
+            var date = DateTime.UtcNow;
+
+            var roleOwner = new Role() { Id = Guid.NewGuid(), Name = "Owner", CreatedAt = date, UpdatedAt = date };
+            var roleAdmin = new Role() { Id = Guid.NewGuid(), Name = "Admin", CreatedAt = date, UpdatedAt = date };
+            var roleModerator = new Role() { Id = Guid.NewGuid(), Name = "Moderator", CreatedAt = date, UpdatedAt = date };
+
+            modelBuilder.Entity<Role>().HasData(new Role[] { roleOwner, roleAdmin, roleModerator });
+
+            var passwordHash = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A=="; // Password = "secret"
+
+            var userOwner = new User() { Id = Guid.NewGuid(), Mail = "Owner", Password = passwordHash, RoleId = roleOwner.Id, /*Role = roleOwner,*/ CreatedAt = date, UpdatedAt = date };
+            var userAdmin = new User() { Id = Guid.NewGuid(), Mail = "Admin", Password = passwordHash, RoleId = roleAdmin.Id, /*Role = roleAdmin,*/ CreatedAt = date, UpdatedAt = date };
+            var userModerator = new User() { Id = Guid.NewGuid(), Mail = "Moderator", Password = passwordHash, RoleId = roleModerator.Id, /*Role = roleModerator,*/ CreatedAt = date, UpdatedAt = date };
+
+            modelBuilder.Entity<User>().HasData(new User[] { userOwner, userAdmin, userModerator });
         }
+
+
     }
 }

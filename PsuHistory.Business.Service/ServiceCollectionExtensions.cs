@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PsuHistory.Business.DTO.Models.AccountDataModels;
 using PsuHistory.Business.Service.Helpers;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Business.Service.Services;
@@ -32,6 +33,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseValidation<Guid, DutyStation>, DutyStationValidation>();
             services.AddScoped<IBaseValidation<Guid, ConscriptionPlace>, ConscriptionPlaceValidation>();
             services.AddScoped<IBaseValidation<Guid, User>, UserValidation>();
+            services.AddScoped<IBaseAccoutValidation<Login>, AccountValidation>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -47,6 +49,7 @@ namespace PsuHistory.Business.Service
             services.AddScoped<IBaseService<Guid, DutyStation>, DutyStationService>();
             services.AddScoped<IBaseService<Guid, ConscriptionPlace>, ConscriptionPlaceService>();
             services.AddScoped<IBaseService<Guid, User>, UserService>();
+            services.AddScoped<IBaseAccoutService<Login>, AccountService>();
         }
 
         private static void AddHelpers(this IServiceCollection services)

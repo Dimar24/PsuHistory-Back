@@ -43,7 +43,9 @@ namespace PsuHistory.Business.Service.Services
 
             var user = await AuthenticateUser(login.Mail, login.Password);
 
-            var token = GenerateJWT(user);
+            validation.Result = new Login();
+
+            validation.Result.Token = GenerateJWT(user);
 
             return validation;
         }
@@ -73,7 +75,7 @@ namespace PsuHistory.Business.Service.Services
                 authParams.Issuer,
                 authParams.Audience,
                 claims,
-                expires: DateTime.Now.AddSeconds(authParams.TokenLifetime),
+                expires: DateTime.UtcNow.AddSeconds(authParams.TokenLifetime),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

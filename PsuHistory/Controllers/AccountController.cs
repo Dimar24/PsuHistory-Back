@@ -21,11 +21,11 @@ namespace PsuHistory.API.Controllers
     public class AccountController : AbstractionControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IBaseAccoutService<Token> accountService;
+        private readonly IBaseAccoutService<Login> accountService;
 
         public AccountController(
             IMapper mapper,
-            IBaseAccoutService<Token> accountService)
+            IBaseAccoutService<Login> accountService)
         {
             this.mapper = mapper;
             this.accountService = accountService;

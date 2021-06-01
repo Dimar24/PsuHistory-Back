@@ -16,7 +16,7 @@ namespace PsuHistory.Data.EF.SQL.Configuration
             builder.ToTable("Users").HasKey(b => b.Id);
 
             builder.Property(b => b.Mail).IsRequired().HasMaxLength(256);
-            builder.Property(b => b.Password).IsRequired().HasMaxLength(64);
+            builder.Property(b => b.Password).IsRequired().HasMaxLength(128);
 
             builder.HasOne(b => b.Role).WithMany(b => b.Users).HasForeignKey(b => b.RoleId);
 

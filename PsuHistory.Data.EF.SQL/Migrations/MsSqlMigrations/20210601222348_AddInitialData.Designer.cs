@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PsuHistory.Data.EF.SQL.Context;
 
 namespace PsuHistory.Data.EF.SQL.Migrations.MsSqlMigrations
 {
     [DbContext(typeof(DbContextMsSql))]
-    partial class DbContextMsSqlModelSnapshot : ModelSnapshot
+    [Migration("20210601222348_AddInitialData")]
+    partial class AddInitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

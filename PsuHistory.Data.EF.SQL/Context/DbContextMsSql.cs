@@ -11,7 +11,7 @@ namespace PsuHistory.Data.EF.SQL.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            optionsBuilder.UseSqlServer("Server=database, 1433; Initial Catalog=psuhistorydb; User ID=SA; Password=Pa55w0rd2021;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-PHD804P;Database=psuhistorydb;Trusted_Connection=True;");//Server=database, 1433; Initial Catalog=psuhistorydb; User ID=SA; Password=Pa55w0rd2021;
 
             base.OnConfiguring(optionsBuilder);
         }

@@ -372,6 +372,29 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f4416227-0a1c-4b49-95d6-809018de1d13"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Name = "Owner",
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        },
+                        new
+                        {
+                            Id = new Guid("f3f2203a-4002-418e-bcc4-a6e28e538534"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        },
+                        new
+                        {
+                            Id = new Guid("08c07505-ee0f-438d-9579-4f158b11c9cb"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Name = "Moderator",
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        });
                 });
 
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Users.User", b =>
@@ -390,8 +413,8 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
@@ -404,6 +427,35 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b12c7f71-a0e8-44ec-9a68-6759c02ca643"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Mail = "Owner",
+                            Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
+                            RoleId = new Guid("f4416227-0a1c-4b49-95d6-809018de1d13"),
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        },
+                        new
+                        {
+                            Id = new Guid("bf39c08e-b8fa-477e-82dc-502cc9c4f96c"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Mail = "Admin",
+                            Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
+                            RoleId = new Guid("f3f2203a-4002-418e-bcc4-a6e28e538534"),
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        },
+                        new
+                        {
+                            Id = new Guid("3df2af1a-b9e2-4299-bdc4-7ba49e039b2f"),
+                            CreatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044),
+                            Mail = "Moderator",
+                            Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
+                            RoleId = new Guid("08c07505-ee0f-438d-9579-4f158b11c9cb"),
+                            UpdatedAt = new DateTime(2021, 6, 1, 22, 24, 15, 222, DateTimeKind.Utc).AddTicks(7044)
+                        });
                 });
 
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.AttachmentForm", b =>
