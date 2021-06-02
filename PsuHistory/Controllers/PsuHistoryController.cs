@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsuHistory.API.Controllers.Abstraction;
+using PsuHistory.Controllers.Abstraction;
 
-namespace PsuHistory.API.Controllers
+namespace PsuHistory.Controllers
 {
     [ApiController]
-    [Route("api/")]
+    [Route("api/[controller]")]
     public class PsuHistoryController : AbstractionControllerBase
     {
     }

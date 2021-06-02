@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PsuHistory.API.Controllers.Abstraction;
+using PsuHistory.Controllers.Abstraction;
 using PsuHistory.Business.DTO.Models.AccountDataModels;
 using PsuHistory.Business.Service.Interfaces;
 using PsuHistory.Common.Models;
@@ -14,10 +14,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace PsuHistory.API.Controllers
+namespace PsuHistory.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : AbstractionControllerBase
     {
         private readonly IMapper mapper;

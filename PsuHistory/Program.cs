@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using PsuHistory.API;
 
 namespace PsuHistory
 {
@@ -16,7 +15,7 @@ namespace PsuHistory
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://*:80");
+                    //webBuilder.UseUrls("http://*:80");
                 });
     }
 }

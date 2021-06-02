@@ -12,7 +12,7 @@ using PsuHistory.Common.Options;
 using PsuHistory.Data.EF.SQL;
 using PsuHistory.Data.Service;
 
-namespace PsuHistory.API
+namespace PsuHistory
 {
     public class Startup
     {
