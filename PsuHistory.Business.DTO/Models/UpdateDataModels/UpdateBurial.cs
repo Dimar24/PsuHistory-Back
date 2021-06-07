@@ -9,6 +9,7 @@ namespace PsuHistory.Business.DTO.Models.UpdateDataModels
 {
     public class UpdateBurial : KeyGuidEntityBase
     {
+        public string Name { get; set; }
         public int NumberBurial { get; set; }
         public string Location { get; set; }
         public int KnownNumber { get; set; }

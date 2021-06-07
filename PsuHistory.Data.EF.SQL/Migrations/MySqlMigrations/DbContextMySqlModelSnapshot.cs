@@ -3,51 +3,49 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PsuHistory.Data.EF.SQL.Context;
 
-namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
+namespace PsuHistory.Data.EF.SQL.Migrations.MySqlMigrations
 {
-    [DbContext(typeof(DbContextPostgres))]
-    partial class DbContextPostgresModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DbContextMySql))]
+    partial class DbContextMySqlModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.6")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.6");
 
             modelBuilder.Entity("PsuHistory.Data.Domain.Models.Histories.AttachmentForm", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("FileType")
                         .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("character varying(8)");
+                        .HasColumnType("varchar(8)");
 
                     b.Property<Guid>("FormId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -60,26 +58,26 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("MiddleName")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -90,31 +88,31 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("BurialId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("FileType")
                         .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("character varying(8)");
+                        .HasColumnType("varchar(8)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -127,18 +125,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasColumnType("varchar(512)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -149,49 +147,49 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(4096)
-                        .HasColumnType("character varying(4096)");
+                        .HasColumnType("varchar(4096)");
 
                     b.Property<int>("KnownNumber")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasColumnType("varchar(512)");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<int>("NumberBurial")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("TypeBurialId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("UnknownNumber")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Year")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -204,18 +202,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasColumnType("varchar(512)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -226,18 +224,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasColumnType("varchar(512)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -248,18 +246,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -270,18 +268,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -292,55 +290,55 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("BirthPlaceId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("BurialId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("ConscriptionPlaceId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DateOfBirth")
                         .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<string>("DateOfDeath")
                         .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<Guid>("DutyStationId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<bool>("IsHeroSoviet")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsPartisan")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("MiddleName")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<Guid>("TypeVictimId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -361,18 +359,18 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -381,24 +379,24 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1228a08d-9596-4b86-9125-f42833590414"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("8722d261-9a84-4f52-86c8-b2b6f5818b38"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Name = "Owner",
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         },
                         new
                         {
-                            Id = new Guid("ddb44385-fa68-489e-bd46-f30f6ffe5786"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("bfa7197a-5b8a-4873-a741-a1cf7ecd8822"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         },
                         new
                         {
-                            Id = new Guid("68611f87-f6bb-4490-b2c3-a7ab3b502823"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("906f9954-fc61-4b0f-b7ec-55ce7570bbde"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Name = "Moderator",
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         });
                 });
 
@@ -406,26 +404,26 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -436,30 +434,30 @@ namespace PsuHistory.Data.EF.SQL.Migrations.PostgresMigrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2017b538-ac76-4633-baf8-80f0bec88856"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("89967998-d84a-463f-872d-2464ca5cefc2"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Mail = "Owner",
                             Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
-                            RoleId = new Guid("1228a08d-9596-4b86-9125-f42833590414"),
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            RoleId = new Guid("8722d261-9a84-4f52-86c8-b2b6f5818b38"),
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         },
                         new
                         {
-                            Id = new Guid("2e93ac0c-3053-4fc1-ad54-7b1dff9b1f5b"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("84ffafbd-1481-468a-85ac-e50dd1321f0b"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Mail = "Admin",
                             Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
-                            RoleId = new Guid("ddb44385-fa68-489e-bd46-f30f6ffe5786"),
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            RoleId = new Guid("bfa7197a-5b8a-4873-a741-a1cf7ecd8822"),
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         },
                         new
                         {
-                            Id = new Guid("d42aef05-d907-4cb2-9401-5800513f8a54"),
-                            CreatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673),
+                            Id = new Guid("fb36c000-9ce3-4482-a194-64987ae71435"),
+                            CreatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894),
                             Mail = "Moderator",
                             Password = "AQAAAAEAACcQAAAAENAnCVyWq0lo9yySX3Ka7WMkN6jmIjUBKz1CohwrKt5ngJpr5Pq4fY4sLSXWs3ul/A==",
-                            RoleId = new Guid("68611f87-f6bb-4490-b2c3-a7ab3b502823"),
-                            UpdatedAt = new DateTime(2021, 6, 7, 19, 11, 1, 560, DateTimeKind.Utc).AddTicks(8673)
+                            RoleId = new Guid("906f9954-fc61-4b0f-b7ec-55ce7570bbde"),
+                            UpdatedAt = new DateTime(2021, 6, 7, 19, 15, 11, 482, DateTimeKind.Utc).AddTicks(1894)
                         });
                 });
 

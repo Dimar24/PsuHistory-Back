@@ -11,8 +11,8 @@ namespace PsuHistory.Data.EF.SQL.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            optionsBuilder.UseMySql("Server=DESKTOP-PHD804P;Database=psuhistorydb;", 
-                ServerVersion.AutoDetect("Server=DESKTOP-PHD804P;Database=psuhistorydb;"));
+            optionsBuilder.UseMySql("server=localhost;user=root;password=root;database=psuhistorydb;", 
+                ServerVersion.AutoDetect("server=localhost;user=root;password=root;database=psuhistorydb;"));
 
             base.OnConfiguring(optionsBuilder);
         }

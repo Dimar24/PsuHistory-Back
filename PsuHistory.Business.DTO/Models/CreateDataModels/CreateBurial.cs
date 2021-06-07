@@ -6,6 +6,7 @@ namespace PsuHistory.Business.DTO.Models.CreateDataModels
 {
     public class CreateBurial
     {
+        public string Name { get; set; }
         public int NumberBurial { get; set; }
         public string Location { get; set; }
         public int KnownNumber { get; set; }

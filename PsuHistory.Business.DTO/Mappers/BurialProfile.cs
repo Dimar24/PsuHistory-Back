@@ -10,6 +10,7 @@ namespace PsuHistory.Business.DTO.Mappers
         public BurialProfile()
         {
             CreateMap<CreateBurial, Burial>()
+                .ForMember(f => f.Name, m => m.MapFrom(cf => cf.Name))
                 .ForMember(f => f.NumberBurial, m => m.MapFrom(cf => cf.NumberBurial))
                 .ForMember(f => f.Location, m => m.MapFrom(cf => cf.Location))
                 .ForMember(f => f.KnownNumber, m => m.MapFrom(cf => cf.KnownNumber))
@@ -21,6 +22,7 @@ namespace PsuHistory.Business.DTO.Mappers
                 .ForMember(f => f.TypeBurialId, m => m.MapFrom(cf => cf.TypeBurialId))
                 .ForMember(f => f.Files, m => m.MapFrom(cf => cf.Files));
             CreateMap<UpdateBurial, Burial>()
+                .ForMember(f => f.Name, m => m.MapFrom(cf => cf.Name))
                 .ForMember(f => f.Id, m => m.MapFrom(cf => cf.Id))
                 .ForMember(f => f.NumberBurial, m => m.MapFrom(cf => cf.NumberBurial))
                 .ForMember(f => f.Location, m => m.MapFrom(cf => cf.Location))
