@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PsuHistory.Data.Domain.Models.Monuments
 {
-    public class Burial : KeyGuidEntityBase 
-    {
+    public class Burial : KeyGuidEntityBase
+    { 
+        public string Name { get; set; }
         public int NumberBurial { get; set; }
         public string Location { get; set; }
         public int KnownNumber { get; set; }

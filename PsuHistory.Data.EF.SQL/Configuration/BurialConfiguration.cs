@@ -10,6 +10,7 @@ namespace PsuHistory.Data.EF.SQL.Configuration
         {
             builder.ToTable("Burials").HasKey(b => b.Id);
 
+            builder.Property(b => b.Name).IsRequired().HasMaxLength(256);
             builder.Property(b => b.NumberBurial).IsRequired();
             builder.Property(b => b.Location).IsRequired().HasMaxLength(512);
             builder.Property(b => b.KnownNumber).IsRequired();
